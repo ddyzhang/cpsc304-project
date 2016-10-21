@@ -21,18 +21,10 @@ public class SeaQuellersBBAPI {
     
     public static void main(String[] args) {
         SeaQuellersBBAPI api = new SeaQuellersBBAPI();
-        ResultSet result = api.executeQuery("SELECT subname FROM subforums, moderators, users "
-                + "WHERE subforums.subid = moderators.subid AND subforums.forumid = moderators.forumid "
-                + "AND moderators.userid = users.userid AND username = 'testmoderator'");
-        try {
-            System.out.println("Subforums moderated by 'testmoderator':");
-            while(result.next()) {
-                System.out.println(result.getString(1));
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
+        ArrayList<Forum> forums = new ArrayList<Forum>();
+        forums = api.getAllForums();
+        for(int i = 0; i < forums.size(); i++) {
+            System.out.println(forums.get(i).name);
         }
     }
     
@@ -76,5 +68,25 @@ public class SeaQuellersBBAPI {
             System.exit(1);
         }
         return null;
+    }
+    
+    public ArrayList<Forum> getAllForums() {
+        ArrayList<Forum> forums = new ArrayList<Forum>();
+        ResultSet result = executeQuery("SELECT * FROM forums");
+        try {
+            while (result.next()) {
+                int forumId = result.getInt("forumid");
+                String name = result.getString("forumname");
+                String description = result.getString("description");
+                int userId = result.getInt("userid");
+                Forum forum = new Forum(forumId, name, description, userId);
+                forums.add(forum);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return forums;
     }
 }
