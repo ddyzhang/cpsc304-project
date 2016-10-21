@@ -21,10 +21,10 @@ public class SeaQuellersBBAPI {
     
     public static void main(String[] args) {
         SeaQuellersBBAPI api = new SeaQuellersBBAPI();
-        ArrayList<Forum> forums = new ArrayList<Forum>();
-        forums = api.getAllForums();
-        for(int i = 0; i < forums.size(); i++) {
-            System.out.println(forums.get(i).name);
+        ArrayList<Subforum> subforums = new ArrayList<Subforum>();
+        subforums = api.getSubforums(4);
+        for(int i = 0; i < subforums.size(); i++) {
+            System.out.println(subforums.get(i).name);
         }
     }
     
@@ -88,5 +88,24 @@ public class SeaQuellersBBAPI {
             System.exit(0);
         }
         return forums;
+    }
+    
+    public ArrayList<Subforum> getSubforums(int forumId) {
+        ArrayList<Subforum> subforums = new ArrayList<Subforum>();
+        ResultSet result = executeQuery("SELECT * FROM subforums WHERE forumid = " + forumId);
+        try {
+            while (result.next()) {
+                int id = result.getInt("subid");
+                String name = result.getString("subname");
+                String description = result.getString("description");
+                Subforum subforum = new Subforum(id, forumId, name, description);
+                subforums.add(subforum);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return subforums;
     }
 }
