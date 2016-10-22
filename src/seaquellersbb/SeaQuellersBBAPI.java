@@ -21,11 +21,7 @@ public class SeaQuellersBBAPI {
     
     public static void main(String[] args) {
         SeaQuellersBBAPI api = new SeaQuellersBBAPI();
-        ArrayList<Subforum> subforums = new ArrayList<Subforum>();
-        subforums = api.getSubforums(4);
-        for(int i = 0; i < subforums.size(); i++) {
-            System.out.println(subforums.get(i).name);
-        }
+        api.createUser("ddyzhang", "derekdyzhang@gmail.com", "asdf");
     }
     
     public SeaQuellersBBAPI() {
@@ -42,7 +38,7 @@ public class SeaQuellersBBAPI {
         System.out.println("Opened database successfully");
     }
     
-    public ResultSet executeQuery(String query) {
+    private ResultSet executeQuery(String query) {
         try {
             Statement st = connection.createStatement();
             return st.executeQuery(query);
@@ -52,6 +48,17 @@ public class SeaQuellersBBAPI {
             System.exit(0);
         }
         return null;
+    }
+    
+    private void executeUpdate(String statement) {
+        try {
+            Statement st = connection.createStatement();
+            st.executeUpdate(statement);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
     }
     
     public ArrayList<String> getTableInfo(String tableName) {
@@ -107,5 +114,218 @@ public class SeaQuellersBBAPI {
             System.exit(0);
         }
         return subforums;
+    }
+    
+    public ArrayList<Thread> getThreads(int subId, int forumId) {
+        // TODO
+        return null;        
+    }
+    
+    public ArrayList<Comment> getComments(int threadId, int subId, int forumId) {
+        // TODO
+        return null;        
+    }
+    
+    public void createUser(String username, String email, String password) {
+        ResultSet result = executeQuery("SELECT * FROM users WHERE username=\'" + username + "\'");
+        try {
+            if (result.next()) {
+                throw new Exception("Username already taken.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        result = executeQuery("SELECT MAX(userid) FROM users");
+        try {
+            if (result.next()) {
+                int id = result.getInt(1) + 1;
+                executeUpdate("INSERT INTO users(userid, username, email, password) VALUES (" + id + ", \'" + username + "\', \'" + email + "\', \'" + password + "\')");
+            } else {
+                throw new RuntimeException("Something is wrong with the database.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    public void createForum(String forumName, String description, int userId) {
+        ResultSet result = executeQuery("SELECT * FROM users WHERE userid=\'" + userId + "\'");
+        try {
+            if (result.next()) {
+                throw new Exception("User does not exist.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        result = executeQuery("SELECT MAX(forumid) FROM forums");
+        try {
+            if (result.next()) {
+                int id = result.getInt(1) + 1;
+                executeUpdate("INSERT INTO forums VALUES (" + id + ", \'" + forumName + "\', \'" + description + "\', " + userId + ")");
+            } else {
+                throw new RuntimeException("Something is wrong with the database.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    public void createSubforum(int forumId, String subName, String description) {
+        ResultSet result = executeQuery("SELECT * FROM forums WHERE forumid=" + forumId);
+        try {
+            if (result.next()) {
+                throw new Exception("Forum does not exist.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        result = executeQuery("SELECT MAX(subid) FROM forums WHERE forumid=" + forumId);
+        try {
+            if (result.next()) {
+                int id = result.getInt(1) + 1;
+                executeUpdate("INSERT INTO subforums VALUES (" + id + ", " + forumId + ", \'" + subName + "\', \'" + description + "\')");
+            } else {
+                throw new RuntimeException("Something is wrong with the database.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    public void createThread(int subId, int forumId, String title, String body, int userId) {
+        ResultSet result = executeQuery("SELECT * FROM subforums WHERE forumid=" + forumId + " AND subid=" + subId);
+        try {
+            if (result.next()) {
+                throw new Exception("Subforum does not exist.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        result = executeQuery("SELECT MAX(threadid) FROM subforums WHERE forumid=" + forumId + " AND subid=" + subId);
+        try {
+            if (result.next()) {
+                int id = result.getInt(1) + 1;
+                executeUpdate("INSERT INTO threads(threadid, subid, forumid, title, body, userid)"
+                        + " VALUES (" + id + ", " + subId + ", " + forumId + ", \'" + title + "\', \'" + body + "\', " + userId + ")");
+            } else {
+                throw new RuntimeException("Something is wrong with the database.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    public void createComment(int threadId, int subId, int forumId, String body, int userId) {
+        ResultSet result = executeQuery("SELECT * FROM threads WHERE forumid=" + forumId + " AND subid=" + subId + " AND threadid=" + threadId);
+        try {
+            if (result.next()) {
+                throw new Exception("Thread does not exist.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        result = executeQuery("SELECT MAX(commentid) FROM threads WHERE forumid=" + forumId + " AND subid=" + subId + " AND threadid=" + threadId);
+        try {
+            if (result.next()) {
+                int id = result.getInt(1) + 1;
+                executeUpdate("INSERT INTO threads(commentid, threadid, subid, forumid, body, userid)"
+                        + " VALUES (" + id + ", " + threadId + ", " + subId + ", " + forumId  + ", \'" + body + "\', " + userId + ")");
+            } else {
+                throw new RuntimeException("Something is wrong with the database.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    public void createAd(String url, int userId, double cpc, double cpi, String link) {
+        ResultSet result = executeQuery("SELECT * FROM users WHERE userid=" + userId);
+        try {
+            if (result.next()) {
+                throw new Exception("User does not exist.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        result = executeQuery("SELECT * FROM advertisements WHERE imageurl = \'" + url + "\'");
+        try {
+            if (result.next()) {
+                throw new Exception("Ad already exists.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        try {
+            if (result.next()) {
+                int id = result.getInt(1) + 1;
+                executeUpdate("INSERT INTO advertisements VALUES (\'" + url + "\', " + userId + ", " + cpc + ", " + cpi + ", \'" + link + "\')");
+            } else {
+                throw new RuntimeException("Something is wrong with the database.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    public void changeEmail(int userId, String newEmail) {
+        // TODO
+    }
+    
+    public void changePassword(int userId, String newPassword) {
+        // TODO
+    }
+    
+    public void editThreadTitle(int threadId, int subId, int forumId, String newTitle) {
+        // TODO
+    }
+    
+    public void editThreadBody(int threadId, int subId, int forumId, String newBody) {
+        // TODO
+    }
+    
+    public void editCommentBody(int commentId, int threadId, int subId, int forumId, String newBody) {
+        // TODO
+    }
+    
+    public void deleteForum(int forumId) {
+        // TODO
+    }
+    
+    public void deleteSubforum(int subId, int forumId) {
+        // TODO
+    }
+    
+    public void deleteThread(int threadId, int subId, int forumId) {
+        // TODO
+    }
+    
+    public void deleteComment(int commentId, int threadId, int subId, int forumId) {
+        // TODO
     }
 }

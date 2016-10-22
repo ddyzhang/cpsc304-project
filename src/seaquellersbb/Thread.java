@@ -17,8 +17,9 @@ public class Thread {
     String body;
     String postDate;
     String postTime;
+    User poster;
 
-    public Thread(int id, int threadId, int subId, int forumId, String body, String postDate, String postTime) {
+    public Thread(int id, int threadId, int subId, int forumId, String body, String postDate, String postTime, User poster) {
         this.id = id;
         this.threadId = threadId;
         this.subId = subId;
@@ -26,5 +27,6 @@ public class Thread {
         this.body = body;
         this.postDate = postDate;
         this.postTime = postTime;
+        this.poster = poster;
     }
 }

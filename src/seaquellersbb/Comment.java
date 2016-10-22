@@ -20,9 +20,9 @@ public class Comment {
     int postCount;
     String threadDate;
     String threadTime;
-    int userId;
+    User poster;
     
-    public Comment(int id, int subId, int forumId, String title, String body, int postCount, String postDate, String postTime, int userId) {
+    public Comment(int id, int subId, int forumId, String title, String body, int postCount, String postDate, String postTime, User poster) {
         this.id = id;
         this.subId = subId;
         this.forumId = forumId;
@@ -31,7 +31,7 @@ public class Comment {
         this.postCount = postCount;
         this.threadDate = postDate;
         this.threadTime = postTime;
-        this.userId = userId;
+        this.poster = poster;
     }
     
 }
