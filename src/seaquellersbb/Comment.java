@@ -15,22 +15,18 @@ public class Comment {
     int id;
     int subId;
     int forumId;
-    String title;
     String body;
-    int postCount;
-    String threadDate;
-    String threadTime;
+    String postDate;
+    String postTime;
     User poster;
     
-    public Comment(int id, int subId, int forumId, String title, String body, int postCount, String postDate, String postTime, User poster) {
+    public Comment(int id, int subId, int forumId, String body, String postDate, String postTime, User poster) {
         this.id = id;
         this.subId = subId;
         this.forumId = forumId;
-        this.title = title;
         this.body = body;
-        this.postCount = postCount;
-        this.threadDate = postDate;
-        this.threadTime = postTime;
+        this.postDate = postDate;
+        this.postTime = postTime;
         this.poster = poster;
     }
     

@@ -17,11 +17,13 @@ public class SeaQuellersBBAPI {
     /**
      * @param args the command line arguments
      */
-    Connection connection;
+    private Connection connection;
     
     public static void main(String[] args) {
         SeaQuellersBBAPI api = new SeaQuellersBBAPI();
-        api.createUser("ddyzhang", "derekdyzhang@gmail.com", "asdf");
+        ArrayList<User> mods = new ArrayList<User>();
+        mods = api.getModerators(0, 0);
+        System.out.println(mods.get(0).username);
     }
     
     public SeaQuellersBBAPI() {
@@ -117,26 +119,113 @@ public class SeaQuellersBBAPI {
     }
     
     public ArrayList<Thread> getThreads(int subId, int forumId) {
-        // TODO
-        return null;        
+        ArrayList<Thread> threads = new ArrayList<Thread>();
+        ResultSet result = executeQuery("SELECT * FROM threads, users WHERE forumid=" + forumId + 
+                " AND subid=" + subId + " AND threads.userid=users.userid");
+        try {
+            while (result.next()) {
+                int id = result.getInt("threadid");
+                String title = result.getString("title");
+                String body = result.getString("body");
+                int postCount = result.getInt("postcount");
+                String time = result.getString("threadtime");
+                String date = result.getString("threaddate");
+                int userId = result.getInt("userid");
+                String username = result.getString("username");
+                int numPosts = result.getInt("numposts");
+                String signupDate = result.getString("signupdate");
+                User poster = new User(userId, numPosts, signupDate, username);
+                Thread thread = new Thread(id, subId, forumId, title, body, date, time, poster);
+                threads.add(thread);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return threads;
     }
     
     public ArrayList<Comment> getComments(int threadId, int subId, int forumId) {
-        // TODO
-        return null;        
+        ArrayList<Comment> comments = new ArrayList<Comment>();
+        ResultSet result = executeQuery("SELECT * FROM comments, users WHERE forumid=" + forumId + 
+                " AND subid=" + subId + " AND threadid=" + threadId + " AND comments.userid=users.userid");
+        try {
+            while (result.next()) {
+                int id = result.getInt("commentid");
+                String body = result.getString("body");
+                String time = result.getString("posttime");
+                String date = result.getString("postdate");
+                int userId = result.getInt("userid");
+                String username = result.getString("username");
+                int numPosts = result.getInt("numposts");
+                String signupDate = result.getString("signupdate");
+                User poster = new User(userId, numPosts, signupDate, username);
+                Comment comment = new Comment(id, subId, forumId, body, date, time, poster);
+                comments.add(comment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return comments;       
     }
     
     public ArrayList<User> getModerators(int subId, int forumId) {
-        // TODO
-        return null;
+        ArrayList<User> mods = new ArrayList<User>();
+        ResultSet result = executeQuery("SELECT * FROM moderators, users WHERE forumid=" + forumId + 
+                " AND subid=" + subId + " AND moderators.userid=users.userid");
+        try {
+            while (result.next()) {
+                int userId = result.getInt("userid");
+                String username = result.getString("username");
+                int numPosts = result.getInt("numposts");
+                String signupDate = result.getString("signupdate");
+                User mod = new User(userId, numPosts, signupDate, username);
+                mods.add(mod);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return mods;
     }
     
     public User getUserInfo(int userId) {
+        ResultSet result = executeQuery("SELECT * from users WHERE userid=" + userId);
+        try {
+            if (result.next()) {
+                String username = result.getString("username");
+                int numPosts = result.getInt("numposts");
+                String signupDate = result.getString("signupdate");
+                return new User(userId, numPosts, signupDate, username);                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return null;
+    }
+    
+    public User getMostRecentUser() {
         // TODO
         return null;
     }
     
-    public ArrayList<AdStatistic> getAdStats() {
+    public User getUserWithMostPosts() {
+        // TODO
+        return null;
+    }
+    
+    public ArrayList<AdStatistic> getAdStatsByAd() {
+        // TODO
+        return null;
+    }
+    
+    public ArrayList<AdStatistic> getAdStatsByForum() {
         // TODO
         return null;
     }

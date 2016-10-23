@@ -11,19 +11,19 @@ package seaquellersbb;
  */
 public class Thread {
     int id;
-    int threadId;
     int subId;
     int forumId;
+    String title;
     String body;
     String postDate;
     String postTime;
     User poster;
 
-    public Thread(int id, int threadId, int subId, int forumId, String body, String postDate, String postTime, User poster) {
+    public Thread(int id, int subId, int forumId, String title, String body, String postDate, String postTime, User poster) {
         this.id = id;
-        this.threadId = threadId;
         this.subId = subId;
         this.forumId = forumId;
+        this.title = title;
         this.body = body;
         this.postDate = postDate;
         this.postTime = postTime;

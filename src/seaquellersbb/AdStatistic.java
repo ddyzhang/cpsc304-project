@@ -14,11 +14,15 @@ public class AdStatistic {
     String imageUrl;
     String forumName;
     double profit;
+    double avgClicks;
+    double avgImpressions;
     
-    public AdStatistic(String imageUrl, String forumName, double profit) {
+    public AdStatistic(String imageUrl, String forumName, double profit, double avgClicks, double avgImpressions) {
         this.imageUrl = imageUrl;
         this.forumName = forumName;
         this.profit = profit;
+        this.avgClicks = avgClicks;
+        this.avgImpressions = avgImpressions;
     }
     
 }
