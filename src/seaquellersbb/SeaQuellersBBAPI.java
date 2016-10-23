@@ -211,12 +211,64 @@ public class SeaQuellersBBAPI {
     }
     
     public User getMostRecentUser() {
-        // TODO
+        ResultSet result = executeQuery("SELECT MAX(userid) FROM users");
+        int maxId = 0;
+        try {
+            if (result.next()) {
+                maxId = result.getInt(0);
+            } else {
+                throw new Exception("Something's wrong with the database.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        result = executeQuery("SELECT * FROM users WHERE userid=" + maxId);
+        try {
+            if (result.next()) {
+                String username = result.getString("username");
+                int numPosts = result.getInt("numposts");
+                String signupDate = result.getString("signupdate");
+                return new User(maxId, numPosts, signupDate, username);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
         return null;
     }
     
     public User getUserWithMostPosts() {
-        // TODO
+        // If there are multiple users with the same max post count, return the first one
+        ResultSet result = executeQuery("SELECT MAX(postcount) FROM users");
+        int maxPosts = 0;
+        try {
+            if (result.next()) {
+                maxPosts = result.getInt(0);
+            } else {
+                throw new Exception("Something's wrong with the database.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        result = executeQuery("SELECT * FROM users WHERE userid=" + maxPosts);
+        try {
+            if (result.next()) {
+                int id = result.getInt("userid");
+                String username = result.getString("username");
+                int numPosts = result.getInt("numposts");
+                String signupDate = result.getString("signupdate");
+                return new User(id, numPosts, signupDate, username);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
         return null;
     }
     
@@ -343,6 +395,7 @@ public class SeaQuellersBBAPI {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+        executeUpdate("UPDATE users SET postcount = postcount + 1 WHERE userid=" + userId);
     }
     
     public void createComment(int threadId, int subId, int forumId, String body, int userId) {
@@ -370,6 +423,7 @@ public class SeaQuellersBBAPI {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+        executeUpdate("UPDATE users SET postcount = postcount + 1 WHERE userid=" + userId);
     }
     
     public void createAd(String url, int userId, double cpc, double cpi, String link) {
