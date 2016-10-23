@@ -126,6 +126,31 @@ public class SeaQuellersBBAPI {
         return null;        
     }
     
+    public ArrayList<User> getModerators(int subId, int forumId) {
+        // TODO
+        return null;
+    }
+    
+    public User getUserInfo(int userId) {
+        // TODO
+        return null;
+    }
+    
+    public ArrayList<AdStatistic> getAdStats() {
+        // TODO
+        return null;
+    }
+    
+    public ArrayList<AdStatistic> getStatsForAllForumAds() {
+        // TODO
+        return null;
+    }
+    
+    public Advertisement getRandomAd() {
+        // TODO
+        return null;
+    }
+    
     public void createUser(String username, String email, String password) {
         ResultSet result = executeQuery("SELECT * FROM users WHERE username=\'" + username + "\'");
         try {
@@ -313,6 +338,22 @@ public class SeaQuellersBBAPI {
         // TODO
     }
     
+    public void changeAdImageUrl(String oldUrl, String newUrl) {
+        // TODO
+    }
+    
+    public void changeAdCpc(String url, double newCpc) {
+        // TODO
+    }
+    
+    public void changeAdCpi(String url, double newCpi) {
+        // TODO
+    }
+    
+    public void changeAdLink(String url, String newLink) {
+        // TODO
+    }
+    
     public void deleteForum(int forumId) {
         // TODO
     }
@@ -326,6 +367,30 @@ public class SeaQuellersBBAPI {
     }
     
     public void deleteComment(int commentId, int threadId, int subId, int forumId) {
+        // TODO
+    }
+    
+    public void deleteModerator(int userId, int subId, int forumId) {
+        // TODO
+    }
+    
+    public void deleteAd(String imageUrl) {
+        // TODO
+    }
+    
+    public void addModerator(int userId, int subId, int forumId) {
+        // TODO
+    }
+    
+    public void pruneThreads(int subId, int forumId, int daysOld) {
+        // TODO
+    }
+    
+    public void adSeen(String imageUrl, int forumId) {
+        // TODO
+    }
+    
+    public void adClicked(String imageUrl, int forumId) {
         // TODO
     }
 }
