@@ -12,14 +12,14 @@ package seaquellersbb;
 public class Advertisement {
     
     String imageUrl;
-    int userId;
+    String username;
     double cpc;
     double cpi;
     String link;
     
-    public Advertisement(String url, int userId, double cpc, double cpi, String link) {
+    public Advertisement(String url, String username, double cpc, double cpi, String link) {
         this.imageUrl = url;
-        this.userId = userId;
+        this.username = username;
         this.cpc = cpc;
         this.cpi = cpi;
         this.link = link;

@@ -288,7 +288,23 @@ public class SeaQuellersBBAPI {
     }
     
     public Advertisement getRandomAd() {
-        // TODO
+        ResultSet result = executeQuery("SELECT * FROM advertisements, users ORDER BY random() LIMIT 1 WHERE advertisements.userid = users.userid");
+        try {
+            if (result.next()) {
+                String imageUrl = result.getString("imageurl");
+                String link = result.getString("link");
+                double cpc = result.getDouble("cpc");
+                double cpi = result.getDouble("cpi");
+                String username = result.getString("username");
+                return new Advertisement(imageUrl, username, cpc, cpi, link);
+            } else {
+                throw new Exception("Something's wrong with the database.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
         return null;
     }
     
@@ -462,78 +478,78 @@ public class SeaQuellersBBAPI {
     }
     
     public void changeEmail(int userId, String newEmail) {
-        // TODO
+        executeUpdate("UPDATE users SET email=\'" + newEmail + "\' WHERE userid=" + userId);
     }
     
     public void changePassword(int userId, String newPassword) {
-        // TODO
+        executeUpdate("UPDATE users SET password=\'" + newPassword + "\' WHERE userid=" + userId);
     }
     
     public void editThreadTitle(int threadId, int subId, int forumId, String newTitle) {
-        // TODO
+        executeUpdate("UPDATE threads SET title=\'" + newTitle + "\' WHERE threadid=" + threadId + " AND subid=" + subId + " AND forumid=" + forumId);
     }
     
     public void editThreadBody(int threadId, int subId, int forumId, String newBody) {
-        // TODO
+        executeUpdate("UPDATE threads SET body=\'" + newBody + "\' WHERE threadid=" + threadId + " AND subid=" + subId + " AND forumid=" + forumId);
     }
     
     public void editCommentBody(int commentId, int threadId, int subId, int forumId, String newBody) {
-        // TODO
+        executeUpdate("UPDATE comments SET body=\'" + newBody + "\' WHERE threadid=" + threadId + " AND subid=" + subId + " AND forumid=" + forumId + " AND commentid=" + commentId);
     }
     
     public void changeAdImageUrl(String oldUrl, String newUrl) {
-        // TODO
+        executeUpdate("UPDATE advertisements SET imageurl=\'" + newUrl + "\' WHERE imageurl=\'" + oldUrl + "\'");
     }
     
     public void changeAdCpc(String url, double newCpc) {
-        // TODO
+        executeUpdate("UPDATE advertisements SET cpc=" + newCpc + " WHERE imageurl=\'" + url + "\'");
     }
     
     public void changeAdCpi(String url, double newCpi) {
-        // TODO
+        executeUpdate("UPDATE advertisements SET cpc=" + newCpi + " WHERE imageurl=\'" + url + "\'");
     }
     
     public void changeAdLink(String url, String newLink) {
-        // TODO
+        executeUpdate("UPDATE advertisements SET link=\'" + newLink + "\' WHERE imageurl=\'" + url + "\'");
     }
     
     public void deleteForum(int forumId) {
-        // TODO
+        executeUpdate("DELETE FROM forums WHERE forumid=" + forumId);
     }
     
     public void deleteSubforum(int subId, int forumId) {
-        // TODO
+        executeUpdate("DELETE FROM subforums WHERE forumid=" + forumId + " AND subid=" + subId);
     }
     
     public void deleteThread(int threadId, int subId, int forumId) {
-        // TODO
+        executeUpdate("DELETE FROM threads WHERE forumid=" + forumId + " AND subid=" + subId + " AND threadid=" + threadId);
     }
     
     public void deleteComment(int commentId, int threadId, int subId, int forumId) {
-        // TODO
+        executeUpdate("DELETE FROM comments WHERE forumid=" + forumId + " AND subid=" + subId + " AND threadid=" + threadId + " AND commentid=" + commentId);
     }
     
     public void deleteModerator(int userId, int subId, int forumId) {
-        // TODO
+        executeUpdate("DELETE FROM moderators WHERE userid=" + userId + " AND subid=" + subId + " AND forumid=" + forumId);
     }
     
     public void deleteAd(String imageUrl) {
-        // TODO
+        executeUpdate("DELETE FROM advertisements WHERE imageurl=\'" + imageUrl + "\'");
     }
     
     public void addModerator(int userId, int subId, int forumId) {
-        // TODO
+        executeUpdate("INSERT INTO moderators VALUES (" + userId + ", " + forumId + ", " + subId + ")");
     }
     
     public void pruneThreads(int subId, int forumId, int daysOld) {
-        // TODO
+        executeUpdate("DELETE FROM threads WHERE threaddate < now() - INTERVAL \'" + daysOld + " days\' AND postcount=0");        
     }
     
     public void adSeen(String imageUrl, int forumId) {
-        // TODO
+        executeUpdate("UPDATE profits SET impressions = impressions + 1 WHERE imageurl=\'" + imageUrl + "\' AND forumid=" + forumId);
     }
     
     public void adClicked(String imageUrl, int forumId) {
-        // TODO
+        executeUpdate("UPDATE profits SET clicks = clicks + 1 WHERE imageurl=\'" + imageUrl + "\' AND forumid=" + forumId);
     }
 }
