@@ -271,20 +271,100 @@ public class SeaQuellersBBAPI {
         }
         return null;
     }
-    
-    public ArrayList<AdStatistic> getAdStatsByAd() {
-        // TODO
-        return null;
+    //get all the adstatistics (from Profit) that follow a particular imageURL
+    public ArrayList<AdStatistic> getAdStatsByAd(String imageURL) {
+        ArrayList<AdStatistic> adstats = new ArrayList<Adstatistic> 
+        ResultSet result = executeQuery(" SELECT *
+					FROM Profits INNER JOIN forums
+					ON Profits.forumId = forums.forumId
+					WHERE imageURL = " + imageURL);
+	try{
+		if (result.next()){
+			String imageUrl = result.getString("ImageURL");
+			String forumName = result.getString("forumname");
+		       double profit = 	<double>result.getInt("clicks") * result.getDouble("cpc") + <double>result.getInt("impressions") * result.getDouble("cpi");
+		       double numusers = executeQuery("SELECT COUNT(*) FROM Users").getInt("COUNT(*)");
+		       double avgClicks = result.getInt("clicks") / numusers;
+		       double avgImpressions = result.getInt("impressions")/ numusers;
+		       AdStatistic adstat = new AdStatistic(imageUrl, forumName, profit, avgClicks, avgImpressions);
+		       adstats.add(adstat);
+		}
+	} catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+	
+	}
+
+        return adstats;
     }
     
-    public ArrayList<AdStatistic> getAdStatsByForum() {
-        // TODO
-        return null;
+    public ArrayList<AdStatistic> getAdStatsByForum(int forumId) {
+        ArrayList<AdStatistic> adstats = new ArrayList<Adstatistic> 
+        ResultSet result = executeQuery(" SELECT *
+					FROM Profits INNER JOIN forums
+					ON Profits.forumId = forums.forumId
+					WHERE forumId = " + forumId);
+	try{
+		if (result.next()){
+			String imageUrl = result.getString("ImageURL");
+			String forumName = result.getString("forumname");
+		       double profit = 	<double>result.getInt("clicks") * result.getDouble("cpc") + <double>result.getInt("impressions") * result.getDouble("cpi");
+		       double numusers = executeQuery("SELECT COUNT(*) FROM Users").getInt("COUNT(*)");
+		       double avgClicks = result.getInt("clicks") / numusers;
+		       double avgImpressions = result.getInt("impressions")/ numusers;
+		       AdStatistic adstat = new AdStatistic(imageUrl, forumName, profit, avgClicks, avgImpressions);
+		       adstats.add(adstat);
+		}
+	} catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+	
+	}
+
+        return adstats;
     }
-    
-    public ArrayList<AdStatistic> getStatsForAllForumAds() {
-        // TODO
-        return null;
+    //division where you return all imageurls who have a list of forumids
+    public ArrayList<AdStatistic> getStatsForAllForumAds(ArrayList<int> forumIds) { 
+        ArrayList<AdStatistic> adstats = new ArrayList<Adstatistic> 
+	String forumIdslist = "(";
+	for(int i : forumIds){
+		forumIdslist += "\"" + i + "\"";
+	}
+	forumIdslist += ")";
+        ResultSet result = executeQuery(" SELECT *
+					FROM (
+						SELECT *
+						FROM Profits
+						WHERE NOT EXISTS (
+							SELECT *
+							FROM forums
+							WHERE NOT EXISTS (
+								SELECT *
+								FROM forums
+								WHERE forumId IN " + forumsIdslist + "))) p
+					INNER JOIN forums ON p.forumId = forums.forumId");
+					
+	try{
+		if (result.next()){
+			String imageUrl = result.getString("ImageURL");
+			String forumName = result.getString("forumname");
+		       double profit = 	<double>result.getInt("clicks") * result.getDouble("cpc") + <double>result.getInt("impressions") * result.getDouble("cpi");
+		       double numusers = executeQuery("SELECT COUNT(*) FROM Users").getInt("COUNT(*)");
+		       double avgClicks = result.getInt("clicks") / numusers;
+		       double avgImpressions = result.getInt("impressions")/ numusers;
+		       AdStatistic adstat = new AdStatistic(imageUrl, forumName, profit, avgClicks, avgImpressions);
+		       adstats.add(adstat);
+		}
+	} catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+	
+	}
+
+        return adstats;
     }
     
     public Advertisement getRandomAd() {
