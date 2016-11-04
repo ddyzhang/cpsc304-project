@@ -12,17 +12,25 @@ package seaquellersbb;
 public class AdStatistic {
     
     String imageUrl;
+    int forumId;
     String forumName;
     double profit;
-    double avgClicks;
-    double avgImpressions;
+    int totalClicks;
+    int totalImpressions;
     
-    public AdStatistic(String imageUrl, String forumName, double profit, double avgClicks, double avgImpressions) {
+    public AdStatistic(String imageUrl, double profit, int totalClicks, int totalImpressions) {
         this.imageUrl = imageUrl;
+        this.profit = profit;
+        this.totalClicks = totalClicks;
+        this.totalImpressions = totalImpressions;
+    }
+    
+    public AdStatistic(int forumId, String forumName, double profit, int totalClicks, int totalImpressions) {
+        this.forumId = forumId;
         this.forumName = forumName;
         this.profit = profit;
-        this.avgClicks = avgClicks;
-        this.avgImpressions = avgImpressions;
+        this.totalClicks = totalClicks;
+        this.totalImpressions = totalImpressions;
     }
     
 }

@@ -274,18 +274,20 @@ public class SeaQuellersBBAPI {
     //get all the adstatistics (from Profit) that follow a particular imageURL
     public ArrayList<AdStatistic> getAdStatsByAd(String imageURL) {
         ArrayList<AdStatistic> adstats = new ArrayList<AdStatistic>();
-        ResultSet result = executeQuery(" SELECT * FROM Profits INNER JOIN forums ON Profits.forumId = forums.forumId WHERE imageURL = " + imageURL);
+        ResultSet result = executeQuery("SELECT profits.imageurl, SUM(((clicks * cpc) + (impressions * cpi))) AS profit, SUM(clicks) as totalclicks, SUM(impressions) as totalimpressions "
+                + "FROM profits "
+                + "INNER JOIN advertisements "
+                + "ON profits.imageurl = advertisements.imageurl "
+                + "GROUP BY profits.imageurl");
 	try{
-		if (result.next()){
-			String imageUrl = result.getString("ImageURL");
-			String forumName = result.getString("forumname");
-		       double profit = 	result.getInt("clicks") * result.getDouble("cpc") + result.getInt("impressions") * result.getDouble("cpi");
-		       double numusers = executeQuery("SELECT COUNT(*) FROM Users").getInt("COUNT(*)");
-		       double avgClicks = result.getInt("clicks") / numusers;
-		       double avgImpressions = result.getInt("impressions")/ numusers;
-		       AdStatistic adstat = new AdStatistic(imageUrl, forumName, profit, avgClicks, avgImpressions);
-		       adstats.add(adstat);
-		}
+            if (result.next()){
+                String imageUrl = result.getString("imageurl");
+                double profit = result.getDouble("profit");
+                int totalClicks = result.getInt("totalclicks");
+                int totalImpressions = result.getInt("totalimpressions");
+                AdStatistic stat = new AdStatistic(imageUrl, profit, totalClicks, totalImpressions);
+                adstats.add(stat);
+            }
 	} catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -296,19 +298,24 @@ public class SeaQuellersBBAPI {
         return adstats;
     }
     
-    public ArrayList<AdStatistic> getAdStatsByForum(int forumId) {
+    public ArrayList<AdStatistic> getAdStatsByForum() {
         ArrayList<AdStatistic> adstats = new ArrayList<AdStatistic>();
-        ResultSet result = executeQuery(" SELECT * FROM Profits INNER JOIN forums ON Profits.forumId = forums.forumId WHERE forumId = " + forumId);
+        ResultSet result = executeQuery("SELECT profits.forumid, forumname, SUM(((clicks * cpc) + (impressions * cpi))) AS profit, SUM(clicks) as totalclicks, SUM(impressions) as totalimpressions "
+                + "FROM profits "
+                + "INNER JOIN advertisements "
+                + "ON profits.imageurl = advertisements.imageurl "
+                + "INNER JOIN forums "
+                + "ON profits.forumid = forums.forumid"
+                + "GROUP BY profits.forumid, forumname");
 	try{
             if (result.next()){
-		String imageUrl = result.getString("ImageURL");
-		String forumName = result.getString("forumname");
-	       double profit = 	result.getInt("clicks") * result.getDouble("cpc") + result.getInt("impressions") * result.getDouble("cpi");
-	       double numusers = executeQuery("SELECT COUNT(*) FROM Users").getInt("COUNT(*)");
-	       double avgClicks = result.getInt("clicks") / numusers;
-	       double avgImpressions = result.getInt("impressions")/ numusers;
-	       AdStatistic adstat = new AdStatistic(imageUrl, forumName, profit, avgClicks, avgImpressions);
-	       adstats.add(adstat);
+                int forumId = result.getInt("forumid");
+                String forumName = result.getString("forumname");
+                double profit = result.getDouble("profit");
+                int totalClicks = result.getInt("totalclicks");
+                int totalImpressions = result.getInt("totalimpressions");
+                AdStatistic stat = new AdStatistic(forumId, forumName, profit, totalClicks, totalImpressions);
+                adstats.add(stat);
             }
 	} catch (Exception e) {
             e.printStackTrace();
@@ -323,19 +330,24 @@ public class SeaQuellersBBAPI {
     public ArrayList<AdStatistic> getStatsForAllForumAds() { 
         
         ArrayList<AdStatistic> adstats = new ArrayList<AdStatistic>();
-        ResultSet result = executeQuery(" SELECT * FROM (SELECT * FROM Profits WHERE NOT EXISTS (SELECT * FROM forums WHERE NOT EXISTS (SELECT * FROM forums WHERE forumId IN ))) p INNER JOIN forums ON p.forumId = forums.forumId");
-					
+        ResultSet result = executeQuery("SELECT * "
+                + "FROM advertisements a "
+                + "WHERE NOT EXISTS "
+                    + "(SELECT forumid "
+                    + "FROM forums "
+                    + "MINUS "
+                    + "SELECT forumid "
+                    + "FROM profits p "
+                    + "WHERE p.imageurl = a.imageurl)");					
 	try{
-		if (result.next()){
-			String imageUrl = result.getString("ImageURL");
-			String forumName = result.getString("forumname");
-		       double profit = 	result.getInt("clicks") * result.getDouble("cpc") + result.getInt("impressions") * result.getDouble("cpi");
-		       double numusers = executeQuery("SELECT COUNT(*) FROM Users").getInt("COUNT(*)");
-		       double avgClicks = result.getInt("clicks") / numusers;
-		       double avgImpressions = result.getInt("impressions")/ numusers;
-		       AdStatistic adstat = new AdStatistic(imageUrl, forumName, profit, avgClicks, avgImpressions);
-		       adstats.add(adstat);
-		}
+            if (result.next()){
+                String imageUrl = result.getString("imageurl");
+                double profit = result.getDouble("profit");
+                int totalClicks = result.getInt("totalclicks");
+                int totalImpressions = result.getInt("totalimpressions");
+                AdStatistic stat = new AdStatistic(imageUrl, profit, totalClicks, totalImpressions);
+                adstats.add(stat);
+            }
 	} catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
