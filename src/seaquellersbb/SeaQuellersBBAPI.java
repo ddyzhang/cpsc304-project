@@ -63,6 +63,24 @@ public class SeaQuellersBBAPI {
         }
     }
     
+    public User login(String username, String password) {
+        ResultSet result = executeQuery("SELECT * FROM users WHERE username=\'" + username + "\' AND password=\'" + password + "\'");
+        try {
+            if (result.next()) {
+                int userId = result.getInt("userid");
+                String email = result.getString("email");
+                int numPosts = result.getInt("numposts");
+                String signupDate = result.getString("signupdate");
+                return new User(userId, numPosts, signupDate, username, email);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return null;
+    }
+    
     public ArrayList<String> getTableInfo(String tableName) {
         try {
             ArrayList<String> tables = new ArrayList<String>();
@@ -132,9 +150,10 @@ public class SeaQuellersBBAPI {
                 String date = result.getString("threaddate");
                 int userId = result.getInt("userid");
                 String username = result.getString("username");
+                String email = result.getString("email");
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
-                User poster = new User(userId, numPosts, signupDate, username);
+                User poster = new User(userId, numPosts, signupDate, username, email);
                 Thread thread = new Thread(id, subId, forumId, title, body, date, time, poster);
                 threads.add(thread);
             }
@@ -160,7 +179,8 @@ public class SeaQuellersBBAPI {
                 String username = result.getString("username");
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
-                User poster = new User(userId, numPosts, signupDate, username);
+                String email = result.getString("email");
+                User poster = new User(userId, numPosts, signupDate, username, email);
                 Comment comment = new Comment(id, subId, forumId, body, date, time, poster);
                 comments.add(comment);
             }
@@ -182,7 +202,8 @@ public class SeaQuellersBBAPI {
                 String username = result.getString("username");
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
-                User mod = new User(userId, numPosts, signupDate, username);
+                String email = result.getString("email");
+                User mod = new User(userId, numPosts, signupDate, username, email);
                 mods.add(mod);
             }
         } catch (Exception e) {
@@ -200,7 +221,8 @@ public class SeaQuellersBBAPI {
                 String username = result.getString("username");
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
-                return new User(userId, numPosts, signupDate, username);                
+                String email = result.getString("email");
+                return new User(userId, numPosts, signupDate, username, email);                
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -230,7 +252,8 @@ public class SeaQuellersBBAPI {
                 String username = result.getString("username");
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
-                return new User(maxId, numPosts, signupDate, username);
+                String email = result.getString("email");
+                return new User(maxId, numPosts, signupDate, username, email);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -262,7 +285,8 @@ public class SeaQuellersBBAPI {
                 String username = result.getString("username");
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
-                return new User(id, numPosts, signupDate, username);
+                String email = result.getString("email");
+                return new User(id, numPosts, signupDate, username, email);
             }
         } catch (Exception e) {
             e.printStackTrace();
