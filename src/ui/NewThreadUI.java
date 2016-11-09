@@ -12,7 +12,7 @@ import seaquellersbb.SeaQuellersBBAPI;
  * @author serenachen
  */
 public class NewThreadUI extends javax.swing.JFrame {
-    private SeaQuellersBBAPI seaQueallers;
+    private SeaQuellersBBAPI seaQuellers;
 
     /**
      * Creates new form NewThreadUI
@@ -20,7 +20,7 @@ public class NewThreadUI extends javax.swing.JFrame {
     public NewThreadUI(SeaQuellersBBAPI seaQueallers) {
         initComponents();
 
-        this.seaQueallers = seaQueallers;
+        this.seaQuellers = seaQueallers;
     }
 
     /**
@@ -160,7 +160,7 @@ public class NewThreadUI extends javax.swing.JFrame {
     }//GEN-LAST:event_titleFieldActionPerformed
 
     private void submitBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitBtnMouseClicked
-        seaQueallers.createSubforum();
+        seaQuellers.createSubforum();
 
         
     
