@@ -5,6 +5,8 @@
  */
 
 package ui;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import seaquellersbb.SeaQuellersBBAPI;
 
 /**
@@ -56,17 +58,21 @@ public class LoginUI extends javax.swing.JFrame {
 
         seaquellersBBLabel.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         seaquellersBBLabel.setForeground(new java.awt.Color(255, 255, 255));
-        seaquellersBBLabel.setText("Seaquellers Bulletin Board");
+        seaquellersBBLabel.setText("SeaQuellers Bulletin Board");
 
-        usernameTxtField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        usernameTxtField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         usernameTxtField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameTxtFieldActionPerformed(evt);
             }
         });
 
-        passwordField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        passwordField.setText("jPasswordField1");
+        passwordField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        passwordField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordFieldActionPerformed(evt);
+            }
+        });
 
         usernameLabel.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
         usernameLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -91,18 +97,18 @@ public class LoginUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(seaquellersBBLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(usernameTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(usernameLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(loginBtn))
                     .addComponent(passwordLabel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,13 +121,13 @@ public class LoginUI extends javax.swing.JFrame {
                             .addComponent(passwordLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(usernameTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(loginBtn)))
+                            .addComponent(usernameTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(loginBtn)
+                            .addComponent(passwordField)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(seaquellersBBLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addGap(26, 26, 26))
         );
 
         headingLabel.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
@@ -129,8 +135,6 @@ public class LoginUI extends javax.swing.JFrame {
 
         registerUsernameLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         registerUsernameLabel.setText("Username");
-
-        registerPWTxtField.setText("jPasswordField1");
 
         registerEmailTxtField.setToolTipText("");
         registerEmailTxtField.addActionListener(new java.awt.event.ActionListener() {
@@ -153,9 +157,14 @@ public class LoginUI extends javax.swing.JFrame {
                 signUpBtnMouseClicked(evt);
             }
         });
+        signUpBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                signUpBtnActionPerformed(evt);
+            }
+        });
 
         registerHeading1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        registerHeading1.setText("on the Seaquellers Bulletin Board.");
+        registerHeading1.setText("on the SeaQuellers Bulletin Board.");
 
         registerHeading2.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         registerHeading2.setText("Connect with friends and the world around you ");
@@ -167,12 +176,10 @@ public class LoginUI extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(registerHeading1)
-                        .addGap(104, 104, 104))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(registerHeading1)
                     .addComponent(registerHeading2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(headingLabel)
                     .addGroup(layout.createSequentialGroup()
@@ -230,14 +237,26 @@ public class LoginUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_registerEmailTxtFieldActionPerformed
 
+    private void signUpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signUpBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_signUpBtnActionPerformed
+
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordFieldActionPerformed
+
     /**
      * Sign up new user
      * */
-    private void signUpBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signUpBtnMouseClicked
+    private void signUpBtnMouseClicked(java.awt.event.MouseEvent evt) {                                       
         String username = registerUsernameTxtField.getText();
-        String password = registerPWTxtField.getPassword().toString();
+        String password = new String(passwordField.getPassword());
         String email = registerEmailTxtField.getText();
-        seaQuellers.createUser(username, email, password);
+        if (seaQuellers.createUser(username, email, password)) {
+            JOptionPane.showMessageDialog(new JFrame(), "Account created successfully! Please login using your new account.");
+        } else {
+            JOptionPane.showMessageDialog(new JFrame(), "Username is already taken.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -245,10 +264,15 @@ public class LoginUI extends javax.swing.JFrame {
      *
      * Log in existing user
      * */
-    private void loginBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginBtnMouseClicked
+    private void loginBtnMouseClicked(java.awt.event.MouseEvent evt) {                                      
         String username = usernameTxtField.getText();
-        String password = passwordField.getPassword().toString();
-
+        String password = new String(passwordField.getPassword());
+        // TEST CODE
+        System.out.println(username + " " + password);
+        ThreadUI thread = new ThreadUI();
+        thread.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        thread.setVisible(true);
+        // TEST CODE
     }
 
     /**
@@ -282,7 +306,7 @@ public class LoginUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginUI().setVisible(true);
+                new LoginUI(new SeaQuellersBBAPI()).setVisible(true);
             }
         });
     }

@@ -403,11 +403,11 @@ public class SeaQuellersBBAPI {
         return null;
     }
     
-    public void createUser(String username, String email, String password) {
+    public boolean createUser(String username, String email, String password) {
         ResultSet result = executeQuery("SELECT * FROM users WHERE username=\'" + username + "\'");
         try {
             if (result.next()) {
-                throw new Exception("Username already taken.");
+                return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -427,6 +427,7 @@ public class SeaQuellersBBAPI {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+        return true;
     }
     
     public void createForum(String forumName, String description, int userId) {
