@@ -19,10 +19,10 @@ public class LoginUI extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    public LoginUI(SeaQuellersBBAPI seaQueallers) {
+    public LoginUI(SeaQuellersBBAPI seaQuellers) {
         initComponents();
 
-        this.seaQuellers = seaQueallers;
+        this.seaQuellers = seaQuellers;
     }
 
     /**
@@ -120,10 +120,11 @@ public class LoginUI extends javax.swing.JFrame {
                             .addComponent(usernameLabel)
                             .addComponent(passwordLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(usernameTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(loginBtn)
-                            .addComponent(passwordField)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(passwordField, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(usernameTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(loginBtn))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(seaquellersBBLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -252,7 +253,9 @@ public class LoginUI extends javax.swing.JFrame {
         String username = registerUsernameTxtField.getText();
         String password = new String(passwordField.getPassword());
         String email = registerEmailTxtField.getText();
-        if (seaQuellers.createUser(username, email, password)) {
+        if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
+             JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.");
+        } else if (seaQuellers.createUser(username, email, password)) {
             JOptionPane.showMessageDialog(new JFrame(), "Account created successfully! Please login using your new account.");
         } else {
             JOptionPane.showMessageDialog(new JFrame(), "Username is already taken.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -267,12 +270,19 @@ public class LoginUI extends javax.swing.JFrame {
     private void loginBtnMouseClicked(java.awt.event.MouseEvent evt) {                                      
         String username = usernameTxtField.getText();
         String password = new String(passwordField.getPassword());
-        // TEST CODE
-        System.out.println(username + " " + password);
-        ThreadUI thread = new ThreadUI();
+        
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.");
+            return;
+        } else {
+        seaQuellers.login(username, password);
+            // TEST CODE
+        System.out.println("username:" + username + "password: " + password);
+        ThreadUI thread = new ThreadUI(new SeaQuellersBBAPI());
         thread.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         thread.setVisible(true);
         // TEST CODE
+        }
     }
 
     /**
