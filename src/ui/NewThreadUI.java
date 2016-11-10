@@ -160,7 +160,7 @@ public class NewThreadUI extends javax.swing.JFrame {
     }//GEN-LAST:event_titleFieldActionPerformed
 
     private void submitBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitBtnMouseClicked
-        seaQuellers.createSubforum();
+        //seaQuellers.createSubforum();
 
         
     

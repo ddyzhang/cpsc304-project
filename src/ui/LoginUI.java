@@ -277,10 +277,10 @@ public class LoginUI extends javax.swing.JFrame {
         } else {
         seaQuellers.login(username, password);
             // TEST CODE
-        System.out.println("username:" + username + "password: " + password);
-        ThreadUI thread = new ThreadUI(new SeaQuellersBBAPI());
-        thread.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        thread.setVisible(true);
+        System.out.println("username: " + username + " password: " + password);
+        HomeUI home = new HomeUI(new SeaQuellersBBAPI());
+        home.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        home.setVisible(true);
         // TEST CODE
         }
     }
