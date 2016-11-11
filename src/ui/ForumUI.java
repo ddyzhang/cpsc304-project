@@ -5,6 +5,8 @@
  */
 package ui;
 
+import java.util.ArrayList;
+import seaquellersbb.*;
 import seaquellersbb.SeaQuellersBBAPI;
 
 /**
@@ -13,13 +15,21 @@ import seaquellersbb.SeaQuellersBBAPI;
  */
 public class ForumUI extends javax.swing.JFrame {
     private SeaQuellersBBAPI seaQuellers;
+    private Forum forum;
+    private User loggedInUser;
+    private ArrayList<Subforum> subforums;
 
     /**
      * Creates new form ForumUI
      */
-    public ForumUI(SeaQuellersBBAPI seaQuellers) {
+    public ForumUI(SeaQuellersBBAPI seaQuellers, Forum forum, User user) {
         initComponents();
         this.seaQuellers = seaQuellers;
+        this.forum = forum;
+        this.loggedInUser = user;
+        this.subforums = seaQuellers.getSubforums(forum.id);
+        username.setText(loggedInUser.username);
+        forumName.setText(forum.name);
     }
 
     /**
@@ -35,6 +45,7 @@ public class ForumUI extends javax.swing.JFrame {
         forumName = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,17 +87,34 @@ public class ForumUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 406, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 272, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -122,7 +150,7 @@ public class ForumUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ForumUI(new SeaQuellersBBAPI()).setVisible(true);
+                // new ForumUI(new SeaQuellersBBAPI()).setVisible(true);
             }
         });
     }
@@ -131,6 +159,7 @@ public class ForumUI extends javax.swing.JFrame {
     private javax.swing.JLabel forumName;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }

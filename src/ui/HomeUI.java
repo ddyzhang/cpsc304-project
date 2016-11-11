@@ -5,8 +5,11 @@
 
 package ui;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.*;
 import seaquellersbb.*;
@@ -31,11 +34,21 @@ public class HomeUI extends javax.swing.JFrame {
         this.loginPage = loginPage;
         username.setText(loggedInUser.username); 
         forumsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+        forumsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         for (int i = 0; i < forums.size(); i++) {
             JLabel forumName = new JLabel(forums.get(i).name);
             JLabel description = new JLabel(forums.get(i).description);
+            forumName.setName("" + i);
             forumName.setFont(Font.decode("Lucida-Grande-Bold-16"));
             description.setFont(Font.decode("Lucida-Grande-14"));
+            forumName.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    JLabel source = (JLabel)e.getSource();
+                    ForumUI forum = new ForumUI(seaQuellers, forums.get(Integer.parseInt(source.getName())), loggedInUser);
+                    forum.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    forum.setVisible(true);
+                }
+            });
             forumsPanel.add(forumName);
             forumsPanel.add(description);
             forumsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
@@ -94,7 +107,7 @@ public class HomeUI extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Welcome to the Seaquellers Bulletin Board!");
+        jLabel1.setText("Welcome to the SeaQuellers Bulletin Board!");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
