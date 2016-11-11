@@ -5,8 +5,10 @@
 
 package ui;
 
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.util.ArrayList;
-import javax.swing.JFrame;
+import javax.swing.*;
 import seaquellersbb.*;
 
 /**
@@ -27,7 +29,18 @@ public class HomeUI extends javax.swing.JFrame {
         this.loggedInUser = user;
         this.forums = seaQuellers.getAllForums();
         this.loginPage = loginPage;
-        username.setText(loggedInUser.username);        
+        username.setText(loggedInUser.username); 
+        forumsPanel.setLayout(new GridLayout(0, 1));
+        for (int i = 0; i < forums.size(); i++) {
+            JLabel forumName = new JLabel(forums.get(i).name);
+            JLabel description = new JLabel(forums.get(i).description);
+            forumName.setFont(Font.decode("Lucida-Grande-Bold-16"));
+            description.setFont(Font.decode("Lucida-Grande-14"));
+            forumsPanel.add(forumName);
+            forumsPanel.add(description);
+            forumsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        }
+        this.pack();
     }
 
     /**
@@ -39,15 +52,23 @@ public class HomeUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        forumsPanel = new javax.swing.JPanel();
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -82,7 +103,7 @@ public class HomeUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(username)
@@ -99,33 +120,24 @@ public class HomeUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel2.setLayout(new java.awt.GridLayout(5, 2));
-
-        jLabel4.setText("jLabel4");
-        jPanel2.add(jLabel4);
-
-        jLabel6.setText("jLabel6");
-        jPanel2.add(jLabel6);
-
-        jLabel7.setText("jLabel7");
-        jPanel2.add(jLabel7);
-
-        jLabel8.setText("jLabel8");
-        jPanel2.add(jLabel8);
+        forumsPanel.setPreferredSize(new java.awt.Dimension(549, 449));
+        forumsPanel.setLayout(new java.awt.GridLayout(5, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(forumsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(forumsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -176,16 +188,29 @@ public class HomeUI extends javax.swing.JFrame {
             }
         });
     }
+    
+    private class subPanel extends JPanel {
+         
+        subPanel me;
+ 
+        public subPanel(String forumName, String description) {
+            super();
+            me = this;
+            JLabel name = new JLabel(forumName);
+            name.setFont(Font.decode("Lucida-Grande-18-Bold"));
+            add(name);
+            JLabel desc = new JLabel(description);
+            name.setFont(Font.decode("Lucida-Grande-14"));
+            add(desc);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel forumsPanel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }
