@@ -253,6 +253,19 @@ public class SeaQuellersBBAPI {
         return null;
     }
     
+    public boolean  isAdmin(int userId) {
+        ResultSet result = executeQuery("SELECT * from Superadmins WHERE userId=" + userId);
+        try {
+            if (result.next()){
+                return result.getInt("userId") == userId;
+            }
+        }  catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return false;
+    }
     public User getMostRecentUser() {
         ResultSet result = executeQuery("SELECT MAX(userid) FROM users");
         int maxId = 0;

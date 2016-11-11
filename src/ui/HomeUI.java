@@ -23,6 +23,7 @@ public class HomeUI extends javax.swing.JFrame {
     private LoginUI loginPage;
     private User loggedInUser;
     private ArrayList<Forum> forums;
+    private boolean isSuperAdmin;
     /**
      * Creates new form HomeUI
      */
@@ -30,9 +31,11 @@ public class HomeUI extends javax.swing.JFrame {
         initComponents();
         this.seaQuellers = seaQuellers;
         this.loggedInUser = user;
+        this.isSuperAdmin = seaQuellers.isAdmin(user.id);
         this.forums = seaQuellers.getAllForums();
         this.loginPage = loginPage;
         username.setText(loggedInUser.username); 
+        if (isSuperAdmin) jLabel5.setText("Administrator: ");
         forumsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         forumsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         for (int i = 0; i < forums.size(); i++) {
