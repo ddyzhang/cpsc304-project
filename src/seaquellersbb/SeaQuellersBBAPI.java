@@ -338,7 +338,7 @@ public class SeaQuellersBBAPI {
                 + "ON profits.imageurl = advertisements.imageurl "
                 + "GROUP BY profits.imageurl");
 	try{
-            if (result.next()){
+            while (result.next()){
                 String imageUrl = result.getString("imageurl");
                 double profit = result.getDouble("profit");
                 int totalClicks = result.getInt("totalclicks");
@@ -366,7 +366,7 @@ public class SeaQuellersBBAPI {
                 + "ON profits.forumid = forums.forumid"
                 + "GROUP BY profits.forumid, forumname");
 	try{
-            if (result.next()){
+            while (result.next()){
                 int forumId = result.getInt("forumid");
                 String forumName = result.getString("forumname");
                 double profit = result.getDouble("profit");
