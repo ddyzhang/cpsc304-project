@@ -7,7 +7,7 @@
 package ui;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import seaquellersbb.SeaQuellersBBAPI;
+import seaquellersbb.*;
 
 /**
  *
@@ -254,7 +254,7 @@ public class LoginUI extends javax.swing.JFrame {
         String password = new String(passwordField.getPassword());
         String email = registerEmailTxtField.getText();
         if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
-             JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.");
+             JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
         } else if (seaQuellers.createUser(username, email, password)) {
             JOptionPane.showMessageDialog(new JFrame(), "Account created successfully! Please login using your new account.");
         } else {
@@ -272,16 +272,18 @@ public class LoginUI extends javax.swing.JFrame {
         String password = new String(passwordField.getPassword());
         
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.");
+            JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } else {
-        seaQuellers.login(username, password);
+            User user = seaQuellers.login(username, password);
+            if (user != null) {
+                HomeUI home = new HomeUI(seaQuellers, user);
+                home.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                home.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(new JFrame(), "Username or password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
             // TEST CODE
-        System.out.println("username: " + username + " password: " + password);
-        HomeUI home = new HomeUI(new SeaQuellersBBAPI());
-        home.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        home.setVisible(true);
-        // TEST CODE
         }
     }
 

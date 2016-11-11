@@ -11,12 +11,12 @@ package seaquellersbb;
  */
 public class AdStatistic {
     
-    String imageUrl;
-    int forumId;
-    String forumName;
-    double profit;
-    int totalClicks;
-    int totalImpressions;
+    public String imageUrl;
+    public int forumId;
+    public String forumName;
+    public double profit;
+    public int totalClicks;
+    public int totalImpressions;
     
     public AdStatistic(String imageUrl, double profit, int totalClicks, int totalImpressions) {
         this.imageUrl = imageUrl;

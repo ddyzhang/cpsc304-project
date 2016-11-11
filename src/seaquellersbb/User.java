@@ -11,11 +11,11 @@ package seaquellersbb;
  */
 public class User {
     
-    int id;
-    int numPosts;
-    String signupDate;
-    String username;
-    String email;
+    public int id;
+    public int numPosts;
+    public String signupDate;
+    public String username;
+    public String email;
     
     public User(int id, int numPosts, String signupDate, String username, String email) {
         this.id = id;

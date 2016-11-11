@@ -5,7 +5,8 @@
 
 package ui;
 
-import seaquellersbb.SeaQuellersBBAPI;
+import java.util.ArrayList;
+import seaquellersbb.*;
 
 /**
  *
@@ -13,13 +14,17 @@ import seaquellersbb.SeaQuellersBBAPI;
  */
 public class HomeUI extends javax.swing.JFrame {
     private SeaQuellersBBAPI seaQuellers;
-
+    private User loggedInUser;
+    private ArrayList<Forum> forums;
     /**
      * Creates new form HomeUI
      */
-    public HomeUI(SeaQuellersBBAPI seaQuellers) {
+    public HomeUI(SeaQuellersBBAPI seaQuellers, User user) {
         initComponents();
         this.seaQuellers = seaQuellers;
+        this.loggedInUser = user;
+        this.forums = seaQuellers.getAllForums();
+        username.setText(loggedInUser.username);        
     }
 
     /**
@@ -143,7 +148,7 @@ public class HomeUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new HomeUI(new SeaQuellersBBAPI()).setVisible(true);
+                //new HomeUI(new SeaQuellersBBAPI(), null).setVisible(true);
             }
         });
     }

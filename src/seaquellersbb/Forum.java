@@ -11,10 +11,10 @@ package seaquellersbb;
  */
 public class Forum {
     
-    int id;
-    String name;
-    String description;
-    int userId;
+    public int id;
+    public String name;
+    public String description;
+    public int userId;
     
     public Forum(int id, String name, String description, int userId) {
         this.id = id;

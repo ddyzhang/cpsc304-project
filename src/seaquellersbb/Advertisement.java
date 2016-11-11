@@ -11,11 +11,11 @@ package seaquellersbb;
  */
 public class Advertisement {
     
-    String imageUrl;
-    String username;
-    double cpc;
-    double cpi;
-    String link;
+    public String imageUrl;
+    public String username;
+    public double cpc;
+    public double cpi;
+    public String link;
     
     public Advertisement(String url, String username, double cpc, double cpi, String link) {
         this.imageUrl = url;
