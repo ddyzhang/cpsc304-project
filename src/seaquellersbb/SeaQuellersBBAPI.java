@@ -97,6 +97,27 @@ public class SeaQuellersBBAPI {
         return null;
     }
     
+    public ArrayList<Advertisement> getAllAds() {
+        ArrayList<Advertisement> ads = new ArrayList<Advertisement>();
+        ResultSet result = executeQuery("SELECT * FROM advertisements, users WHERE advertisements.userid = users.userid");
+        try {
+            while (result.next()) {
+                String imageUrl = result.getString("imageurl");
+                String username = result.getString("username");
+                double cpc = result.getDouble("cpc");
+                double cpi = result.getDouble("cpi");
+                String link = result.getString("link");
+                Advertisement ad = new Advertisement(imageUrl, username, cpc, cpi, link);
+                ads.add(ad);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return ads;
+    }
+    
     public ArrayList<Forum> getAllForums() {
         ArrayList<Forum> forums = new ArrayList<Forum>();
         ResultSet result = executeQuery("SELECT * FROM forums");
@@ -295,8 +316,8 @@ public class SeaQuellersBBAPI {
         }
         return null;
     }
-    //get all the adstatistics (from Profit) that follow a particular imageURL
-    public ArrayList<AdStatistic> getAdStatsByAd(String imageURL) {
+
+    public ArrayList<AdStatistic> getAdStatsByAd() {
         ArrayList<AdStatistic> adstats = new ArrayList<AdStatistic>();
         ResultSet result = executeQuery("SELECT profits.imageurl, SUM(((clicks * cpc) + (impressions * cpi))) AS profit, SUM(clicks) as totalclicks, SUM(impressions) as totalimpressions "
                 + "FROM profits "
@@ -359,7 +380,7 @@ public class SeaQuellersBBAPI {
                 + "WHERE NOT EXISTS "
                     + "(SELECT forumid "
                     + "FROM forums "
-                    + "MINUS "
+                    + "EXCEPT "
                     + "SELECT forumid "
                     + "FROM profits p "
                     + "WHERE p.imageurl = a.imageurl)");					
