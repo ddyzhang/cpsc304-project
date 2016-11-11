@@ -30,7 +30,7 @@ public class HomeUI extends javax.swing.JFrame {
         this.forums = seaQuellers.getAllForums();
         this.loginPage = loginPage;
         username.setText(loggedInUser.username); 
-        forumsPanel.setLayout(new GridLayout(0, 1));
+        forumsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         for (int i = 0; i < forums.size(); i++) {
             JLabel forumName = new JLabel(forums.get(i).name);
             JLabel description = new JLabel(forums.get(i).description);
@@ -187,22 +187,6 @@ public class HomeUI extends javax.swing.JFrame {
                 //new HomeUI(new SeaQuellersBBAPI(), null).setVisible(true);
             }
         });
-    }
-    
-    private class subPanel extends JPanel {
-         
-        subPanel me;
- 
-        public subPanel(String forumName, String description) {
-            super();
-            me = this;
-            JLabel name = new JLabel(forumName);
-            name.setFont(Font.decode("Lucida-Grande-18-Bold"));
-            add(name);
-            JLabel desc = new JLabel(description);
-            name.setFont(Font.decode("Lucida-Grande-14"));
-            add(desc);
-        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
