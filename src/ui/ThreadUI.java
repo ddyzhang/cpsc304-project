@@ -5,8 +5,9 @@
  */
 package ui;
 
+import java.util.ArrayList;
 import javax.swing.SwingUtilities;
-import seaquellersbb.SeaQuellersBBAPI;
+import seaquellersbb.*;
 
 /**
  *
@@ -14,13 +15,20 @@ import seaquellersbb.SeaQuellersBBAPI;
  */
 public class ThreadUI extends javax.swing.JFrame {
     private SeaQuellersBBAPI seaQuellers;
+    private seaquellersbb.Thread thread;
+    private ArrayList<Comment> comments;
+    private User loggedInUser;
 
     /**
      * Creates new form ThreadUI
      */
-    public ThreadUI(SeaQuellersBBAPI seaQueallers) {
+    public ThreadUI(SeaQuellersBBAPI seaQuellers, seaquellersbb.Thread thread, User user) {
         initComponents();
         this.seaQuellers = seaQuellers;
+        this.thread = thread;
+        this.loggedInUser = user;
+        username.setText(loggedInUser.username);
+        threadTitle.setText(thread.title);
     }
 
     /**
@@ -35,13 +43,13 @@ public class ThreadUI extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         toolbarPanel = new javax.swing.JPanel();
-        forumName = new javax.swing.JLabel();
-        subforumName = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
+        threadTitle = new javax.swing.JLabel();
         panel = new javax.swing.JScrollPane();
         commentPanel = new javax.swing.JTextPane();
         replyBtn = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -61,14 +69,6 @@ public class ThreadUI extends javax.swing.JFrame {
 
         toolbarPanel.setBackground(new java.awt.Color(0, 102, 204));
 
-        forumName.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        forumName.setForeground(new java.awt.Color(255, 255, 255));
-        forumName.setText("[forumName]");
-
-        subforumName.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        subforumName.setForeground(new java.awt.Color(255, 255, 255));
-        subforumName.setText("[subforumName]");
-
         jLabel5.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Currently logged in:");
@@ -77,30 +77,31 @@ public class ThreadUI extends javax.swing.JFrame {
         username.setForeground(new java.awt.Color(255, 255, 255));
         username.setText("[username]");
 
+        threadTitle.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        threadTitle.setForeground(new java.awt.Color(255, 255, 255));
+        threadTitle.setText("[threadTitle]");
+
         javax.swing.GroupLayout toolbarPanelLayout = new javax.swing.GroupLayout(toolbarPanel);
         toolbarPanel.setLayout(toolbarPanelLayout);
         toolbarPanelLayout.setHorizontalGroup(
             toolbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(toolbarPanelLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(forumName, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(subforumName)
-                .addGap(121, 121, 121)
+                .addContainerGap()
+                .addComponent(threadTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 340, Short.MAX_VALUE)
                 .addComponent(jLabel5)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addComponent(username)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap())
         );
         toolbarPanelLayout.setVerticalGroup(
             toolbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(toolbarPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(toolbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(forumName)
-                    .addComponent(subforumName)
                     .addComponent(jLabel5)
-                    .addComponent(username))
+                    .addComponent(username)
+                    .addComponent(threadTitle))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -113,6 +114,17 @@ public class ThreadUI extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 275, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -120,27 +132,30 @@ public class ThreadUI extends javax.swing.JFrame {
             .addComponent(toolbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(280, 280, 280)
-                        .addComponent(replyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(replyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 333, Short.MAX_VALUE)
+                    .addGap(0, 326, Short.MAX_VALUE)
                     .addComponent(jLabel6)
-                    .addGap(0, 334, Short.MAX_VALUE)))
+                    .addGap(0, 326, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(toolbarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(replyBtn))
+                .addComponent(replyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 224, Short.MAX_VALUE)
@@ -195,22 +210,22 @@ public class ThreadUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ThreadUI(new SeaQuellersBBAPI()).setVisible(true);
-            }
-        });
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new ThreadUI(new SeaQuellersBBAPI()).setVisible(true);
+//            }
+//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextPane commentPanel;
-    private javax.swing.JLabel forumName;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane panel;
     private javax.swing.JButton replyBtn;
-    private javax.swing.JLabel subforumName;
+    private javax.swing.JLabel threadTitle;
     private javax.swing.JPanel toolbarPanel;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables

@@ -5,7 +5,15 @@
  */
 package ui;
 
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import seaquellersbb.*;
 import seaquellersbb.SeaQuellersBBAPI;
 
@@ -30,6 +38,27 @@ public class ForumUI extends javax.swing.JFrame {
         this.subforums = seaQuellers.getSubforums(forum.id);
         username.setText(loggedInUser.username);
         forumName.setText(forum.name);
+        subsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+        subsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        for (int i = 0; i < subforums.size(); i++) {
+            JLabel subforumName = new JLabel(subforums.get(i).name);
+            JLabel description = new JLabel(subforums.get(i).description);
+            subforumName.setName("" + i);
+            subforumName.setFont(Font.decode("Lucida-Grande-Bold-16"));
+            description.setFont(Font.decode("Lucida-Grande-14"));
+            subforumName.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    JLabel source = (JLabel) e.getSource();
+                    SubforumUI subforum = new SubforumUI(seaQuellers, subforums.get(Integer.parseInt(source.getName())), loggedInUser);
+                    subforum.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    subforum.setVisible(true);
+                }
+            });
+            subsPanel.add(subforumName);
+            subsPanel.add(description);
+            subsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        }
+        this.pack();
     }
 
     /**
@@ -45,7 +74,7 @@ public class ForumUI extends javax.swing.JFrame {
         forumName = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        subsPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,14 +116,14 @@ public class ForumUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout subsPanelLayout = new javax.swing.GroupLayout(subsPanel);
+        subsPanel.setLayout(subsPanelLayout);
+        subsPanelLayout.setHorizontalGroup(
+            subsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        subsPanelLayout.setVerticalGroup(
+            subsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 406, Short.MAX_VALUE)
         );
 
@@ -105,7 +134,7 @@ public class ForumUI extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(subsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -113,7 +142,7 @@ public class ForumUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(subsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -159,7 +188,7 @@ public class ForumUI extends javax.swing.JFrame {
     private javax.swing.JLabel forumName;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel subsPanel;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,17 +5,57 @@
  */
 package ui;
 
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import seaquellersbb.*;
+
 /**
  *
  * @author serenachen
  */
 public class SubforumUI extends javax.swing.JFrame {
+    
+    private SeaQuellersBBAPI seaQuellers;
+    private Subforum subforum;
+    private User loggedInUser;
+    private ArrayList<seaquellersbb.Thread> threads;
 
     /**
      * Creates new form SubforumUI
      */
-    public SubforumUI() {
+    public SubforumUI(SeaQuellersBBAPI seaQuellers, Subforum subforum, User user) {
         initComponents();
+        this.seaQuellers = seaQuellers;
+        this.subforum = subforum;
+        this.loggedInUser = user;
+        username.setText(loggedInUser.username);
+        subforumName.setText(subforum.name);
+        threads = seaQuellers.getThreads(subforum.id, subforum.forumId);
+        threadsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+        threadsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        for (int i = 0; i < threads.size(); i++) {
+            JLabel threadTitle = new JLabel(threads.get(i).title);
+            threadTitle.setName("" + i);
+            threadTitle.setFont(Font.decode("Lucida-Grande-Bold-16"));
+            threadTitle.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    JLabel source = (JLabel) e.getSource();
+                    ThreadUI thread = new ThreadUI(seaQuellers, threads.get(Integer.parseInt(source.getName())), loggedInUser);
+                    thread.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    thread.setVisible(true);
+                }
+            });
+            threadsPanel.add(threadTitle);
+            threadsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        }
+        this.pack();
     }
 
     /**
@@ -27,24 +67,15 @@ public class SubforumUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        subforumName = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        forumName = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
-        subforumName1 = new javax.swing.JLabel();
-
-        subforumName.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        subforumName.setForeground(new java.awt.Color(255, 255, 255));
-        subforumName.setText("[subforumName]");
+        subforumName = new javax.swing.JLabel();
+        threadsPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 204));
-
-        forumName.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        forumName.setForeground(new java.awt.Color(255, 255, 255));
-        forumName.setText("[forumName]");
 
         jLabel5.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -54,20 +85,18 @@ public class SubforumUI extends javax.swing.JFrame {
         username.setForeground(new java.awt.Color(255, 255, 255));
         username.setText("[username]");
 
-        subforumName1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        subforumName1.setForeground(new java.awt.Color(255, 255, 255));
-        subforumName1.setText("[subforumName]");
+        subforumName.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        subforumName.setForeground(new java.awt.Color(255, 255, 255));
+        subforumName.setText("[subforumName]");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(forumName, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(subforumName1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(subforumName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(username)
@@ -78,11 +107,21 @@ public class SubforumUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(forumName)
                     .addComponent(jLabel5)
                     .addComponent(username)
-                    .addComponent(subforumName1))
+                    .addComponent(subforumName))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout threadsPanelLayout = new javax.swing.GroupLayout(threadsPanel);
+        threadsPanel.setLayout(threadsPanelLayout);
+        threadsPanelLayout.setHorizontalGroup(
+            threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        threadsPanelLayout.setVerticalGroup(
+            threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 433, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -90,12 +129,18 @@ public class SubforumUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(threadsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 337, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(threadsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -129,19 +174,18 @@ public class SubforumUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SubforumUI().setVisible(true);
-            }
-        });
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new SubforumUI().setVisible(true);
+//            }
+//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel forumName;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel subforumName;
-    private javax.swing.JLabel subforumName1;
+    private javax.swing.JPanel threadsPanel;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }
