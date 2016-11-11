@@ -31,11 +31,10 @@ public class HomeUI extends javax.swing.JFrame {
         initComponents();
         this.seaQuellers = seaQuellers;
         this.loggedInUser = user;
-        this.isSuperAdmin = seaQuellers.isAdmin(user.id);
         this.forums = seaQuellers.getAllForums();
         this.loginPage = loginPage;
         username.setText(loggedInUser.username); 
-        if (isSuperAdmin) jLabel5.setText("Administrator: ");
+        if (user.isAdmin) jLabel5.setText("Administrator: ");
         forumsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         forumsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         for (int i = 0; i < forums.size(); i++) {
@@ -119,7 +118,7 @@ public class HomeUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(username)
@@ -145,8 +144,9 @@ public class HomeUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(forumsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

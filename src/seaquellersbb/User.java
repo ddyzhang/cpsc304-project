@@ -16,6 +16,7 @@ public class User {
     public String signupDate;
     public String username;
     public String email;
+    public boolean isAdmin;
     
     public User(int id, int numPosts, String signupDate, String username, String email) {
         this.id = id;
@@ -23,5 +24,16 @@ public class User {
         this.signupDate = signupDate;
         this.username = username;
         this.email = email;
+        this.isAdmin = false;
     }
+    
+    public User(int id, int numPosts, String signupDate, String username, String email, boolean isadmin) {
+        this.id = id;
+        this.numPosts = numPosts;
+        this.signupDate = signupDate;
+        this.username = username;
+        this.email = email;
+        this.isAdmin = isadmin;
+    }
+    
 }
