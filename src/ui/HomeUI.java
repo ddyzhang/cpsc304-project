@@ -6,6 +6,7 @@
 package ui;
 
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import seaquellersbb.*;
 
 /**
@@ -14,16 +15,18 @@ import seaquellersbb.*;
  */
 public class HomeUI extends javax.swing.JFrame {
     private SeaQuellersBBAPI seaQuellers;
+    private LoginUI loginPage;
     private User loggedInUser;
     private ArrayList<Forum> forums;
     /**
      * Creates new form HomeUI
      */
-    public HomeUI(SeaQuellersBBAPI seaQuellers, User user) {
+    public HomeUI(SeaQuellersBBAPI seaQuellers, User user, LoginUI loginPage) {
         initComponents();
         this.seaQuellers = seaQuellers;
         this.loggedInUser = user;
         this.forums = seaQuellers.getAllForums();
+        this.loginPage = loginPage;
         username.setText(loggedInUser.username);        
     }
 
@@ -47,6 +50,11 @@ public class HomeUI extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 204));
 
@@ -57,6 +65,11 @@ public class HomeUI extends javax.swing.JFrame {
         username.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         username.setForeground(new java.awt.Color(255, 255, 255));
         username.setText("[username]");
+        username.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                usernameMouseClicked(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -117,6 +130,17 @@ public class HomeUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void usernameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usernameMouseClicked
+        System.out.println(loggedInUser.username);
+        UserProfileUI userProfile = new UserProfileUI(seaQuellers, loggedInUser);
+        userProfile.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        userProfile.setVisible(true);
+    }//GEN-LAST:event_usernameMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        loginPage.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments

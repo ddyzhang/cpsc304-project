@@ -5,17 +5,30 @@
  */
 package ui;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import seaquellersbb.*;
+
 /**
  *
  * @author serenachen
  */
 public class UserProfileUI extends javax.swing.JFrame {
+    
+    private SeaQuellersBBAPI seaQuellers;
+    private User loggedInUser;
 
     /**
      * Creates new form UserProfileUI
      */
-    public UserProfileUI() {
+    public UserProfileUI(SeaQuellersBBAPI seaQuellers, User user) {
         initComponents();
+        this.seaQuellers = seaQuellers;
+        this.loggedInUser = user;
+        signupDate.setText(loggedInUser.signupDate);
+        numPosts.setText("" + loggedInUser.numPosts);
+        emailBox.setText(user.email);
+        username.setText(loggedInUser.username);
     }
 
     /**
@@ -31,10 +44,17 @@ public class UserProfileUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        joinDateLabel = new javax.swing.JLabel();
+        totalPostsLabel = new javax.swing.JLabel();
+        signupDate = new javax.swing.JLabel();
+        numPosts = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
+        emailBox = new javax.swing.JTextField();
+        changePasswordLabel = new javax.swing.JLabel();
+        confirmPasswordLabel = new javax.swing.JLabel();
+        saveChangesButton = new javax.swing.JButton();
+        newPasswordBox = new javax.swing.JPasswordField();
+        confirmPasswordBox = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,7 +79,7 @@ public class UserProfileUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(username)
@@ -76,13 +96,40 @@ public class UserProfileUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel3.setText("Join date:");
+        joinDateLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        joinDateLabel.setText("Join Date:");
 
-        jLabel4.setText("Total posts:");
+        totalPostsLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        totalPostsLabel.setText("Total Posts:");
 
-        jLabel7.setText("[signupDate]");
+        signupDate.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        signupDate.setText("[signupDate]");
 
-        jLabel8.setText("[numPosts]");
+        numPosts.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        numPosts.setText("[numPosts]");
+
+        emailLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        emailLabel.setText("Email:");
+
+        emailBox.setText("[email]");
+        emailBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailBoxActionPerformed(evt);
+            }
+        });
+
+        changePasswordLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        changePasswordLabel.setText("New Password:");
+
+        confirmPasswordLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        confirmPasswordLabel.setText("Confirm Password:");
+
+        saveChangesButton.setText("Save Changes");
+        saveChangesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveChangesButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,31 +137,75 @@ public class UserProfileUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(221, 221, 221)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel3))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(saveChangesButton)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(totalPostsLabel)
+                            .addComponent(joinDateLabel)
+                            .addComponent(emailLabel)
+                            .addComponent(changePasswordLabel)
+                            .addComponent(confirmPasswordLabel))
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(numPosts)
+                            .addComponent(signupDate)
+                            .addComponent(emailBox, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                            .addComponent(newPasswordBox)
+                            .addComponent(confirmPasswordBox))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(77, 77, 77)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7)
-                .addGap(27, 27, 27)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8)
-                .addGap(0, 108, Short.MAX_VALUE))
+                .addGap(38, 38, 38)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(joinDateLabel)
+                    .addComponent(signupDate))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(totalPostsLabel)
+                    .addComponent(numPosts))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(emailLabel)
+                    .addComponent(emailBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(changePasswordLabel)
+                    .addComponent(newPasswordBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(confirmPasswordLabel)
+                    .addComponent(confirmPasswordBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(saveChangesButton)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void emailBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailBoxActionPerformed
+
+    private void saveChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveChangesButtonActionPerformed
+        if (emailBox.getText() != loggedInUser.email) {
+            seaQuellers.changeEmail(loggedInUser.id, emailBox.getText());
+        }
+        String newPassword = new String(newPasswordBox.getPassword());
+        String confirmPassword = new String(confirmPasswordBox.getPassword());
+        if (!newPassword.equals(null) && newPassword.equals(confirmPassword)) {
+            seaQuellers.changePassword(loggedInUser.id, newPassword);
+        } else if (!newPassword.equals(null) && !newPassword.equals(confirmPassword)) {
+            JOptionPane.showMessageDialog(new JFrame(), "Passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        JOptionPane.showMessageDialog(new JFrame(), "Account details saved!");
+    }//GEN-LAST:event_saveChangesButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -125,40 +216,47 @@ public class UserProfileUI extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UserProfileUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UserProfileUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UserProfileUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UserProfileUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new UserProfileUI().setVisible(true);
-            }
-        });
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(UserProfileUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(UserProfileUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(UserProfileUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(UserProfileUI.class.gjoinDateLabel)).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                // new UserProfileUI().setVisible(true);
+//            }
+//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel changePasswordLabel;
+    private javax.swing.JPasswordField confirmPasswordBox;
+    private javax.swing.JLabel confirmPasswordLabel;
+    private javax.swing.JTextField emailBox;
+    private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel joinDateLabel;
+    private javax.swing.JPasswordField newPasswordBox;
+    private javax.swing.JLabel numPosts;
+    private javax.swing.JButton saveChangesButton;
+    private javax.swing.JLabel signupDate;
+    private javax.swing.JLabel totalPostsLabel;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }

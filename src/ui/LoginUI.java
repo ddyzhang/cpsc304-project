@@ -277,9 +277,10 @@ public class LoginUI extends javax.swing.JFrame {
         } else {
             User user = seaQuellers.login(username, password);
             if (user != null) {
-                HomeUI home = new HomeUI(seaQuellers, user);
+                HomeUI home = new HomeUI(seaQuellers, user, this);
                 home.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 home.setVisible(true);
+                this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(new JFrame(), "Username or password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
             }
