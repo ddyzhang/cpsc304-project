@@ -71,7 +71,8 @@ public class SeaQuellersBBAPI {
                 String email = result.getString("email");
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
-                return new User(userId, numPosts, signupDate, username, email);
+                boolean isadmin = this.isAdmin(userId);
+                return new User(userId, numPosts, signupDate, username, email, isadmin);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -243,6 +244,7 @@ public class SeaQuellersBBAPI {
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
                 String email = result.getString("email");
+                boolean isadmin = this.isAdmin(result.getInt("userid"));
                 return new User(userId, numPosts, signupDate, username, email);                
             }
         } catch (Exception e) {
