@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
@@ -29,11 +30,12 @@ public class ThreadUI extends javax.swing.JFrame {
     private Forum forum;
     private Subforum subforum;
     private SubforumUI subUI;
-
+    private boolean isMod;
+    private Comment activeComment;
     /**
      * Creates new form ThreadUI
      */
-    public ThreadUI(SeaQuellersBBAPI seaQuellers, seaquellersbb.Thread thread, User user, Forum forum, Subforum subforum, SubforumUI subUI) {
+    public ThreadUI(SeaQuellersBBAPI seaQuellers, seaquellersbb.Thread thread, User user, Forum forum, Subforum subforum, SubforumUI subUI, int[] modIds) {
         initComponents();
         this.seaQuellers = seaQuellers;
         this.thread = thread;
@@ -43,7 +45,10 @@ public class ThreadUI extends javax.swing.JFrame {
         this.subUI = subUI;
         username.setText(loggedInUser.username);
         threadTitle.setText(thread.title);
-        if (!(user.isSuperAdmin || forum.userId == user.id || thread.poster.id == user.id)) deleteThreadButton.setVisible(false);
+        this.isMod = (user.isSuperAdmin || forum.userId == user.id || thread.poster.id == user.id || Arrays.stream(modIds).anyMatch(x -> x == user.id));
+        if (!isMod) deleteThreadButton.setVisible(false);
+        editButton.setVisible(false);
+        cancelEditButton.setVisible(false);
         drawComments();
     }
 
@@ -68,6 +73,9 @@ public class ThreadUI extends javax.swing.JFrame {
         replyBtn = new javax.swing.JButton();
         DisplayPanel = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        editButton = new javax.swing.JButton();
+        cancelEditButton = new javax.swing.JButton();
+        deleteCommentButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -160,6 +168,27 @@ public class ThreadUI extends javax.swing.JFrame {
             }
         });
 
+        editButton.setText("Edit");
+        editButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editButtonMouseClicked(evt);
+            }
+        });
+
+        cancelEditButton.setText("Cancel");
+        cancelEditButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cancelEditButtonMouseClicked(evt);
+            }
+        });
+
+        deleteCommentButton.setText("Delete");
+        deleteCommentButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteCommentButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -171,6 +200,12 @@ public class ThreadUI extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(deleteCommentButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cancelEditButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(editButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(replyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(panel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(DisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -192,7 +227,10 @@ public class ThreadUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(replyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(editButton)
+                    .addComponent(cancelEditButton)
+                    .addComponent(deleteCommentButton))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -222,6 +260,43 @@ public class ThreadUI extends javax.swing.JFrame {
         subUI.refreshThreads();
         this.dispose();
     }//GEN-LAST:event_deleteThreadButtonMouseClicked
+
+    private void editButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editButtonMouseClicked
+        if (activeComment != null){
+            String newCommentBody = commentPanel.getText();
+            seaQuellers.editCommentBody(activeComment.id, thread.id, thread.subId, thread.forumId, newCommentBody);
+        }
+        else{
+            String newThreadBody = commentPanel.getText();
+            seaQuellers.editThreadBody(thread.id, thread.subId, thread.forumId, newThreadBody);
+        }
+        commentPanel.setText("");
+        editButton.setVisible(false);
+        cancelEditButton.setVisible(false);
+        deleteCommentButton.setVisible(false);
+        replyBtn.setVisible(true);
+        this.refreshComments();
+    }//GEN-LAST:event_editButtonMouseClicked
+
+    private void cancelEditButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelEditButtonMouseClicked
+        commentPanel.setText("");
+        activeComment = null;
+        editButton.setVisible(false);
+        cancelEditButton.setVisible(false);
+        deleteCommentButton.setVisible(false);
+        replyBtn.setVisible(true);
+    }//GEN-LAST:event_cancelEditButtonMouseClicked
+
+    private void deleteCommentButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteCommentButtonMouseClicked
+        seaQuellers.deleteComment(activeComment.id, thread.id, thread.subId, thread.forumId);
+        commentPanel.setText("");
+        activeComment = null;
+        editButton.setVisible(false);
+        cancelEditButton.setVisible(false);
+        deleteCommentButton.setVisible(false);
+        replyBtn.setVisible(true);
+        this.refreshComments();
+    }//GEN-LAST:event_deleteCommentButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -276,6 +351,17 @@ public class ThreadUI extends javax.swing.JFrame {
         JLabel threadBody = new JLabel(thread.body);
         threadBody.setName("" + 0);
         threadBody.setFont(Font.decode("Lucida-Grande-Bold-16"));
+        threadBody.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (thread.poster.id == loggedInUser.id){
+                    activeComment = null;
+                    commentPanel.setText(threadBody.getText());
+                    replyBtn.setVisible(false);
+                    editButton.setVisible(true);
+                    cancelEditButton.setVisible(true);
+                }
+            }
+        });
         DisplayPanel.add(threadBody);
         JLabel poster = new JLabel(thread.poster.username);
         poster.setName("c"+0);
@@ -283,9 +369,30 @@ public class ThreadUI extends javax.swing.JFrame {
         DisplayPanel.add(poster);
         DisplayPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         for (int i = 0; i < comments.size(); i++) {
+            Comment comment = comments.get(i);
             JLabel commentBody = new JLabel(comments.get(i).body);
             commentBody.setName("" + (i+1));
             commentBody.setFont(Font.decode("Lucida-Grande-Bold-14"));
+            commentBody.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (thread.poster.id == loggedInUser.id){
+                    activeComment = comment;
+                    commentPanel.setText(commentBody.getText());
+                    replyBtn.setVisible(false);
+                    editButton.setVisible(true);
+                    cancelEditButton.setVisible(true);
+                    deleteCommentButton.setVisible(true);
+                }
+                else if (isMod){
+                    activeComment = comment;
+                    commentPanel.setText(commentBody.getText());
+                    replyBtn.setVisible(false);
+                    cancelEditButton.setVisible(true);
+                    deleteCommentButton.setVisible(true);
+                    
+                }
+            }
+        });
             DisplayPanel.add(commentBody);
             JLabel commenter = new JLabel(comments.get(i).poster.username);
             commenter.setName("c"+(i+1));
@@ -296,8 +403,11 @@ public class ThreadUI extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel DisplayPanel;
+    private javax.swing.JButton cancelEditButton;
     private javax.swing.JTextPane commentPanel;
+    private javax.swing.JButton deleteCommentButton;
     private javax.swing.JButton deleteThreadButton;
+    private javax.swing.JButton editButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

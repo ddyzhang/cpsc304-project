@@ -261,7 +261,7 @@ public class SubforumUI extends javax.swing.JFrame {
             threadTitle.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     JLabel source = (JLabel) e.getSource();
-                    ThreadUI thread = new ThreadUI(seaQuellers, threads.get(Integer.parseInt(source.getName())), loggedInUser, forum, subforum, that);
+                    ThreadUI thread = new ThreadUI(seaQuellers, threads.get(Integer.parseInt(source.getName())), loggedInUser, forum, subforum, that, modIds);
                     thread.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     thread.setVisible(true);
                 }
