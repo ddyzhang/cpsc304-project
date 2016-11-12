@@ -256,8 +256,11 @@ public class ThreadUI extends javax.swing.JFrame {
     }
     
     public void refreshThreads(){
+        DisplayPanel.removeAll();
         commentPanel.removeAll();
         drawComments();
+        DisplayPanel.revalidate();
+        DisplayPanel.repaint();
         commentPanel.revalidate();
         commentPanel.repaint();
         this.pack();
