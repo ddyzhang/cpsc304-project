@@ -140,6 +140,11 @@ public class SubforumUI extends javax.swing.JFrame {
                 manageModsButtonMouseClicked(evt);
             }
         });
+        manageModsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manageModsButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,6 +192,12 @@ public class SubforumUI extends javax.swing.JFrame {
     private void manageModsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageModsButtonMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_manageModsButtonMouseClicked
+
+    private void manageModsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageModsButtonActionPerformed
+        ManageModsUI manageMods = new ManageModsUI(seaQuellers, subforum, loggedInUser);
+        manageMods.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        manageMods.setVisible(true);
+    }//GEN-LAST:event_manageModsButtonActionPerformed
 
     /**
      * @param args the command line arguments
