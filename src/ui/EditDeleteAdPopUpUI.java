@@ -36,6 +36,7 @@ public class EditDeleteAdPopUpUI extends javax.swing.JFrame {
         this.loggedInUser = loggedInUser;
         this.ad=ad;
         this.editDelAdsPage=editDelAdsPage;
+        System.out.println(editDelAdsPage);
         ImgURL.setText(ad.imageUrl);
         CPC.setText(String.valueOf(ad.cpc));
         CPI.setText(String.valueOf(ad.cpi));
@@ -190,7 +191,7 @@ public class EditDeleteAdPopUpUI extends javax.swing.JFrame {
         seaQuellers.changeAdCpi(oldURL, Double.parseDouble(cpi));
         seaQuellers.changeAdImageUrl(oldURL, newURL);
         seaQuellers.changeAdLink(oldURL, link);
-          editDelAdsPage.populateAdsView();
+        editDelAdsPage.populateAdsView();
           this.dispose();
         }
     }//GEN-LAST:event_confirmButtonMouseClicked

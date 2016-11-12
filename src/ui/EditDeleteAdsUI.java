@@ -26,6 +26,7 @@ public class EditDeleteAdsUI extends javax.swing.JFrame {
     private ArrayList<Advertisement> adsView;
     private ArrayList<AdStatistic> forumView;
     private ArrayList<AdStatistic> allView;
+    EditDeleteAdsUI holdThis;
 
 
     public EditDeleteAdsUI(SeaQuellersBBAPI seaQuellers, User user, ManageAdsUI managePage) {
@@ -41,13 +42,14 @@ public class EditDeleteAdsUI extends javax.swing.JFrame {
         adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         populateAdsView();
+        
        
     }
 
     
     
       public void populateAdsView() {
-        
+         adsView=seaQuellers.getAllAds();
          adsPanel.removeAll();
          adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
@@ -62,7 +64,7 @@ public class EditDeleteAdsUI extends javax.swing.JFrame {
             adName.setName("bloop " + i);
             adName.setFont(Font.decode("Lucida-Grande-Bold-16"));
             description.setFont(Font.decode("Lucida-Grande-14"));
-            EditDeleteAdsUI holdThis=this;
+            
             adName.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     JLabel source = (JLabel)e.getSource();
@@ -81,8 +83,11 @@ public class EditDeleteAdsUI extends javax.swing.JFrame {
         this.pack();
         adsPanel.revalidate();
         adsPanel.repaint();
+        holdThis=this;
         
     }
+      
+
     
     
     
