@@ -52,9 +52,9 @@ public class AdStatisticsUI extends javax.swing.JFrame {
         adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
          for (int i = 0; i < adsView.size(); i++) {
             JLabel adName = new JLabel(adsView.get(i).imageUrl);
-          String  Description=("ForumId:"+adsView.get(i).forumId+" Profit:"+adsView.get(i).profit                    
+          String  Description=("Profit:"+adsView.get(i).profit                    
                   +" Total Clicks:"+adsView.get(i).totalClicks+" Total Impressions:"
-                    +adsView.get(i).totalImpressions+" Forum Name:"+adsView.get(i).forumName);
+                    +adsView.get(i).totalImpressions);
           
             JLabel description = new JLabel(Description);
             adName.setName("bloop " + i);
