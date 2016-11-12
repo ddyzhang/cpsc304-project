@@ -276,18 +276,21 @@ public class ThreadUI extends javax.swing.JFrame {
         JLabel threadBody = new JLabel(thread.body);
         threadBody.setName("" + 0);
         threadBody.setFont(Font.decode("Lucida-Grande-Bold-16"));
-        threadBody.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    
-                }
-            });
         DisplayPanel.add(threadBody);
+        JLabel poster = new JLabel(thread.poster.username);
+        poster.setName("c"+0);
+        poster.setFont(Font.decode("Times-New-Roman-11"));
+        DisplayPanel.add(poster);
         DisplayPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         for (int i = 0; i < comments.size(); i++) {
             JLabel commentBody = new JLabel(comments.get(i).body);
             commentBody.setName("" + (i+1));
-            commentBody.setFont(Font.decode("Lucida-Grande-Bold-16"));
+            commentBody.setFont(Font.decode("Lucida-Grande-Bold-14"));
             DisplayPanel.add(commentBody);
+            JLabel commenter = new JLabel(comments.get(i).poster.username);
+            commenter.setName("c"+(i+1));
+            commenter.setFont(Font.decode("Times-New-Roman-9"));
+            DisplayPanel.add(commenter);
             DisplayPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         }
     }
