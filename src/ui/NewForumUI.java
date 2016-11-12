@@ -118,7 +118,7 @@ public class NewForumUI extends javax.swing.JFrame {
         String newForumDesc = forumDesc.getText();
         System.out.println("Creating forum for user: " + loggedInUser.id);
         seaQuellers.createForum(newForumTitle, newForumDesc, loggedInUser.id);
-        home.drawForumsPanel();
+        home.refreshForums();
         this.dispose();
     }//GEN-LAST:event_confirmButtonMouseClicked
 

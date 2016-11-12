@@ -366,7 +366,7 @@ public class SeaQuellersBBAPI {
                 + "ON profits.imageurl = advertisements.imageurl "
                 + "INNER JOIN forums "
                 + "ON profits.forumid = forums.forumid"
-                + "GROUP BY profits.forumid, forumname");
+                + " GROUP BY profits.forumid, forums.forumname");
 	try{
             while (result.next()){
                 int forumId = result.getInt("forumid");
