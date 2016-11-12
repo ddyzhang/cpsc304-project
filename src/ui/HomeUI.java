@@ -54,7 +54,7 @@ public class HomeUI extends javax.swing.JFrame {
         username = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         forumsPanel = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        createForumButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -121,10 +121,10 @@ public class HomeUI extends javax.swing.JFrame {
         forumsPanel.setPreferredSize(new java.awt.Dimension(549, 449));
         forumsPanel.setLayout(new java.awt.GridLayout(5, 0));
 
-        jButton1.setText("Create Forum");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        createForumButton.setText("Create Forum");
+        createForumButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                createForumButtonMouseClicked(evt);
             }
         });
 
@@ -148,7 +148,7 @@ public class HomeUI extends javax.swing.JFrame {
                 .addGap(162, 162, 162)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(createForumButton)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -159,7 +159,7 @@ public class HomeUI extends javax.swing.JFrame {
                 .addComponent(forumsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(createForumButton)
                     .addComponent(jButton2))
                 .addGap(7, 7, 7))
         );
@@ -178,13 +178,16 @@ public class HomeUI extends javax.swing.JFrame {
         loginPage.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void createForumButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createForumButtonMouseClicked
         NewForumUI newForum = new NewForumUI(seaQuellers, loggedInUser, this);
         newForum.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         newForum.setVisible(true);
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_createForumButtonMouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+
+        //this is a debug cause I got tired of rerunning every time
+        //TODO: remove this in final version
         this.refreshForums();
     }//GEN-LAST:event_jButton2MouseClicked
 
@@ -224,8 +227,8 @@ public class HomeUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton createForumButton;
     private javax.swing.JPanel forumsPanel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
@@ -244,6 +247,7 @@ public class HomeUI extends javax.swing.JFrame {
 
     }
     public void drawForumsPanel() {
+        HomeUI that = this;
         forumsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         forumsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         for (int i = 0; i < forums.size(); i++) {
@@ -255,7 +259,7 @@ public class HomeUI extends javax.swing.JFrame {
             forumName.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     JLabel source = (JLabel)e.getSource();
-                    ForumUI forum = new ForumUI(seaQuellers, forums.get(Integer.parseInt(source.getName())), loggedInUser);
+                    ForumUI forum = new ForumUI(seaQuellers, forums.get(Integer.parseInt(source.getName())), loggedInUser, that);
                     forum.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     forum.setVisible(true);
                 }

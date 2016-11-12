@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import seaquellersbb.*;
 import seaquellersbb.SeaQuellersBBAPI;
 
@@ -26,38 +27,22 @@ public class ForumUI extends javax.swing.JFrame {
     private Forum forum;
     private User loggedInUser;
     private ArrayList<Subforum> subforums;
-
+    private HomeUI home;
     /**
      * Creates new form ForumUI
      */
-    public ForumUI(SeaQuellersBBAPI seaQuellers, Forum forum, User user) {
+    public ForumUI(SeaQuellersBBAPI seaQuellers, Forum forum, User user, HomeUI home) {
         initComponents();
         this.seaQuellers = seaQuellers;
         this.forum = forum;
         this.loggedInUser = user;
         this.subforums = seaQuellers.getSubforums(forum.id);
+        this.home = home;
+        if (!(user.isAdmin || forum.userId == user.id)) forumDeletionButton.setVisible(false);
         username.setText(loggedInUser.username);
         forumName.setText(forum.name);
         subsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         subsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        for (int i = 0; i < subforums.size(); i++) {
-            JLabel subforumName = new JLabel(subforums.get(i).name);
-            JLabel description = new JLabel(subforums.get(i).description);
-            subforumName.setName("" + i);
-            subforumName.setFont(Font.decode("Lucida-Grande-Bold-16"));
-            description.setFont(Font.decode("Lucida-Grande-14"));
-            subforumName.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    JLabel source = (JLabel) e.getSource();
-                    SubforumUI subforum = new SubforumUI(seaQuellers, subforums.get(Integer.parseInt(source.getName())), loggedInUser);
-                    subforum.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    subforum.setVisible(true);
-                }
-            });
-            subsPanel.add(subforumName);
-            subsPanel.add(description);
-            subsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        }
         this.pack();
     }
 
@@ -74,8 +59,9 @@ public class ForumUI extends javax.swing.JFrame {
         forumName = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         subsPanel = new javax.swing.JPanel();
+        forumDeletionButton = new javax.swing.JButton();
+        subCreationButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,13 +79,6 @@ public class ForumUI extends javax.swing.JFrame {
         username.setForeground(new java.awt.Color(255, 255, 255));
         username.setText("[username]");
 
-        jButton1.setText("Delete This");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -107,9 +86,7 @@ public class ForumUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(forumName, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(username)
@@ -122,9 +99,8 @@ public class ForumUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(forumName)
                     .addComponent(jLabel5)
-                    .addComponent(username)
-                    .addComponent(jButton1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(username))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout subsPanelLayout = new javax.swing.GroupLayout(subsPanel);
@@ -135,8 +111,22 @@ public class ForumUI extends javax.swing.JFrame {
         );
         subsPanelLayout.setVerticalGroup(
             subsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 401, Short.MAX_VALUE)
+            .addGap(0, 379, Short.MAX_VALUE)
         );
+
+        forumDeletionButton.setText("Delete Forum");
+        forumDeletionButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                forumDeletionButtonMouseClicked(evt);
+            }
+        });
+
+        subCreationButton.setText("Create New Subforum");
+        subCreationButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                subCreationButtonMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,7 +135,12 @@ public class ForumUI extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(subsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(subsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(forumDeletionButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(subCreationButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -153,17 +148,26 @@ public class ForumUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(subsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(subsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(forumDeletionButton)
+                    .addComponent(subCreationButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void forumDeletionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forumDeletionButtonMouseClicked
         seaQuellers.deleteForum(forum.id);
+        home.refreshForums();
         this.dispose();
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_forumDeletionButtonMouseClicked
+
+    private void subCreationButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subCreationButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_subCreationButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -199,12 +203,43 @@ public class ForumUI extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void refreshSubForums(){
+        this.subforums = seaQuellers.getSubforums(forum.id);
+        subsPanel.removeAll();
+        drawSubForumsPanel();
+        subsPanel.revalidate();
+        subsPanel.repaint();
+        this.pack();
 
+    }
+    
+    public void drawSubForumsPanel(){
+        for (int i = 0; i < subforums.size(); i++) {
+            JLabel subforumName = new JLabel(subforums.get(i).name);
+            JLabel description = new JLabel(subforums.get(i).description);
+            subforumName.setName("" + i);
+            subforumName.setFont(Font.decode("Lucida-Grande-Bold-16"));
+            description.setFont(Font.decode("Lucida-Grande-14"));
+            subforumName.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    JLabel source = (JLabel) e.getSource();
+                    SubforumUI subforum = new SubforumUI(seaQuellers, subforums.get(Integer.parseInt(source.getName())), loggedInUser);
+                    subforum.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    subforum.setVisible(true);
+                }
+            });
+            subsPanel.add(subforumName);
+            subsPanel.add(description);
+            subsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton forumDeletionButton;
     private javax.swing.JLabel forumName;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton subCreationButton;
     private javax.swing.JPanel subsPanel;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
