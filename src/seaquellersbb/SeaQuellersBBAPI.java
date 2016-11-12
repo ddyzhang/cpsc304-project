@@ -630,7 +630,7 @@ public class SeaQuellersBBAPI {
     }
     
     public void changeAdCpi(String url, double newCpi) {
-        executeUpdate("UPDATE advertisements SET cpc=" + newCpi + " WHERE imageurl=\'" + url + "\'");
+        executeUpdate("UPDATE advertisements SET cpi=" + newCpi + " WHERE imageurl=\'" + url + "\'");
     }
     
     public void changeAdLink(String url, String newLink) {
