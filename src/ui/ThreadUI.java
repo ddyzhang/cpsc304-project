@@ -359,6 +359,7 @@ public class ThreadUI extends javax.swing.JFrame {
                     replyBtn.setVisible(false);
                     editButton.setVisible(true);
                     cancelEditButton.setVisible(true);
+                    deleteCommentButton.setVisible(false);
                 }
             }
         });
@@ -375,7 +376,7 @@ public class ThreadUI extends javax.swing.JFrame {
             commentBody.setFont(Font.decode("Lucida-Grande-Bold-14"));
             commentBody.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (thread.poster.id == loggedInUser.id){
+                if (comment.poster.id == loggedInUser.id){
                     activeComment = comment;
                     commentPanel.setText(commentBody.getText());
                     replyBtn.setVisible(false);
