@@ -194,7 +194,12 @@ public class UserProfileUI extends javax.swing.JFrame {
 
     private void saveChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveChangesButtonActionPerformed
         if (emailBox.getText() != loggedInUser.email) {
-            seaQuellers.changeEmail(loggedInUser.id, emailBox.getText());
+            if (isValidEmailAddress(emailBox.getText())) {
+                seaQuellers.changeEmail(loggedInUser.id, emailBox.getText());
+            } else {
+                JOptionPane.showMessageDialog(new JFrame(), "Invalid email format.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }            
         }
         String newPassword = new String(newPasswordBox.getPassword());
         String confirmPassword = new String(confirmPasswordBox.getPassword());
@@ -210,6 +215,13 @@ public class UserProfileUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    private boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
