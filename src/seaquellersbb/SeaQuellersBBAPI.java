@@ -481,7 +481,7 @@ public class SeaQuellersBBAPI {
         try {
             if (result.next()) {
                 int id = result.getInt(1) + 1;
-                executeUpdate("INSERT INTO forums VALUES (" + id + ", \'" + forumName + "\', \'" + description + "\', " + userId + ")");
+                executeUpdate("INSERT INTO forums VALUES (" + id + ", \'" + forumName.replace("'", "''") + "\', \'" + description.replace("'", "''") + "\', " + userId + ")");
             } else {
                 throw new RuntimeException("Something is wrong with the database.");
             }
@@ -507,7 +507,7 @@ public class SeaQuellersBBAPI {
         try {
             if (result.next()) {
                 int id = result.getInt(1) + 1;
-                executeUpdate("INSERT INTO subforums VALUES (" + id + ", " + forumId + ", \'" + subName + "\', \'" + description + "\')");
+                executeUpdate("INSERT INTO subforums VALUES (" + id + ", " + forumId + ", \'" + subName.replace("'", "''") + "\', \'" + description.replace("'", "''") + "\')");
             } else {
                 throw new RuntimeException("Something is wrong with the database.");
             }
@@ -534,7 +534,7 @@ public class SeaQuellersBBAPI {
             if (result.next()) {
                 int id = result.getInt(1) + 1;
                 executeUpdate("INSERT INTO threads(threadid, subid, forumid, title, body, userid)"
-                        + " VALUES (" + id + ", " + subId + ", " + forumId + ", \'" + title + "\', \'" + body + "\', " + userId + ")");
+                        + " VALUES (" + id + ", " + subId + ", " + forumId + ", \'" + title.replace("'", "''") + "\', \'" + body.replace("'", "''") + "\', " + userId + ")");
             } else {
                 throw new RuntimeException("Something is wrong with the database.");
             }
@@ -562,7 +562,7 @@ public class SeaQuellersBBAPI {
             if (result.next()) {
                 int id = result.getInt(1) + 1;
                 executeUpdate("INSERT INTO threads(commentid, threadid, subid, forumid, body, userid)"
-                        + " VALUES (" + id + ", " + threadId + ", " + subId + ", " + forumId  + ", \'" + body + "\', " + userId + ")");
+                        + " VALUES (" + id + ", " + threadId + ", " + subId + ", " + forumId  + ", \'" + body.replace("'", "''") + "\', " + userId + ")");
             } else {
                 throw new RuntimeException("Something is wrong with the database.");
             }
