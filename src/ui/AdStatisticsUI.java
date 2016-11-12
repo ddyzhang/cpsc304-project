@@ -22,6 +22,7 @@ public class AdStatisticsUI extends javax.swing.JFrame {
     private SeaQuellersBBAPI seaQuellers;
     private HomeUI homePage;
     private User loggedInUser;
+    private SuperAdminProfileUI superAdmin;
     private ArrayList<AdStatistic> adsView;
     private ArrayList<AdStatistic> forumView;
     private ArrayList<AdStatistic> allView;
@@ -31,7 +32,7 @@ public class AdStatisticsUI extends javax.swing.JFrame {
         initComponents();
         this.seaQuellers = seaQuellers;
         this.loggedInUser = user;
-
+        this.superAdmin=superAdmin;
         this.adsView=seaQuellers.getAdStatsByAd();
         this.forumView=seaQuellers.getAdStatsByForum();
         this.allView=seaQuellers.getStatsForAllForumAds();
