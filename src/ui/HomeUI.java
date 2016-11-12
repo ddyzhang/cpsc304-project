@@ -35,26 +35,7 @@ public class HomeUI extends javax.swing.JFrame {
         this.loginPage = loginPage;
         username.setText(loggedInUser.username); 
         if (user.isAdmin) jLabel5.setText("Administrator: ");
-        forumsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
-        forumsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        for (int i = 0; i < forums.size(); i++) {
-            JLabel forumName = new JLabel(forums.get(i).name);
-            JLabel description = new JLabel(forums.get(i).description);
-            forumName.setName("" + i);
-            forumName.setFont(Font.decode("Lucida-Grande-Bold-16"));
-            description.setFont(Font.decode("Lucida-Grande-14"));
-            forumName.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    JLabel source = (JLabel)e.getSource();
-                    ForumUI forum = new ForumUI(seaQuellers, forums.get(Integer.parseInt(source.getName())), loggedInUser);
-                    forum.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    forum.setVisible(true);
-                }
-            });
-            forumsPanel.add(forumName);
-            forumsPanel.add(description);
-            forumsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        }
+        drawForumsPanel();
         this.pack();
     }
 
@@ -73,6 +54,7 @@ public class HomeUI extends javax.swing.JFrame {
         username = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         forumsPanel = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -138,6 +120,13 @@ public class HomeUI extends javax.swing.JFrame {
         forumsPanel.setPreferredSize(new java.awt.Dimension(549, 449));
         forumsPanel.setLayout(new java.awt.GridLayout(5, 0));
 
+        jButton1.setText("Create Forum");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -147,13 +136,20 @@ public class HomeUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(forumsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(forumsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(forumsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addGap(7, 7, 7))
         );
 
         pack();
@@ -169,6 +165,12 @@ public class HomeUI extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         loginPage.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        NewForumUI newForum = new NewForumUI(seaQuellers, loggedInUser, this);
+        newForum.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        newForum.setVisible(true);
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -207,10 +209,34 @@ public class HomeUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel forumsPanel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
+
+    public void drawForumsPanel() {
+        forumsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+        forumsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        for (int i = 0; i < forums.size(); i++) {
+            JLabel forumName = new JLabel(forums.get(i).name);
+            JLabel description = new JLabel(forums.get(i).description);
+            forumName.setName("" + i);
+            forumName.setFont(Font.decode("Lucida-Grande-Bold-16"));
+            description.setFont(Font.decode("Lucida-Grande-14"));
+            forumName.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    JLabel source = (JLabel)e.getSource();
+                    ForumUI forum = new ForumUI(seaQuellers, forums.get(Integer.parseInt(source.getName())), loggedInUser);
+                    forum.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    forum.setVisible(true);
+                }
+            });
+            forumsPanel.add(forumName);
+            forumsPanel.add(description);
+            forumsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        }
+    }
 }

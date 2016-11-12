@@ -469,7 +469,7 @@ public class SeaQuellersBBAPI {
     public void createForum(String forumName, String description, int userId) {
         ResultSet result = executeQuery("SELECT * FROM users WHERE userid=\'" + userId + "\'");
         try {
-            if (result.next()) {
+            if (!result.next()) {
                 throw new Exception("User does not exist.");
             }
         } catch (Exception e) {
