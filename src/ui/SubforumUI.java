@@ -24,27 +24,27 @@ public class SubforumUI extends javax.swing.JFrame {
     
     private SeaQuellersBBAPI seaQuellers;
     private Subforum subforum;
+    private Forum forum;
     private User loggedInUser;
     private ArrayList<seaquellersbb.Thread> threads;
-    private ForumUI forum;
-    private int adminid;
+    private ForumUI forumUI;
     /**
      * Creates new form SubforumUI
      */
-    public SubforumUI(SeaQuellersBBAPI seaQuellers, Subforum subforum, User user, int adminid, ForumUI forum) {
+    public SubforumUI(SeaQuellersBBAPI seaQuellers, Subforum subforum, Forum forum, User user, ForumUI forumUI) {
         initComponents();
         this.seaQuellers = seaQuellers;
         this.subforum = subforum;
         this.forum = forum;
         this.loggedInUser = user;
-        this.adminid = adminid;
-        if (!(user.isSuperAdmin || adminid == user.id)){ 
+        this.forumUI = forumUI;
+        if (!(user.isSuperAdmin || forum.userId == user.id)){ 
             manageModsButton.setVisible(false);
             deleteSubButton.setVisible(false);
         }
         username.setText(loggedInUser.username);
         subforumName.setText(subforum.name);
-        
+        drawThreadsPanel();
         this.pack();
     }
 
@@ -174,7 +174,7 @@ public class SubforumUI extends javax.swing.JFrame {
 
     private void deleteSubButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteSubButtonMouseClicked
         seaQuellers.deleteSubforum(subforum.id, subforum.forumId);
-        forum.refreshSubForums();
+        forumUI.refreshSubForums();
         this.dispose();
     }//GEN-LAST:event_deleteSubButtonMouseClicked
 
@@ -233,6 +233,7 @@ public class SubforumUI extends javax.swing.JFrame {
     }
     
     public void drawThreadsPanel(){
+        SubforumUI that = this;
         threads = seaQuellers.getThreads(subforum.id, subforum.forumId);
         threadsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         threadsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
@@ -243,7 +244,7 @@ public class SubforumUI extends javax.swing.JFrame {
             threadTitle.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     JLabel source = (JLabel) e.getSource();
-                    ThreadUI thread = new ThreadUI(seaQuellers, threads.get(Integer.parseInt(source.getName())), loggedInUser);
+                    ThreadUI thread = new ThreadUI(seaQuellers, threads.get(Integer.parseInt(source.getName())), loggedInUser, forum, subforum, that);
                     thread.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     thread.setVisible(true);
                 }

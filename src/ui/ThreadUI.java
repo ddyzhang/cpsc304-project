@@ -5,7 +5,12 @@
  */
 package ui;
 
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import seaquellersbb.*;
 
@@ -18,17 +23,24 @@ public class ThreadUI extends javax.swing.JFrame {
     private seaquellersbb.Thread thread;
     private ArrayList<Comment> comments;
     private User loggedInUser;
+    private Forum forum;
+    private Subforum subforum;
+    private SubforumUI subUI;
 
     /**
      * Creates new form ThreadUI
      */
-    public ThreadUI(SeaQuellersBBAPI seaQuellers, seaquellersbb.Thread thread, User user) {
+    public ThreadUI(SeaQuellersBBAPI seaQuellers, seaquellersbb.Thread thread, User user, Forum forum, Subforum subforum, SubforumUI subUI) {
         initComponents();
         this.seaQuellers = seaQuellers;
         this.thread = thread;
         this.loggedInUser = user;
+        this.forum = forum;
+        this.subforum = subforum;
+        this.subUI = subUI;
         username.setText(loggedInUser.username);
         threadTitle.setText(thread.title);
+        drawComments();
     }
 
     /**
@@ -46,10 +58,12 @@ public class ThreadUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
         threadTitle = new javax.swing.JLabel();
+        deleteThreadButton = new javax.swing.JButton();
         panel = new javax.swing.JScrollPane();
         commentPanel = new javax.swing.JTextPane();
         replyBtn = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        DisplayPanel = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -81,17 +95,26 @@ public class ThreadUI extends javax.swing.JFrame {
         threadTitle.setForeground(new java.awt.Color(255, 255, 255));
         threadTitle.setText("[threadTitle]");
 
+        deleteThreadButton.setText("Delete This Thread");
+        deleteThreadButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteThreadButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout toolbarPanelLayout = new javax.swing.GroupLayout(toolbarPanel);
         toolbarPanel.setLayout(toolbarPanelLayout);
         toolbarPanelLayout.setHorizontalGroup(
             toolbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(toolbarPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(threadTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 340, Short.MAX_VALUE)
                 .addComponent(jLabel5)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(username)
+                .addGap(67, 67, 67)
+                .addComponent(threadTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                .addComponent(deleteThreadButton)
                 .addContainerGap())
         );
         toolbarPanelLayout.setVerticalGroup(
@@ -101,7 +124,8 @@ public class ThreadUI extends javax.swing.JFrame {
                 .addGroup(toolbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(username)
-                    .addComponent(threadTitle))
+                    .addComponent(threadTitle)
+                    .addComponent(deleteThreadButton))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -114,16 +138,23 @@ public class ThreadUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout DisplayPanelLayout = new javax.swing.GroupLayout(DisplayPanel);
+        DisplayPanel.setLayout(DisplayPanelLayout);
+        DisplayPanelLayout.setHorizontalGroup(
+            DisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 275, Short.MAX_VALUE)
+        DisplayPanelLayout.setVerticalGroup(
+            DisplayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 259, Short.MAX_VALUE)
         );
+
+        jButton1.setText("Exit");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,14 +162,14 @@ public class ThreadUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(toolbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(replyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(replyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panel, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(DisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -151,11 +182,14 @@ public class ThreadUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(toolbarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(DisplayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(replyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(replyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 224, Short.MAX_VALUE)
@@ -169,18 +203,22 @@ public class ThreadUI extends javax.swing.JFrame {
     // TODO: need IDs
     // mouse event to create a new thread comment, clear commentPanel, and refresh the window 
     private void replyBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_replyBtnMouseClicked
-        // TODO add your handling code here:
-        
-        int threadId = 1;   // ??
-        int subId = 1;      // ??
-        int forumId = 1;    // ??    
-        String body = commentPanel.getText();
-        int userId = 1;     // ??
+        String body = commentPanel.getText();  // ??
        
-        seaQuellers.createComment(threadId, subId, forumId, body, userId);
+        seaQuellers.createComment(thread.id, thread.subId, thread.forumId, body, loggedInUser.id);
         commentPanel.setText("");
-        SwingUtilities.updateComponentTreeUI(this);     
+        this.refreshThreads();
     }//GEN-LAST:event_replyBtnMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        this.dispose();
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void deleteThreadButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteThreadButtonMouseClicked
+        seaQuellers.deleteThread(thread.id, thread.subId, thread.forumId);
+        subUI.refreshThreads();
+        this.dispose();
+    }//GEN-LAST:event_deleteThreadButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -216,12 +254,40 @@ public class ThreadUI extends javax.swing.JFrame {
 //            }
 //        });
     }
+    
+    public void refreshThreads(){
+        commentPanel.removeAll();
+        drawComments();
+        commentPanel.revalidate();
+        commentPanel.repaint();
+        this.pack();
 
+    }
+    
+    public void drawComments(){
+        comments = seaQuellers.getComments(thread.id, thread.subId, thread.forumId);
+        DisplayPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+        DisplayPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        JLabel threadBody = new JLabel(thread.body);
+        threadBody.setName("" + 0);
+        threadBody.setFont(Font.decode("Lucida-Grande-Bold-16"));
+        DisplayPanel.add(threadBody);
+        DisplayPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        for (int i = 0; i < comments.size(); i++) {
+            JLabel commentBody = new JLabel(comments.get(i).body);
+            commentBody.setName("" + (i+1));
+            commentBody.setFont(Font.decode("Lucida-Grande-Bold-16"));
+            DisplayPanel.add(commentBody);
+            DisplayPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel DisplayPanel;
     private javax.swing.JTextPane commentPanel;
+    private javax.swing.JButton deleteThreadButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane panel;
     private javax.swing.JButton replyBtn;

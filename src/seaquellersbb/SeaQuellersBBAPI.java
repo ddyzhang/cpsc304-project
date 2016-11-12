@@ -529,7 +529,7 @@ public class SeaQuellersBBAPI {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        result = executeQuery("SELECT MAX(threadid) FROM subforums WHERE forumid=" + forumId + " AND subid=" + subId);
+        result = executeQuery("SELECT MAX(threadid) FROM threads WHERE forumid=" + forumId + " AND subid=" + subId);
         try {
             if (result.next()) {
                 int id = result.getInt(1) + 1;
@@ -543,7 +543,7 @@ public class SeaQuellersBBAPI {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        executeUpdate("UPDATE users SET postcount = postcount + 1 WHERE userid=" + userId);
+        executeUpdate("UPDATE users SET numPosts = numPosts + 1 WHERE userid=" + userId);
     }
     
     public void createComment(int threadId, int subId, int forumId, String body, int userId) {
