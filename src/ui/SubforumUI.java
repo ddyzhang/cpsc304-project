@@ -48,8 +48,9 @@ public class SubforumUI extends javax.swing.JFrame {
         subforumName.setText(subforum.name);
         drawThreadsPanel();
         this.mods = seaQuellers.getModerators(subforum.id, subforum.forumId);
+        this.modIds = new int[mods.size()];
         for (int i = 0; i < mods.size(); i++) {
-            modIds[i] = mods.get(i).id;
+            modIds[i] = this.mods.get(i).id;
         }
         this.pack();
     }
