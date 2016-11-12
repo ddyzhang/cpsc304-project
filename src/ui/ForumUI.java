@@ -36,7 +36,6 @@ public class ForumUI extends javax.swing.JFrame {
         this.seaQuellers = seaQuellers;
         this.forum = forum;
         this.loggedInUser = user;
-        this.subforums = seaQuellers.getSubforums(forum.id);
         this.home = home;
         if (!(user.isSuperAdmin || forum.userId == user.id)) forumDeletionButton.setVisible(false);
         username.setText(loggedInUser.username);
@@ -208,16 +207,16 @@ public class ForumUI extends javax.swing.JFrame {
     }
     
     public void refreshSubForums(){
-        this.subforums = seaQuellers.getSubforums(forum.id);
         subsPanel.removeAll();
         drawSubForumsPanel();
         subsPanel.revalidate();
         subsPanel.repaint();
         this.pack();
-
     }
     
     public void drawSubForumsPanel(){
+        this.subforums = seaQuellers.getSubforums(forum.id);
+        ForumUI that = this;
         for (int i = 0; i < subforums.size(); i++) {
             JLabel subforumName = new JLabel(subforums.get(i).name);
             JLabel description = new JLabel(subforums.get(i).description);
@@ -227,7 +226,7 @@ public class ForumUI extends javax.swing.JFrame {
             subforumName.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     JLabel source = (JLabel) e.getSource();
-                    SubforumUI subforum = new SubforumUI(seaQuellers, subforums.get(Integer.parseInt(source.getName())), loggedInUser);
+                    SubforumUI subforum = new SubforumUI(seaQuellers, subforums.get(Integer.parseInt(source.getName())), loggedInUser, that);
                     subforum.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     subforum.setVisible(true);
                 }
