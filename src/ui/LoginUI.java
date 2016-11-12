@@ -253,12 +253,21 @@ public class LoginUI extends javax.swing.JFrame {
         String password = new String(registerPWTxtField.getPassword());
         String email = registerEmailTxtField.getText();
         if ( username.isEmpty() || password.isEmpty() || email.isEmpty()) {
-             JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fieldss", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fieldss", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (!isValidEmailAddress(email)) {
+            JOptionPane.showMessageDialog(new JFrame(), "Invalid email address format.", "Error", JOptionPane.ERROR_MESSAGE);
         } else if (seaQuellers.createUser(username, email, password)) {
             JOptionPane.showMessageDialog(new JFrame(), "Account created successfully! Please login using your new account.");
         } else {
             JOptionPane.showMessageDialog(new JFrame(), "Username is already taken.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    private boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
     }
 
     /**

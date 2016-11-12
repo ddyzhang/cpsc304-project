@@ -299,13 +299,13 @@ public class SeaQuellersBBAPI {
         return null;
     }
     
-    public User getUserWithMostPosts() {
+    public int getNumUsers() {
         // If there are multiple users with the same max post count, return the first one
-        ResultSet result = executeQuery("SELECT MAX(postcount) FROM users");
-        int maxPosts = 0;
+        ResultSet result = executeQuery("SELECT COUNT(*) FROM users");
+        int numUsers = 0;
         try {
             if (result.next()) {
-                maxPosts = result.getInt(0);
+                numUsers = result.getInt(0);
             } else {
                 throw new Exception("Something's wrong with the database.");
             }
@@ -314,22 +314,7 @@ public class SeaQuellersBBAPI {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        result = executeQuery("SELECT * FROM users WHERE userid=" + maxPosts);
-        try {
-            if (result.next()) {
-                int id = result.getInt("userid");
-                String username = result.getString("username");
-                int numPosts = result.getInt("numposts");
-                String signupDate = result.getString("signupdate");
-                String email = result.getString("email");
-                return new User(id, numPosts, signupDate, username, email);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-        return null;
+        return numUsers;
     }
 
     public ArrayList<AdStatistic> getAdStatsByAd() {
