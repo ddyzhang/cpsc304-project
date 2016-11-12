@@ -419,7 +419,7 @@ public class SeaQuellersBBAPI {
     }
     
     public Advertisement getRandomAd() {
-        ResultSet result = executeQuery("SELECT * FROM advertisements, users ORDER BY random() LIMIT 1 WHERE advertisements.userid = users.userid");
+        ResultSet result = executeQuery("SELECT * FROM advertisements, users WHERE advertisements.userid = users.userid ORDER BY random() LIMIT 1");
         try {
             if (result.next()) {
                 String imageUrl = result.getString("imageurl");
