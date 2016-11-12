@@ -27,15 +27,21 @@ public class SubforumUI extends javax.swing.JFrame {
     private User loggedInUser;
     private ArrayList<seaquellersbb.Thread> threads;
     private ForumUI forum;
+    private int adminid;
     /**
      * Creates new form SubforumUI
      */
-    public SubforumUI(SeaQuellersBBAPI seaQuellers, Subforum subforum, User user, ForumUI forum) {
+    public SubforumUI(SeaQuellersBBAPI seaQuellers, Subforum subforum, User user, int adminid, ForumUI forum) {
         initComponents();
         this.seaQuellers = seaQuellers;
         this.subforum = subforum;
         this.forum = forum;
         this.loggedInUser = user;
+        this.adminid = adminid;
+        if (!(user.isSuperAdmin || adminid == user.id)){ 
+            manageModsButton.setVisible(false);
+            deleteSubButton.setVisible(false);
+        }
         username.setText(loggedInUser.username);
         subforumName.setText(subforum.name);
         
@@ -173,7 +179,7 @@ public class SubforumUI extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteSubButtonMouseClicked
 
     private void postThreadButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_postThreadButtonMouseClicked
-        NewThreadUI newThread = new NewThreadUI(seaQuellers);
+        NewThreadUI newThread = new NewThreadUI(seaQuellers, this, subforum.id, subforum.forumId, loggedInUser.id);
         newThread.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         newThread.setVisible(true);
     }//GEN-LAST:event_postThreadButtonMouseClicked
