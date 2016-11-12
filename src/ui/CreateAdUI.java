@@ -5,6 +5,8 @@
  */
 package ui;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import seaquellersbb.SeaQuellersBBAPI;
 import seaquellersbb.User;
@@ -17,6 +19,7 @@ public class CreateAdUI extends javax.swing.JFrame {
     private HomeUI home;
     private SeaQuellersBBAPI seaQuellers;
     private User loggedInUser;
+    
     /**
      * Creates new ad
      * @param seaQuellers
@@ -27,6 +30,7 @@ public class CreateAdUI extends javax.swing.JFrame {
         this.home = home;
         this.seaQuellers = seaQuellers;
         this.loggedInUser = loggedInUser;
+        
     }
 
     /**
@@ -140,13 +144,21 @@ public class CreateAdUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confirmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmButtonMouseClicked
-        String URL = ImgURL.getText();
         String cpc = CPC.getText();
         String cpi=CPI.getText();
         String link=Link.getText();
+        String URL = ImgURL.getText();
+          if ( URL.isEmpty() || cpc.isEmpty() || cpi.isEmpty()||link.isEmpty()) {
+             JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fieldss", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+          else{
+               
+
         System.out.println(URL+" "+ loggedInUser.id+" "+ Double.parseDouble(cpc)+" "+Double.parseDouble(cpi)+" "+link);
         seaQuellers.createAd(URL, loggedInUser.id, Double.parseDouble(cpc),Double.parseDouble(cpi),link);
+        
         this.dispose();
+          }
     }//GEN-LAST:event_confirmButtonMouseClicked
 
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
