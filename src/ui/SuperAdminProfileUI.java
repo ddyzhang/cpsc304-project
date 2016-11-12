@@ -55,7 +55,6 @@ public class SuperAdminProfileUI extends javax.swing.JFrame {
         saveChangesButton = new javax.swing.JButton();
         newPasswordBox = new javax.swing.JPasswordField();
         confirmPasswordBox = new javax.swing.JPasswordField();
-        AdStats = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -132,14 +131,6 @@ public class SuperAdminProfileUI extends javax.swing.JFrame {
             }
         });
 
-        AdStats.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        AdStats.setText("Ad Stats");
-        AdStats.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AdStatsMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -155,8 +146,7 @@ public class SuperAdminProfileUI extends javax.swing.JFrame {
                             .addComponent(joinDateLabel)
                             .addComponent(emailLabel)
                             .addComponent(changePasswordLabel)
-                            .addComponent(confirmPasswordLabel)
-                            .addComponent(AdStats, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(confirmPasswordLabel))
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(numPosts)
@@ -192,9 +182,7 @@ public class SuperAdminProfileUI extends javax.swing.JFrame {
                     .addComponent(confirmPasswordBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(saveChangesButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(AdStats, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
@@ -218,12 +206,6 @@ public class SuperAdminProfileUI extends javax.swing.JFrame {
         }
         JOptionPane.showMessageDialog(new JFrame(), "Account details saved!");
     }//GEN-LAST:event_saveChangesButtonActionPerformed
-
-    private void AdStatsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AdStatsMouseClicked
-        AdStatisticsUI adstats = new AdStatisticsUI(seaQuellers, loggedInUser);
-        adstats.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        adstats.setVisible(true);        // TODO add your handling code here:
-    }//GEN-LAST:event_AdStatsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -261,7 +243,6 @@ public class SuperAdminProfileUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel AdStats;
     private javax.swing.JLabel changePasswordLabel;
     private javax.swing.JPasswordField confirmPasswordBox;
     private javax.swing.JLabel confirmPasswordLabel;
