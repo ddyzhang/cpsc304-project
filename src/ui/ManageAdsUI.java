@@ -16,7 +16,7 @@ import seaquellersbb.*;
 
 /**
  *
- * @author serenachen
+ * @author Dustin
  */
 public class ManageAdsUI extends javax.swing.JFrame {
     private SeaQuellersBBAPI seaQuellers;
@@ -25,7 +25,7 @@ public class ManageAdsUI extends javax.swing.JFrame {
     private ArrayList<Forum> forums;
     private boolean isSuperAdmin;
     /**
-     * Creates new form HomeUI
+     * Links between Home UI and Ad preferences 
      */
     public ManageAdsUI(SeaQuellersBBAPI seaQuellers, User user, HomeUI homePage) {
         initComponents();
@@ -200,7 +200,10 @@ public class ManageAdsUI extends javax.swing.JFrame {
     }//GEN-LAST:event_AdStatsMouseClicked
 
     private void CreateAdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CreateAdMouseClicked
-        // TODO add your handling code here:
+         CreateAdUI newAds = new CreateAdUI(seaQuellers, loggedInUser);
+        newAds.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        newAds.setVisible(true);
+         
     }//GEN-LAST:event_CreateAdMouseClicked
 
     private void DeleteAdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeleteAdMouseClicked
