@@ -528,7 +528,6 @@ public class SeaQuellersBBAPI {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        executeUpdate("UPDATE users SET numPosts = numPosts + 1 WHERE userid=" + userId);
     }
     
     public void createComment(int threadId, int subId, int forumId, String body, int userId) {
@@ -542,11 +541,11 @@ public class SeaQuellersBBAPI {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        result = executeQuery("SELECT MAX(commentid) FROM threads WHERE forumid=" + forumId + " AND subid=" + subId + " AND threadid=" + threadId);
+        result = executeQuery("SELECT MAX(commentid) FROM comments WHERE forumid=" + forumId + " AND subid=" + subId + " AND threadid=" + threadId);
         try {
             if (result.next()) {
                 int id = result.getInt(1) + 1;
-                executeUpdate("INSERT INTO threads(commentid, threadid, subid, forumid, body, userid)"
+                executeUpdate("INSERT INTO comments(commentid, threadid, subid, forumid, body, userid)"
                         + " VALUES (" + id + ", " + threadId + ", " + subId + ", " + forumId  + ", \'" + body.replace("'", "''") + "\', " + userId + ")");
             } else {
                 throw new RuntimeException("Something is wrong with the database.");
@@ -556,7 +555,6 @@ public class SeaQuellersBBAPI {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        executeUpdate("UPDATE users SET postcount = postcount + 1 WHERE userid=" + userId);
     }
     
     public void createAd(String url, int userId, double cpc, double cpi, String link) {

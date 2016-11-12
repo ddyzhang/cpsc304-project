@@ -261,7 +261,6 @@ public class ThreadUI extends javax.swing.JFrame {
         commentPanel.revalidate();
         commentPanel.repaint();
         this.pack();
-
     }
     
     public void drawComments(){
