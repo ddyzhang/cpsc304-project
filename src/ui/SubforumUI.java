@@ -28,6 +28,8 @@ public class SubforumUI extends javax.swing.JFrame {
     private User loggedInUser;
     private ArrayList<seaquellersbb.Thread> threads;
     private ForumUI forumUI;
+    private ArrayList<User> mods;
+    private int[] modIds;
     /**
      * Creates new form SubforumUI
      */
@@ -45,6 +47,10 @@ public class SubforumUI extends javax.swing.JFrame {
         username.setText(loggedInUser.username);
         subforumName.setText(subforum.name);
         drawThreadsPanel();
+        this.mods = seaQuellers.getModerators(subforum.id, subforum.forumId);
+        for (int i = 0; i < mods.size(); i++) {
+            modIds[i] = mods.get(i).id;
+        }
         this.pack();
     }
 
