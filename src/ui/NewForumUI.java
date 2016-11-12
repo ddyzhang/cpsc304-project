@@ -123,7 +123,6 @@ public class NewForumUI extends javax.swing.JFrame {
     }//GEN-LAST:event_confirmButtonMouseClicked
 
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
-
         this.dispose();
     }//GEN-LAST:event_cancelButtonMouseClicked
 

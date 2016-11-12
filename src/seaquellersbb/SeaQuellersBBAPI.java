@@ -71,7 +71,7 @@ public class SeaQuellersBBAPI {
                 String email = result.getString("email");
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
-                boolean isadmin = this.isAdmin(userId);
+                boolean isadmin = this.isSuperAdmin(userId);
                 return new User(userId, numPosts, signupDate, username, email, isadmin);
             }
         } catch (Exception e) {
@@ -244,7 +244,6 @@ public class SeaQuellersBBAPI {
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
                 String email = result.getString("email");
-                boolean isadmin = this.isAdmin(result.getInt("userid"));
                 return new User(userId, numPosts, signupDate, username, email);                
             }
         } catch (Exception e) {
@@ -255,7 +254,7 @@ public class SeaQuellersBBAPI {
         return null;
     }
     
-    public boolean  isAdmin(int userId) {
+    public boolean  isSuperAdmin(int userId) {
         ResultSet result = executeQuery("SELECT * from Superadmins WHERE userId=" + userId);
         try {
             if (result.next()){
