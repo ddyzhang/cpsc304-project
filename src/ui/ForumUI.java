@@ -39,11 +39,11 @@ public class ForumUI extends javax.swing.JFrame {
         this.subforums = seaQuellers.getSubforums(forum.id);
         this.home = home;
         if (!(user.isSuperAdmin || forum.userId == user.id)) forumDeletionButton.setVisible(false);
-        drawSubForumsPanel();
         username.setText(loggedInUser.username);
         forumName.setText(forum.name);
         subsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         subsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        this.drawSubForumsPanel();
         this.pack();
     }
 

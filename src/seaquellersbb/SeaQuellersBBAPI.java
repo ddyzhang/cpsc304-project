@@ -244,7 +244,8 @@ public class SeaQuellersBBAPI {
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
                 String email = result.getString("email");
-                return new User(userId, numPosts, signupDate, username, email);                
+                boolean isadmin = this.isSuperAdmin(userId);
+                return new User(userId, numPosts, signupDate, username, email, isadmin);
             }
         } catch (Exception e) {
             e.printStackTrace();
