@@ -16,32 +16,85 @@ import seaquellersbb.*;
 
 /**
  *
- * @author Dustin
+ * @author serenachen
  */
-public class ManageAdsUI extends javax.swing.JFrame {
+public class EditDeleteAdsUI extends javax.swing.JFrame {
     private SeaQuellersBBAPI seaQuellers;
-    private HomeUI homePage;
+    private ManageAdsUI managePage;
     private User loggedInUser;
-    private ArrayList<Forum> forums;
-    private boolean isSuperAdmin;
-    /**
-     * Links between Home UI and Ad preferences 
-     */
-    public ManageAdsUI(SeaQuellersBBAPI seaQuellers, User user, HomeUI homePage) {
+    private SuperAdminProfileUI superAdmin;
+    private ArrayList<Advertisement> adsView;
+    private ArrayList<AdStatistic> forumView;
+    private ArrayList<AdStatistic> allView;
+    EditDeleteAdsUI holdThis;
+
+
+    public EditDeleteAdsUI(SeaQuellersBBAPI seaQuellers, User user, ManageAdsUI managePage) {
         initComponents();
-       
-        
         this.seaQuellers = seaQuellers;
         this.loggedInUser = user;
-        this.forums = seaQuellers.getAllForums();
-        this.homePage = homePage;
+        this.managePage=managePage;
+        this.superAdmin=superAdmin;
+        this.adsView=seaQuellers.getAllAds();
+
+
         username.setText(loggedInUser.username); 
-        if (user.isSuperAdmin) jLabel5.setText("Administrator: ");
-       
+        adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+        adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        populateAdsView();
         
-        this.pack();
+       
     }
 
+    
+    
+      public void populateAdsView() {
+         adsView=seaQuellers.getAllAds();
+         adsPanel.removeAll();
+         adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+        adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        int i=0;
+        for(Advertisement ad : adsView){
+            JLabel adName = new JLabel(ad.imageUrl);
+          String  Description=("Posted by:"+ad.username                    
+                  +" CPC:"+ad.cpc+" CPI:"
+                    +ad.cpi+" Ad Link:"+ad.link);
+          
+            JLabel description = new JLabel(Description);
+            adName.setName("bloop " + i);
+            adName.setFont(Font.decode("Lucida-Grande-Bold-16"));
+            description.setFont(Font.decode("Lucida-Grande-14"));
+            
+            adName.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    JLabel source = (JLabel)e.getSource();
+                    EditDeleteAdPopUpUI editDelPopUP = 
+                            new EditDeleteAdPopUpUI(seaQuellers, ad, loggedInUser,holdThis);
+                    editDelPopUP.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    editDelPopUP.setVisible(true);
+                }
+            });
+            adsPanel.add(adName);
+            adsPanel.add(description);
+            adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+            i++;
+        }
+         
+        this.pack();
+        adsPanel.revalidate();
+        adsPanel.repaint();
+        holdThis=this;
+        
+    }
+      
+
+    
+    
+    
+    
+    
+  
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -56,9 +109,7 @@ public class ManageAdsUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        AdStats = new javax.swing.JLabel();
-        CreateAd = new javax.swing.JLabel();
-        DeleteAd = new javax.swing.JLabel();
+        adsPanel = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -95,20 +146,20 @@ public class ManageAdsUI extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Manage Ads");
+        jLabel1.setText("Edit & Delete Ads");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 204, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(username)
-                .addContainerGap())
+                .addGap(37, 37, 37))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,104 +169,43 @@ public class ManageAdsUI extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(username)
                     .addComponent(jLabel1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
-        AdStats.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        AdStats.setText("View Ads Stats");
-        AdStats.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AdStatsMouseClicked(evt);
-            }
-        });
-
-        CreateAd.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        CreateAd.setText("Create An Ad");
-        CreateAd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CreateAdMouseClicked(evt);
-            }
-        });
-
-        DeleteAd.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        DeleteAd.setText("Edit & Delete An Ad");
-        DeleteAd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                DeleteAdMouseClicked(evt);
-            }
-        });
+        adsPanel.setPreferredSize(new java.awt.Dimension(549, 449));
+        adsPanel.setLayout(new java.awt.GridLayout(5, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(AdStats, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(CreateAd, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(110, 110, 110))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(DeleteAd)
-                        .addGap(96, 96, 96))))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(adsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(AdStats, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(CreateAd, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(DeleteAd, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(adsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void usernameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usernameMouseClicked
-       System.out.println(loggedInUser.username);
-        if(loggedInUser.isSuperAdmin){
-            SuperAdminProfileUI superAdminProfile = new SuperAdminProfileUI(seaQuellers, loggedInUser);
-            superAdminProfile.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            superAdminProfile.setVisible(true);
-    }
-        else{
-            UserProfileUI userProfile = new UserProfileUI(seaQuellers, loggedInUser);
-            userProfile.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            userProfile.setVisible(true);
-                }
+        System.out.println(loggedInUser.username);
+        UserProfileUI userProfile = new UserProfileUI(seaQuellers, loggedInUser);
+        userProfile.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        userProfile.setVisible(true);
     }//GEN-LAST:event_usernameMouseClicked
 
+
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        homePage.setVisible(true);
+        managePage.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
-
-    private void AdStatsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AdStatsMouseClicked
-        AdStatisticsUI statAds = new AdStatisticsUI(seaQuellers, loggedInUser, this);
-        statAds.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        statAds.setVisible(true);
-         this.setVisible(false);
-    }//GEN-LAST:event_AdStatsMouseClicked
-
-    private void CreateAdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CreateAdMouseClicked
-         CreateAdUI newAds = new CreateAdUI(seaQuellers, loggedInUser);
-        newAds.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        newAds.setVisible(true);
-         
-    }//GEN-LAST:event_CreateAdMouseClicked
-
-    private void DeleteAdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeleteAdMouseClicked
-        EditDeleteAdsUI editDelete = new EditDeleteAdsUI (seaQuellers, loggedInUser, this);
-        editDelete.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        editDelete.setVisible(true);
-         this.setVisible(false);
-    }//GEN-LAST:event_DeleteAdMouseClicked
 
     /**
      * @param args the command line arguments
@@ -234,14 +224,20 @@ public class ManageAdsUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ManageAdsUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditDeleteAdsUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ManageAdsUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditDeleteAdsUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ManageAdsUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditDeleteAdsUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ManageAdsUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditDeleteAdsUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -254,16 +250,11 @@ public class ManageAdsUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel AdStats;
-    private javax.swing.JLabel CreateAd;
-    private javax.swing.JLabel DeleteAd;
+    private javax.swing.JPanel adsPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
-
-   
-  
 }

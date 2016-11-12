@@ -8,6 +8,7 @@ package ui;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import seaquellersbb.Advertisement;
 import seaquellersbb.SeaQuellersBBAPI;
 import seaquellersbb.User;
 
@@ -15,22 +16,32 @@ import seaquellersbb.User;
  *
  * @author Dustin
  */
-public class CreateAdUI extends javax.swing.JFrame {
+public class EditDeleteAdPopUpUI extends javax.swing.JFrame {
     private HomeUI home;
     private SeaQuellersBBAPI seaQuellers;
     private User loggedInUser;
-    
+    private Advertisement ad;
+    private String oldURL;
+    EditDeleteAdsUI editDelAdsPage;
     /**
      * Creates new ad
      * @param seaQuellers
      * @param loggedInUser
      */
-    public CreateAdUI(SeaQuellersBBAPI seaQuellers, User loggedInUser) {
+    public EditDeleteAdPopUpUI(SeaQuellersBBAPI seaQuellers, Advertisement ad, 
+            User loggedInUser, EditDeleteAdsUI editDelAdsPage) {
         initComponents();
         this.home = home;
         this.seaQuellers = seaQuellers;
         this.loggedInUser = loggedInUser;
-        
+        this.ad=ad;
+        this.editDelAdsPage=editDelAdsPage;
+        System.out.println(editDelAdsPage);
+        ImgURL.setText(ad.imageUrl);
+        CPC.setText(String.valueOf(ad.cpc));
+        CPI.setText(String.valueOf(ad.cpi));
+        Link.setText(ad.link);
+        oldURL=ad.imageUrl;
     }
 
     /**
@@ -52,6 +63,7 @@ public class CreateAdUI extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         Link = new javax.swing.JTextField();
+        DeleteButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,10 +76,15 @@ public class CreateAdUI extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("CPI");
 
-        confirmButton.setText("Confirm");
+        confirmButton.setText("Change Ad");
         confirmButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 confirmButtonMouseClicked(evt);
+            }
+        });
+        confirmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmButtonActionPerformed(evt);
             }
         });
 
@@ -81,6 +98,18 @@ public class CreateAdUI extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Link");
 
+        DeleteButton.setText("Delete Ad");
+        DeleteButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DeleteButtonMouseClicked(evt);
+            }
+        });
+        DeleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,7 +117,6 @@ public class CreateAdUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cancelButton)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
@@ -96,16 +124,19 @@ public class CreateAdUI extends javax.swing.JFrame {
                             .addComponent(jLabel4)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabel2)
-                                .addComponent(jLabel3)))))
+                                .addComponent(jLabel3))))
+                    .addComponent(cancelButton, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(CPI, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 321, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                        .addComponent(DeleteButton)
+                        .addGap(102, 102, 102)
                         .addComponent(confirmButton)
-                        .addGap(36, 36, 36))
+                        .addGap(27, 27, 27))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -135,8 +166,9 @@ public class CreateAdUI extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelButton)
-                    .addComponent(confirmButton))
+                    .addComponent(DeleteButton)
+                    .addComponent(confirmButton)
+                    .addComponent(cancelButton))
                 .addContainerGap())
         );
 
@@ -144,26 +176,42 @@ public class CreateAdUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confirmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmButtonMouseClicked
+        
+        String newURL = ImgURL.getText();
         String cpc = CPC.getText();
         String cpi=CPI.getText();
         String link=Link.getText();
-        String URL = ImgURL.getText();
-          if ( URL.isEmpty() || cpc.isEmpty() || cpi.isEmpty()||link.isEmpty()) {
+
+        if ( newURL.isEmpty() || cpc.isEmpty() || cpi.isEmpty()||link.isEmpty()) {
              JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fieldss", "Error", JOptionPane.ERROR_MESSAGE);
         }
-          else{
-               
-
-        System.out.println(URL+" "+ loggedInUser.id+" "+ Double.parseDouble(cpc)+" "+Double.parseDouble(cpi)+" "+link);
-        seaQuellers.createAd(URL, loggedInUser.id, Double.parseDouble(cpc),Double.parseDouble(cpi),link);
-        
-        this.dispose();
-          }
+        else{
+        System.out.println(newURL+"<--new "+"  old->>"+oldURL+ loggedInUser.id+" "+ Double.parseDouble(cpc)+" "+Double.parseDouble(cpi)+" "+link);
+        seaQuellers.changeAdCpc(oldURL,Double.parseDouble(cpc) );
+        seaQuellers.changeAdCpi(oldURL, Double.parseDouble(cpi));
+        seaQuellers.changeAdImageUrl(oldURL, newURL);
+        seaQuellers.changeAdLink(oldURL, link);
+        editDelAdsPage.populateAdsView();
+          this.dispose();
+        }
     }//GEN-LAST:event_confirmButtonMouseClicked
 
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
         this.dispose();
     }//GEN-LAST:event_cancelButtonMouseClicked
+
+    private void DeleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeleteButtonMouseClicked
+        seaQuellers.deleteAd(oldURL);
+        this.dispose();
+    }//GEN-LAST:event_DeleteButtonMouseClicked
+
+    private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_confirmButtonActionPerformed
+
+    private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DeleteButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,14 +230,16 @@ public class CreateAdUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateAdUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditDeleteAdPopUpUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateAdUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditDeleteAdPopUpUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateAdUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditDeleteAdPopUpUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateAdUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditDeleteAdPopUpUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -204,6 +254,7 @@ public class CreateAdUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CPC;
     private javax.swing.JTextField CPI;
+    private javax.swing.JButton DeleteButton;
     private javax.swing.JTextField ImgURL;
     private javax.swing.JTextField Link;
     private javax.swing.JButton cancelButton;
