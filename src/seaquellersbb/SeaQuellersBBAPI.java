@@ -614,6 +614,7 @@ public class SeaQuellersBBAPI {
     }
     
     public void editThreadBody(int threadId, int subId, int forumId, String newBody) {
+        System.out.println(newBody);
         executeUpdate("UPDATE threads SET body=\'" + newBody + "\' WHERE threadid=" + threadId + " AND subid=" + subId + " AND forumid=" + forumId);
     }
     
