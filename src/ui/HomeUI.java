@@ -33,7 +33,6 @@ public class HomeUI extends javax.swing.JFrame {
         
         this.seaQuellers = seaQuellers;
         this.loggedInUser = user;
-        this.forums = seaQuellers.getAllForums();
         this.loginPage = loginPage;
         username.setText(loggedInUser.username); 
         if (user.isSuperAdmin) jLabel5.setText("Administrator: ");
@@ -270,7 +269,6 @@ public class HomeUI extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public void refreshForums(){
-        this.forums = this.seaQuellers.getAllForums();
         forumsPanel.removeAll();
         drawForumsPanel();
         forumsPanel.revalidate();
@@ -279,6 +277,7 @@ public class HomeUI extends javax.swing.JFrame {
 
     }
     public void drawForumsPanel() {
+        this.forums = seaQuellers.getAllForums();
         HomeUI that = this;
         forumsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         forumsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));

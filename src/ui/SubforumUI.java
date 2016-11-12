@@ -26,35 +26,25 @@ public class SubforumUI extends javax.swing.JFrame {
     private Subforum subforum;
     private User loggedInUser;
     private ArrayList<seaquellersbb.Thread> threads;
-
+    private ForumUI forum;
+    private int adminid;
     /**
      * Creates new form SubforumUI
      */
-    public SubforumUI(SeaQuellersBBAPI seaQuellers, Subforum subforum, User user) {
+    public SubforumUI(SeaQuellersBBAPI seaQuellers, Subforum subforum, User user, int adminid, ForumUI forum) {
         initComponents();
         this.seaQuellers = seaQuellers;
         this.subforum = subforum;
+        this.forum = forum;
         this.loggedInUser = user;
+        this.adminid = adminid;
+        if (!(user.isSuperAdmin || adminid == user.id)){ 
+            manageModsButton.setVisible(false);
+            deleteSubButton.setVisible(false);
+        }
         username.setText(loggedInUser.username);
         subforumName.setText(subforum.name);
-        threads = seaQuellers.getThreads(subforum.id, subforum.forumId);
-        threadsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
-        threadsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        for (int i = 0; i < threads.size(); i++) {
-            JLabel threadTitle = new JLabel(threads.get(i).title);
-            threadTitle.setName("" + i);
-            threadTitle.setFont(Font.decode("Lucida-Grande-Bold-16"));
-            threadTitle.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    JLabel source = (JLabel) e.getSource();
-                    ThreadUI thread = new ThreadUI(seaQuellers, threads.get(Integer.parseInt(source.getName())), loggedInUser);
-                    thread.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    thread.setVisible(true);
-                }
-            });
-            threadsPanel.add(threadTitle);
-            threadsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        }
+        
         this.pack();
     }
 
@@ -71,7 +61,10 @@ public class SubforumUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
         subforumName = new javax.swing.JLabel();
+        postThreadButton = new javax.swing.JButton();
         threadsPanel = new javax.swing.JPanel();
+        deleteSubButton = new javax.swing.JButton();
+        manageModsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,6 +82,13 @@ public class SubforumUI extends javax.swing.JFrame {
         subforumName.setForeground(new java.awt.Color(255, 255, 255));
         subforumName.setText("[subforumName]");
 
+        postThreadButton.setText("Post Thread");
+        postThreadButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                postThreadButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -96,7 +96,9 @@ public class SubforumUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(subforumName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addComponent(postThreadButton)
+                .addGap(48, 48, 48)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(username)
@@ -109,7 +111,8 @@ public class SubforumUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(username)
-                    .addComponent(subforumName))
+                    .addComponent(subforumName)
+                    .addComponent(postThreadButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -121,8 +124,22 @@ public class SubforumUI extends javax.swing.JFrame {
         );
         threadsPanelLayout.setVerticalGroup(
             threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 433, Short.MAX_VALUE)
+            .addGap(0, 416, Short.MAX_VALUE)
         );
+
+        deleteSubButton.setText("Delete Subforum");
+        deleteSubButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteSubButtonMouseClicked(evt);
+            }
+        });
+
+        manageModsButton.setText("Manage Moderators");
+        manageModsButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                manageModsButtonMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,7 +148,12 @@ public class SubforumUI extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(threadsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(threadsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(deleteSubButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(manageModsButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -139,12 +161,32 @@ public class SubforumUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(threadsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(threadsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deleteSubButton)
+                    .addComponent(manageModsButton))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void deleteSubButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteSubButtonMouseClicked
+        seaQuellers.deleteSubforum(subforum.id, subforum.forumId);
+        forum.refreshSubForums();
+        this.dispose();
+    }//GEN-LAST:event_deleteSubButtonMouseClicked
+
+    private void postThreadButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_postThreadButtonMouseClicked
+        NewThreadUI newThread = new NewThreadUI(seaQuellers, this, subforum.id, subforum.forumId, loggedInUser.id);
+        newThread.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        newThread.setVisible(true);
+    }//GEN-LAST:event_postThreadButtonMouseClicked
+
+    private void manageModsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageModsButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_manageModsButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -180,10 +222,43 @@ public class SubforumUI extends javax.swing.JFrame {
 //            }
 //        });
     }
+    
+    public void refreshThreads(){
+        threadsPanel.removeAll();
+        drawThreadsPanel();
+        threadsPanel.revalidate();
+        threadsPanel.repaint();
+        this.pack();
+
+    }
+    
+    public void drawThreadsPanel(){
+        threads = seaQuellers.getThreads(subforum.id, subforum.forumId);
+        threadsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+        threadsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        for (int i = 0; i < threads.size(); i++) {
+            JLabel threadTitle = new JLabel(threads.get(i).title);
+            threadTitle.setName("" + i);
+            threadTitle.setFont(Font.decode("Lucida-Grande-Bold-16"));
+            threadTitle.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    JLabel source = (JLabel) e.getSource();
+                    ThreadUI thread = new ThreadUI(seaQuellers, threads.get(Integer.parseInt(source.getName())), loggedInUser);
+                    thread.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    thread.setVisible(true);
+                }
+            });
+            threadsPanel.add(threadTitle);
+            threadsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton deleteSubButton;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton manageModsButton;
+    private javax.swing.JButton postThreadButton;
     private javax.swing.JLabel subforumName;
     private javax.swing.JPanel threadsPanel;
     private javax.swing.JLabel username;
