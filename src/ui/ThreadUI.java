@@ -7,7 +7,10 @@ package ui;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -40,6 +43,7 @@ public class ThreadUI extends javax.swing.JFrame {
         this.subUI = subUI;
         username.setText(loggedInUser.username);
         threadTitle.setText(thread.title);
+        if (!(user.isSuperAdmin || forum.userId == user.id || thread.poster.id == user.id)) deleteThreadButton.setVisible(false);
         drawComments();
     }
 
@@ -203,11 +207,10 @@ public class ThreadUI extends javax.swing.JFrame {
     // TODO: need IDs
     // mouse event to create a new thread comment, clear commentPanel, and refresh the window 
     private void replyBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_replyBtnMouseClicked
-        String body = commentPanel.getText();  // ??
-       
+        String body = commentPanel.getText();
         seaQuellers.createComment(thread.id, thread.subId, thread.forumId, body, loggedInUser.id);
         commentPanel.setText("");
-        this.refreshThreads();
+        this.refreshComments();
     }//GEN-LAST:event_replyBtnMouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
@@ -255,7 +258,7 @@ public class ThreadUI extends javax.swing.JFrame {
 //        });
     }
     
-    public void refreshThreads(){
+    public void refreshComments(){
         DisplayPanel.removeAll();
         commentPanel.removeAll();
         drawComments();
@@ -273,6 +276,11 @@ public class ThreadUI extends javax.swing.JFrame {
         JLabel threadBody = new JLabel(thread.body);
         threadBody.setName("" + 0);
         threadBody.setFont(Font.decode("Lucida-Grande-Bold-16"));
+        threadBody.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    
+                }
+            });
         DisplayPanel.add(threadBody);
         DisplayPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         for (int i = 0; i < comments.size(); i++) {

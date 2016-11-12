@@ -5,7 +5,10 @@
  */
 package ui;
 
+import seaquellersbb.Forum;
 import seaquellersbb.SeaQuellersBBAPI;
+import seaquellersbb.Subforum;
+import seaquellersbb.User;
 
 /**
  *
@@ -20,12 +23,16 @@ public class NewThreadUI extends javax.swing.JFrame {
     /**
      * Creates new form NewThreadUI
      */
-    public NewThreadUI(SeaQuellersBBAPI seaQuellers, SubforumUI subforum, int subid, int forumid, int userid) {
+    public NewThreadUI(SeaQuellersBBAPI seaQuellers, SubforumUI subforum, Subforum sub, Forum forum, User user) {
         initComponents();
         this.subforum = subforum;
-        this.subid = subid;
-        this.forumid = forumid;
+        this.subid = sub.id;
+        this.forumid = forum.id;
+        this.userid = user.id;
         this.seaQuellers = seaQuellers;
+        forumName.setText(forum.name);
+        subforumName.setText(sub.name);
+        username.setText(user.username);
     }
 
     /**
@@ -177,19 +184,6 @@ public class NewThreadUI extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1MouseClicked
 
-    /**
-     * TODO: need to update code with current forum/subforum
-     *
-     * Sets labels:
-     * forumName = current forum
-     * subforumName = current subforum
-     * username = user that's currently logged in
-     * */
-    private void setLabels(javax.swing.JLabel label1, javax.swing.JLabel label2) {
-        forumName.setText("Serena's forum");
-        subforumName.setText("Serena's subforum");
-        username.setText("Serena");
-    }
 
     /**
      * @param args the command line arguments

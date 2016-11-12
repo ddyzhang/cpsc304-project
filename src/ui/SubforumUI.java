@@ -179,7 +179,7 @@ public class SubforumUI extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteSubButtonMouseClicked
 
     private void postThreadButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_postThreadButtonMouseClicked
-        NewThreadUI newThread = new NewThreadUI(seaQuellers, this, subforum.id, subforum.forumId, loggedInUser.id);
+        NewThreadUI newThread = new NewThreadUI(seaQuellers, this, subforum, forum, loggedInUser);
         newThread.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         newThread.setVisible(true);
     }//GEN-LAST:event_postThreadButtonMouseClicked
