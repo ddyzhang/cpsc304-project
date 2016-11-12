@@ -34,7 +34,7 @@ public class HomeUI extends javax.swing.JFrame {
         this.forums = seaQuellers.getAllForums();
         this.loginPage = loginPage;
         username.setText(loggedInUser.username); 
-        if (user.isSuperadmin) jLabel5.setText("Administrator: ");
+        if (user.isSuperAdmin) jLabel5.setText("Administrator: ");
         drawForumsPanel();
         this.pack();
     }

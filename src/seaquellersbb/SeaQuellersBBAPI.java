@@ -71,7 +71,7 @@ public class SeaQuellersBBAPI {
                 String email = result.getString("email");
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
-                boolean isadmin = this.isSuperadmin(userId);
+                boolean isadmin = this.isSuperAdmin(userId);
                 return new User(userId, numPosts, signupDate, username, email, isadmin);
             }
         } catch (Exception e) {
@@ -244,8 +244,8 @@ public class SeaQuellersBBAPI {
                 int numPosts = result.getInt("numposts");
                 String signupDate = result.getString("signupdate");
                 String email = result.getString("email");
-                boolean isadmin = this.isSuperadmin(userId);
-                return new User(userId, numPosts, signupDate, username, email, isadmin);                
+                boolean isadmin = this.isSuperAdmin(userId);
+                return new User(userId, numPosts, signupDate, username, email, isadmin);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -255,7 +255,7 @@ public class SeaQuellersBBAPI {
         return null;
     }
     
-    public boolean  isSuperadmin(int userId) {
+    public boolean  isSuperAdmin(int userId) {
         ResultSet result = executeQuery("SELECT * from Superadmins WHERE userId=" + userId);
         try {
             if (result.next()){
@@ -495,7 +495,7 @@ public class SeaQuellersBBAPI {
     public void createSubforum(int forumId, String subName, String description) {
         ResultSet result = executeQuery("SELECT * FROM forums WHERE forumid=" + forumId);
         try {
-            if (result.next()) {
+            if (!result.next()) {
                 throw new Exception("Forum does not exist.");
             }
         } catch (Exception e) {
@@ -503,7 +503,7 @@ public class SeaQuellersBBAPI {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        result = executeQuery("SELECT MAX(subid) FROM forums WHERE forumid=" + forumId);
+        result = executeQuery("SELECT MAX(subid) FROM subforums WHERE forumid=" + forumId);
         try {
             if (result.next()) {
                 int id = result.getInt(1) + 1;
@@ -521,7 +521,7 @@ public class SeaQuellersBBAPI {
     public void createThread(int subId, int forumId, String title, String body, int userId) {
         ResultSet result = executeQuery("SELECT * FROM subforums WHERE forumid=" + forumId + " AND subid=" + subId);
         try {
-            if (result.next()) {
+            if (!result.next()) {
                 throw new Exception("Subforum does not exist.");
             }
         } catch (Exception e) {
@@ -549,7 +549,7 @@ public class SeaQuellersBBAPI {
     public void createComment(int threadId, int subId, int forumId, String body, int userId) {
         ResultSet result = executeQuery("SELECT * FROM threads WHERE forumid=" + forumId + " AND subid=" + subId + " AND threadid=" + threadId);
         try {
-            if (result.next()) {
+            if (!result.next()) {
                 throw new Exception("Thread does not exist.");
             }
         } catch (Exception e) {
@@ -577,7 +577,7 @@ public class SeaQuellersBBAPI {
     public void createAd(String url, int userId, double cpc, double cpi, String link) {
         ResultSet result = executeQuery("SELECT * FROM users WHERE userid=" + userId);
         try {
-            if (result.next()) {
+            if (!result.next()) {
                 throw new Exception("User does not exist.");
             }
         } catch (Exception e) {

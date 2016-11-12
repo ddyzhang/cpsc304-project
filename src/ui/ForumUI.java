@@ -38,7 +38,7 @@ public class ForumUI extends javax.swing.JFrame {
         this.loggedInUser = user;
         this.subforums = seaQuellers.getSubforums(forum.id);
         this.home = home;
-        if (!(user.isSuperadmin || forum.userId == user.id)) forumDeletionButton.setVisible(false);
+        if (!(user.isSuperAdmin || forum.userId == user.id)) forumDeletionButton.setVisible(false);
         username.setText(loggedInUser.username);
         forumName.setText(forum.name);
         subsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
@@ -167,7 +167,9 @@ public class ForumUI extends javax.swing.JFrame {
     }//GEN-LAST:event_forumDeletionButtonMouseClicked
 
     private void subCreationButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subCreationButtonMouseClicked
-        // TODO add your handling code here:
+        NewSubUI newSub = new NewSubUI(seaQuellers, this, forum.id);
+        newSub.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        newSub.setVisible(true);
     }//GEN-LAST:event_subCreationButtonMouseClicked
 
     /**
