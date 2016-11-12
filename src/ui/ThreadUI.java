@@ -266,7 +266,7 @@ public class ThreadUI extends javax.swing.JFrame {
             String newCommentBody = commentPanel.getText();
             seaQuellers.editCommentBody(activeComment.id, thread.id, thread.subId, thread.forumId, newCommentBody);
         }
-        else{
+        else {
             String newThreadBody = commentPanel.getText();
             seaQuellers.editThreadBody(thread.id, thread.subId, thread.forumId, newThreadBody);
         }
@@ -356,6 +356,7 @@ public class ThreadUI extends javax.swing.JFrame {
                 if (thread.poster.id == loggedInUser.id){
                     activeComment = null;
                     commentPanel.setText(threadBody.getText());
+                    deleteCommentButton.setVisible(false);
                     replyBtn.setVisible(false);
                     editButton.setVisible(true);
                     cancelEditButton.setVisible(true);
