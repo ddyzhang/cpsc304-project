@@ -7,6 +7,7 @@ package seaquellersbb;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.lang.Object;
 
 /**
  *
@@ -568,7 +569,7 @@ public class SeaQuellersBBAPI {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        result = executeQuery("SELECT * FROM advertisements WHERE imageurl = \'" + url + "\'");
+        result = executeQuery("SELECT * FROM advertisements WHERE imageurl=\'" + url + "\'");
         try {
             if (result.next()) {
                 throw new Exception("Ad already exists.");
@@ -578,18 +579,7 @@ public class SeaQuellersBBAPI {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        try {
-            if (result.next()) {
-                int id = result.getInt(1) + 1;
-                executeUpdate("INSERT INTO advertisements VALUES (\'" + url + "\', " + userId + ", " + cpc + ", " + cpi + ", \'" + link + "\')");
-            } else {
-                throw new RuntimeException("Something is wrong with the database.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
+        executeUpdate("INSERT INTO advertisements VALUES (\'" + url + "\', " + userId + ", " + cpc + ", " + cpi + ", \'" + link + "\')");
     }
     
     public void changeEmail(int userId, String newEmail) {
