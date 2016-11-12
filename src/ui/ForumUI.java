@@ -43,6 +43,7 @@ public class ForumUI extends javax.swing.JFrame {
         forumName.setText(forum.name);
         subsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         subsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        this.drawSubForumsPanel();
         this.pack();
     }
 
