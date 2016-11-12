@@ -38,7 +38,7 @@ public class ForumUI extends javax.swing.JFrame {
         this.loggedInUser = user;
         this.subforums = seaQuellers.getSubforums(forum.id);
         this.home = home;
-        if (!(user.isAdmin || forum.userId == user.id)) forumDeletionButton.setVisible(false);
+        if (!(user.isSuperAdmin || forum.userId == user.id)) forumDeletionButton.setVisible(false);
         drawSubForumsPanel();
         username.setText(loggedInUser.username);
         forumName.setText(forum.name);
