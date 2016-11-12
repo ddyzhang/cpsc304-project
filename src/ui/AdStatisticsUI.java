@@ -20,7 +20,7 @@ import seaquellersbb.*;
  */
 public class AdStatisticsUI extends javax.swing.JFrame {
     private SeaQuellersBBAPI seaQuellers;
-    private HomeUI homePage;
+    private ManageAdsUI managePage;
     private User loggedInUser;
     private SuperAdminProfileUI superAdmin;
     private ArrayList<AdStatistic> adsView;
@@ -28,10 +28,11 @@ public class AdStatisticsUI extends javax.swing.JFrame {
     private ArrayList<AdStatistic> allView;
 
 
-    public AdStatisticsUI(SeaQuellersBBAPI seaQuellers, User user) {
+    public AdStatisticsUI(SeaQuellersBBAPI seaQuellers, User user, ManageAdsUI managePage) {
         initComponents();
         this.seaQuellers = seaQuellers;
         this.loggedInUser = user;
+        this.managePage=managePage;
         this.superAdmin=superAdmin;
         this.adsView=seaQuellers.getAdStatsByAd();
         this.forumView=seaQuellers.getAdStatsByForum();
@@ -274,7 +275,7 @@ public class AdStatisticsUI extends javax.swing.JFrame {
 
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-     //   homePage.setVisible(true);
+        managePage.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
     private void AllViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AllViewMouseClicked
