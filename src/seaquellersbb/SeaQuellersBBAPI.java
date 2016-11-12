@@ -610,16 +610,16 @@ public class SeaQuellersBBAPI {
     }
     
     public void editThreadTitle(int threadId, int subId, int forumId, String newTitle) {
-        executeUpdate("UPDATE threads SET title=\'" + newTitle + "\' WHERE threadid=" + threadId + " AND subid=" + subId + " AND forumid=" + forumId);
+        executeUpdate("UPDATE threads SET title=\'" + newTitle.replace("'", "''") + "\' WHERE threadid=" + threadId + " AND subid=" + subId + " AND forumid=" + forumId);
     }
     
     public void editThreadBody(int threadId, int subId, int forumId, String newBody) {
         System.out.println(newBody);
-        executeUpdate("UPDATE threads SET body=\'" + newBody + "\' WHERE threadid=" + threadId + " AND subid=" + subId + " AND forumid=" + forumId);
+        executeUpdate("UPDATE threads SET body=\'" + newBody.replace("'", "''") + "\' WHERE threadid=" + threadId + " AND subid=" + subId + " AND forumid=" + forumId);
     }
     
     public void editCommentBody(int commentId, int threadId, int subId, int forumId, String newBody) {
-        executeUpdate("UPDATE comments SET body=\'" + newBody + "\' WHERE threadid=" + threadId + " AND subid=" + subId + " AND forumid=" + forumId + " AND commentid=" + commentId);
+        executeUpdate("UPDATE comments SET body=\'" + newBody.replace("'", "''") + "\' WHERE threadid=" + threadId + " AND subid=" + subId + " AND forumid=" + forumId + " AND commentid=" + commentId);
     }
     
     public void changeAdImageUrl(String oldUrl, String newUrl) {
