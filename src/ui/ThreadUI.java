@@ -269,6 +269,7 @@ public class ThreadUI extends javax.swing.JFrame {
         else {
             String newThreadBody = commentPanel.getText();
             seaQuellers.editThreadBody(thread.id, thread.subId, thread.forumId, newThreadBody);
+            thread.body = newThreadBody;
         }
         commentPanel.setText("");
         editButton.setVisible(false);
