@@ -199,7 +199,11 @@ public class UserProfileUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }                                        
 
-    private void saveChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                  
+    private void saveChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {     
+        if (!isValidEmailAddress(emailBox.getText())) {
+            JOptionPane.showMessageDialog(new JFrame(), "Invalid email address format.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         if (emailBox.getText() != loggedInUser.email) {
             seaQuellers.changeEmail(loggedInUser.id, emailBox.getText());
         }
@@ -212,7 +216,14 @@ public class UserProfileUI extends javax.swing.JFrame {
             return;
         }
         JOptionPane.showMessageDialog(new JFrame(), "Account details saved!");
-    }                                                 
+    }       
+    
+    private boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
 
     /**
      * @param args the command line arguments

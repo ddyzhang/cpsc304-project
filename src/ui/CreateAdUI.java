@@ -158,7 +158,29 @@ public class CreateAdUI extends javax.swing.JFrame {
         String URL = ImgURL.getText();
         if (URL.isEmpty() || cpc.isEmpty() || cpi.isEmpty() || link.isEmpty()) {
             JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
-        } else if (!isValidUrl(URL) || !isValidUrl(link)) {
+            return;
+        }
+        try {
+            String[] cpcSplit = cpc.split("\\.");
+            int cpcPlaceValues = cpcSplit[1].length();
+            String[] cpiSplit = cpi.split("\\.");
+            int cpiPlaceValues = cpiSplit[1].length();
+            if (cpcPlaceValues != 2 || cpiPlaceValues != 2) {
+                JOptionPane.showMessageDialog(new JFrame(), "Please enter valid currency formats for CPC and CPI.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please enter valid currency formats for CPC and CPI.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            double cpcDouble = Double.parseDouble(cpc);
+            double cpiDouble = Double.parseDouble(cpi);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please enter valid currency formats for CPC and CPI.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!isValidUrl(URL) || !isValidUrl(link)) {
             JOptionPane.showMessageDialog(new JFrame(), "Please enter valid URLs.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
 

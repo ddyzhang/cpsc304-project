@@ -5,6 +5,8 @@
  */
 package ui;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -183,17 +185,40 @@ public class EditDeleteAdPopUpUI extends javax.swing.JFrame {
         String link=Link.getText();
 
         if ( newURL.isEmpty() || cpc.isEmpty() || cpi.isEmpty()||link.isEmpty()) {
-             JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fieldss", "Error", JOptionPane.ERROR_MESSAGE);
+             JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+             return;
         }
-        else{
-        System.out.println(newURL+"<--new "+"  old->>"+oldURL+ loggedInUser.id+" "+ Double.parseDouble(cpc)+" "+Double.parseDouble(cpi)+" "+link);
-        seaQuellers.changeAdCpc(oldURL,Double.parseDouble(cpc) );
+        try {
+            String[] cpcSplit = cpc.split("\\.");
+            int cpcPlaceValues = cpcSplit[1].length();
+            String[] cpiSplit = cpi.split("\\.");
+            int cpiPlaceValues = cpiSplit[1].length();
+            if (cpcPlaceValues != 2 || cpiPlaceValues != 2) {
+                JOptionPane.showMessageDialog(new JFrame(), "Please enter valid currency formats for CPC and CPI.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please enter valid currency formats for CPC and CPI.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            double cpcDouble = Double.parseDouble(cpc);
+            double cpiDouble = Double.parseDouble(cpi);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please enter valid currency formats for CPC and CPI.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!isValidUrl(newURL) || !isValidUrl(link)) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please enter valid URLs.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        System.out.println(newURL + "<--new " + "  old->>" + oldURL + loggedInUser.id + " " + Double.parseDouble(cpc) + " " + Double.parseDouble(cpi) + " " + link);
+        seaQuellers.changeAdCpc(oldURL, Double.parseDouble(cpc));
         seaQuellers.changeAdCpi(oldURL, Double.parseDouble(cpi));
         seaQuellers.changeAdImageUrl(oldURL, newURL);
         seaQuellers.changeAdLink(oldURL, link);
         editDelAdsPage.populateAdsView();
-          this.dispose();
-        }
+        this.dispose();
     }//GEN-LAST:event_confirmButtonMouseClicked
 
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
@@ -214,6 +239,15 @@ public class EditDeleteAdPopUpUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_DeleteButtonActionPerformed
 
+    private boolean isValidUrl(String link) {
+        try {
+            URL url = new URL(link);
+        } catch (MalformedURLException e) {
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * @param args the command line arguments
      */
