@@ -187,17 +187,9 @@ public class HomeUI extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     private void usernameMouseClicked(java.awt.event.MouseEvent evt) {                                      
-       System.out.println(loggedInUser.username);
-        if(loggedInUser.isSuperAdmin){
-            SuperAdminProfileUI superAdminProfile = new SuperAdminProfileUI(seaQuellers, loggedInUser);
-            superAdminProfile.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            superAdminProfile.setVisible(true);
-    }
-        else{
-            UserProfileUI userProfile = new UserProfileUI(seaQuellers, loggedInUser);
-            userProfile.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            userProfile.setVisible(true);
-                }
+        UserProfileUI userProfile = new UserProfileUI(seaQuellers, loggedInUser);
+        userProfile.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        userProfile.setVisible(true);
     }                                     
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {                                  

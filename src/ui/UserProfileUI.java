@@ -27,7 +27,7 @@ public class UserProfileUI extends javax.swing.JFrame {
         this.loggedInUser = seaQuellers.getUserInfo(user.id);
         signupDate.setText(loggedInUser.signupDate);
         numPosts.setText("" + loggedInUser.numPosts);
-        emailBox.setText(user.email);
+        emailBox.setText(loggedInUser.email);
         username.setText(loggedInUser.username);
     }
 
@@ -205,9 +205,9 @@ public class UserProfileUI extends javax.swing.JFrame {
         }
         String newPassword = new String(newPasswordBox.getPassword());
         String confirmPassword = new String(confirmPasswordBox.getPassword());
-        if (!newPassword.equals(null) && newPassword.equals(confirmPassword)) {
+        if (!newPassword.equals("") && newPassword.equals(confirmPassword)) {
             seaQuellers.changePassword(loggedInUser.id, newPassword);
-        } else if (!newPassword.equals(null) && !newPassword.equals(confirmPassword)) {
+        } else if (!newPassword.equals("") && !newPassword.equals(confirmPassword)) {
             JOptionPane.showMessageDialog(new JFrame(), "Passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
