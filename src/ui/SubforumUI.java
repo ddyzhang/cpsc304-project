@@ -5,11 +5,19 @@
  */
 package ui;
 
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import seaquellersbb.*;
+import static ui.ForumUI.openWebpage;
 
 /**
  *
@@ -32,6 +41,7 @@ public class SubforumUI extends javax.swing.JFrame {
     private ForumUI forumUI;
     private ArrayList<User> mods;
     private int[] modIds;
+    private Advertisement ad;
     /**
      * Creates new form SubforumUI
      */
@@ -42,6 +52,7 @@ public class SubforumUI extends javax.swing.JFrame {
         this.forum = forum;
         this.loggedInUser = user;
         this.forumUI = forumUI;
+        this.ad=seaQuellers.getRandomAd();
         if (!(user.isSuperAdmin || forum.userId == user.id)){ 
             manageModsButton.setVisible(false);
             deleteSubButton.setVisible(false);
@@ -56,8 +67,8 @@ public class SubforumUI extends javax.swing.JFrame {
             modIds[i] = this.mods.get(i).id;
         }
         
-  
-
+        
+        drawAd();
         this.pack();
     }
 
@@ -76,10 +87,10 @@ public class SubforumUI extends javax.swing.JFrame {
         subforumName = new javax.swing.JLabel();
         postThreadButton = new javax.swing.JButton();
         threadsPanel = new javax.swing.JPanel();
-        AdPanel = new javax.swing.JPanel();
         deleteSubButton = new javax.swing.JButton();
         manageModsButton = new javax.swing.JButton();
         pruneButton = new javax.swing.JButton();
+        AdPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,30 +142,15 @@ public class SubforumUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout AdPanelLayout = new javax.swing.GroupLayout(AdPanel);
-        AdPanel.setLayout(AdPanelLayout);
-        AdPanelLayout.setHorizontalGroup(
-            AdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        AdPanelLayout.setVerticalGroup(
-            AdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 63, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout threadsPanelLayout = new javax.swing.GroupLayout(threadsPanel);
         threadsPanel.setLayout(threadsPanelLayout);
         threadsPanelLayout.setHorizontalGroup(
             threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(threadsPanelLayout.createSequentialGroup()
-                .addComponent(AdPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 536, Short.MAX_VALUE)
         );
         threadsPanelLayout.setVerticalGroup(
             threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, threadsPanelLayout.createSequentialGroup()
-                .addGap(0, 353, Short.MAX_VALUE)
-                .addComponent(AdPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(0, 310, Short.MAX_VALUE)
         );
 
         deleteSubButton.setText("Delete Subforum");
@@ -183,6 +179,23 @@ public class SubforumUI extends javax.swing.JFrame {
             }
         });
 
+        AdPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AdPanelMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout AdPanelLayout = new javax.swing.GroupLayout(AdPanel);
+        AdPanel.setLayout(AdPanelLayout);
+        AdPanelLayout.setHorizontalGroup(
+            AdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        AdPanelLayout.setVerticalGroup(
+            AdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -191,6 +204,7 @@ public class SubforumUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(AdPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(threadsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(deleteSubButton)
@@ -206,6 +220,8 @@ public class SubforumUI extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(threadsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(AdPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteSubButton)
@@ -248,6 +264,19 @@ public class SubforumUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(new JFrame(), "Invalid format. Please enter a number.", "Error", JOptionPane.ERROR_MESSAGE);
         }        
     }//GEN-LAST:event_pruneButtonActionPerformed
+
+    private void AdPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AdPanelMouseClicked
+            try {
+         URL adLink= new URL(ad.link);      
+        openWebpage(adLink.toURI());
+        seaQuellers.adClicked(ad.imageUrl, forum.id);
+    } catch (URISyntaxException e) {
+        e.printStackTrace();
+    }   catch (MalformedURLException ex) {
+        ex.printStackTrace();
+        
+        }
+    }//GEN-LAST:event_AdPanelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -314,6 +343,37 @@ public class SubforumUI extends javax.swing.JFrame {
             threadsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         }
     }
+     public void drawAd(){
+        
+        seaQuellers.adSeen(ad.imageUrl, forum.id);
+        try{
+             URL url = new URL(ad.imageUrl);
+             BufferedImage img = ImageIO.read(url);
+             ImageIcon ad1Image = new ImageIcon(img);
+                JLabel forumAdLabel = new JLabel();
+        
+        forumAdLabel.setIcon(ad1Image);
+        AdPanel.setLayout(new GridLayout(0,1));
+        AdPanel.add(forumAdLabel);}
+       catch (MalformedURLException e) {
+                  e.printStackTrace();
+               } 
+        catch (IOException e) {
+                  e.printStackTrace();
+               } 
+
+    }
+    
+    public static void openWebpage(URI uri) {
+    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+        try {
+            desktop.browse(uri);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AdPanel;
