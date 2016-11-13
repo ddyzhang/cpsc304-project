@@ -337,7 +337,43 @@ public class SeaQuellersBBAPI {
         return numUsers;
     }
     
+    public double getTotalProfit() {
+        ResultSet result = executeQuery("SELECT SUM(profit) FROM "
+                + "(SELECT profits.imageurl, SUM(((clicks * cpc) + (impressions * cpi))) AS profit "
+                + "FROM profits "
+                + "INNER JOIN advertisements "
+                + "ON profits.imageurl = advertisements.imageurl "
+                + "GROUP BY profits.imageurl) as temp");
+        try{
+            if (result.next()){
+                return result.getDouble("sum");
+            }
+	} catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+	}
+        return 0;
+    }
     
+    public double getAverageProfit() {
+        ResultSet result = executeQuery("SELECT AVG(profit) FROM "
+                + "(SELECT profits.imageurl, SUM(((clicks * cpc) + (impressions * cpi))) AS profit "
+                + "FROM profits "
+                + "INNER JOIN advertisements "
+                + "ON profits.imageurl = advertisements.imageurl "
+                + "GROUP BY profits.imageurl) as temp");
+        try {
+            if (result.next()) {
+                return result.getDouble("avg");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return 0;
+    }
 
     public ArrayList<AdStatistic> getAdStatsByAd() {
         ArrayList<AdStatistic> adstats = new ArrayList<AdStatistic>();

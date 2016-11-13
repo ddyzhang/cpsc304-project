@@ -47,31 +47,31 @@ public class AdStatisticsUI extends javax.swing.JFrame {
 
     
     
-      public void populateAdsView() {
-        
-          adsPanel.removeAll();
-          adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
-          adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-          for (int i = 0; i < adsView.size(); i++) {
-              JLabel adName = new JLabel(adsView.get(i).imageUrl);
-              String Description = ("Profit:$" + adsView.get(i).profit
-                      + " Total Clicks:" + adsView.get(i).totalClicks + " Total Impressions:"
-                      + adsView.get(i).totalImpressions);
+    public void populateAdsView() {
 
-              JLabel description = new JLabel(Description);
-              adName.setName("bloop " + i);
-              adName.setFont(Font.decode("Lucida-Grande-Bold-16"));
-              description.setFont(Font.decode("Lucida-Grande-14"));
+        adsPanel.removeAll();
+        adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+        adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        for (int i = 0; i < adsView.size(); i++) {
+            JLabel adName = new JLabel(adsView.get(i).imageUrl);
+            String Description = ("Profit:$" + adsView.get(i).profit
+                    + " Total Clicks:" + adsView.get(i).totalClicks + " Total Impressions:"
+                    + adsView.get(i).totalImpressions);
 
-              adsPanel.add(adName);
-              adsPanel.add(description);
-              adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-          }
+            JLabel description = new JLabel(Description);
+            adName.setName("bloop " + i);
+            adName.setFont(Font.decode("Lucida-Grande-Bold-16"));
+            description.setFont(Font.decode("Lucida-Grande-14"));
 
-          this.pack();
-          adsPanel.revalidate();
-          adsPanel.repaint();
-        
+            adsPanel.add(adName);
+            adsPanel.add(description);
+            adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        }
+
+        this.pack();
+        adsPanel.revalidate();
+        adsPanel.repaint();
+
     }
     
     
@@ -103,31 +103,49 @@ public class AdStatisticsUI extends javax.swing.JFrame {
     }
     
     
-     public void populateAllView() {
+    public void populateAllView() {
 
-         adsPanel.removeAll();
-         adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
-         adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-         for (int i = 0; i < allView.size(); i++) {
-             JLabel adName = new JLabel(allView.get(i).imageUrl);
-             String Description = ("Profit:$" + allView.get(i).profit
-                     + " Total Clicks:" + allView.get(i).totalClicks + " Total Impressions:"
-                     + allView.get(i).totalImpressions);
+        adsPanel.removeAll();
+        adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+        adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        for (int i = 0; i < allView.size(); i++) {
+            JLabel adName = new JLabel(allView.get(i).imageUrl);
+            String Description = ("Profit:$" + allView.get(i).profit
+                    + " Total Clicks:" + allView.get(i).totalClicks + " Total Impressions:"
+                    + allView.get(i).totalImpressions);
 
-             JLabel description = new JLabel(Description);
-             adName.setName("bloop " + i);
-             adName.setFont(Font.decode("Lucida-Grande-Bold-16"));
-             description.setFont(Font.decode("Lucida-Grande-14"));
+            JLabel description = new JLabel(Description);
+            adName.setName("bloop " + i);
+            adName.setFont(Font.decode("Lucida-Grande-Bold-16"));
+            description.setFont(Font.decode("Lucida-Grande-14"));
 
-             adsPanel.add(adName);
-             adsPanel.add(description);
-             adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-         }
+            adsPanel.add(adName);
+            adsPanel.add(description);
+            adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        }
 
-         this.pack();
-         adsPanel.revalidate();
-         adsPanel.repaint();
-        
+        this.pack();
+        adsPanel.revalidate();
+        adsPanel.repaint();
+
+    }
+     
+    public void populateAggregatedStats() {
+        adsPanel.removeAll();
+        adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        double total = seaQuellers.getTotalProfit();
+        double avg = seaQuellers.getAverageProfit();
+        JLabel totalProfit = new JLabel("Total Profit: $" + total);
+        totalProfit.setFont(Font.decode("Lucida-Grande-Bold-16"));
+        adsPanel.add(totalProfit);
+        adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        JLabel avgProfit = new JLabel("Average Profit: $" + avg);
+        avgProfit.setFont(Font.decode("Lucida-Grande-Bold-16"));
+        adsPanel.add(avgProfit);
+        adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+        this.pack();
+        adsPanel.revalidate();
+        adsPanel.repaint();
     }
     
     /**
@@ -144,10 +162,11 @@ public class AdStatisticsUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         username = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        AdsView = new javax.swing.JLabel();
-        ForumView = new javax.swing.JLabel();
-        AllView = new javax.swing.JLabel();
         adsPanel = new javax.swing.JPanel();
+        byAdButton = new javax.swing.JButton();
+        byForumButton = new javax.swing.JButton();
+        divisonButton = new javax.swing.JButton();
+        aggregatedButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -186,33 +205,6 @@ public class AdStatisticsUI extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("AdStatistics");
 
-        AdsView.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        AdsView.setForeground(new java.awt.Color(255, 255, 255));
-        AdsView.setText("AdsView");
-        AdsView.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AdsViewMouseClicked(evt);
-            }
-        });
-
-        ForumView.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        ForumView.setForeground(new java.awt.Color(255, 255, 255));
-        ForumView.setText("ForumView");
-        ForumView.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ForumViewMouseClicked(evt);
-            }
-        });
-
-        AllView.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        AllView.setForeground(new java.awt.Color(255, 255, 255));
-        AllView.setText("All");
-        AllView.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AllViewMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -220,13 +212,7 @@ public class AdStatisticsUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(33, 33, 33)
-                .addComponent(AdsView)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ForumView)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(AllView)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(username)
@@ -239,15 +225,40 @@ public class AdStatisticsUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(username)
-                    .addComponent(jLabel1)
-                    .addComponent(AdsView)
-                    .addComponent(ForumView)
-                    .addComponent(AllView))
+                    .addComponent(jLabel1))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
         adsPanel.setPreferredSize(new java.awt.Dimension(549, 449));
         adsPanel.setLayout(new java.awt.GridLayout(5, 0));
+
+        byAdButton.setText("By Ad");
+        byAdButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                byAdButtonActionPerformed(evt);
+            }
+        });
+
+        byForumButton.setText("By Forum");
+        byForumButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                byForumButtonActionPerformed(evt);
+            }
+        });
+
+        divisonButton.setText("By Ads in All Forums");
+        divisonButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                divisonButtonActionPerformed(evt);
+            }
+        });
+
+        aggregatedButton.setText("Aggregated Stats");
+        aggregatedButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aggregatedButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -255,14 +266,30 @@ public class AdStatisticsUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(adsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(adsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(byAdButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(byForumButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(divisonButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(aggregatedButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(byAdButton)
+                    .addComponent(byForumButton)
+                    .addComponent(divisonButton)
+                    .addComponent(aggregatedButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(adsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -281,20 +308,24 @@ public class AdStatisticsUI extends javax.swing.JFrame {
         managePage.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
-    private void AllViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AllViewMouseClicked
-        System.out.println("All Clicked");
-        populateAllView();
-    }//GEN-LAST:event_AllViewMouseClicked
-
-    private void AdsViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AdsViewMouseClicked
+    private void byAdButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byAdButtonActionPerformed
         System.out.println("Ads Clicked");
         populateAdsView();
-    }//GEN-LAST:event_AdsViewMouseClicked
+    }//GEN-LAST:event_byAdButtonActionPerformed
 
-    private void ForumViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ForumViewMouseClicked
+    private void byForumButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byForumButtonActionPerformed
         System.out.println("Forum Clicked");
         populateForumsView();
-    }//GEN-LAST:event_ForumViewMouseClicked
+    }//GEN-LAST:event_byForumButtonActionPerformed
+
+    private void divisonButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_divisonButtonActionPerformed
+        System.out.println("All Clicked");
+        populateAllView();
+    }//GEN-LAST:event_divisonButtonActionPerformed
+
+    private void aggregatedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aggregatedButtonActionPerformed
+        populateAggregatedStats();
+    }//GEN-LAST:event_aggregatedButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -333,10 +364,11 @@ public class AdStatisticsUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel AdsView;
-    private javax.swing.JLabel AllView;
-    private javax.swing.JLabel ForumView;
     private javax.swing.JPanel adsPanel;
+    private javax.swing.JButton aggregatedButton;
+    private javax.swing.JButton byAdButton;
+    private javax.swing.JButton byForumButton;
+    private javax.swing.JButton divisonButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;

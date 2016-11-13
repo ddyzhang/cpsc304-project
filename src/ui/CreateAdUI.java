@@ -19,18 +19,19 @@ public class CreateAdUI extends javax.swing.JFrame {
     private HomeUI home;
     private SeaQuellersBBAPI seaQuellers;
     private User loggedInUser;
+    private ManageAdsUI parent;
     
     /**
      * Creates new ad
      * @param seaQuellers
      * @param loggedInUser
      */
-    public CreateAdUI(SeaQuellersBBAPI seaQuellers, User loggedInUser) {
+    public CreateAdUI(SeaQuellersBBAPI seaQuellers, User loggedInUser, ManageAdsUI parent) {
         initComponents();
         this.home = home;
         this.seaQuellers = seaQuellers;
         this.loggedInUser = loggedInUser;
-        
+        this.parent = parent;
     }
 
     /**
@@ -54,6 +55,11 @@ public class CreateAdUI extends javax.swing.JFrame {
         Link = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Image URL");
@@ -164,6 +170,10 @@ public class CreateAdUI extends javax.swing.JFrame {
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
         this.dispose();
     }//GEN-LAST:event_cancelButtonMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        parent.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
