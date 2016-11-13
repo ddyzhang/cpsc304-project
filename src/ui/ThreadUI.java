@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -68,6 +69,7 @@ public class ThreadUI extends javax.swing.JFrame {
         username = new javax.swing.JLabel();
         threadTitle = new javax.swing.JLabel();
         deleteThreadButton = new javax.swing.JButton();
+        editTitleButton = new javax.swing.JButton();
         panel = new javax.swing.JScrollPane();
         commentPanel = new javax.swing.JTextPane();
         replyBtn = new javax.swing.JButton();
@@ -114,6 +116,13 @@ public class ThreadUI extends javax.swing.JFrame {
             }
         });
 
+        editTitleButton.setText("Edit Title");
+        editTitleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editTitleButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout toolbarPanelLayout = new javax.swing.GroupLayout(toolbarPanel);
         toolbarPanel.setLayout(toolbarPanelLayout);
         toolbarPanelLayout.setHorizontalGroup(
@@ -125,7 +134,9 @@ public class ThreadUI extends javax.swing.JFrame {
                 .addComponent(username)
                 .addGap(67, 67, 67)
                 .addComponent(threadTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addComponent(editTitleButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(deleteThreadButton)
                 .addContainerGap())
         );
@@ -137,7 +148,8 @@ public class ThreadUI extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(username)
                     .addComponent(threadTitle)
-                    .addComponent(deleteThreadButton))
+                    .addComponent(deleteThreadButton)
+                    .addComponent(editTitleButton))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -299,6 +311,13 @@ public class ThreadUI extends javax.swing.JFrame {
         this.refreshComments();
     }//GEN-LAST:event_deleteCommentButtonMouseClicked
 
+    private void editTitleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editTitleButtonActionPerformed
+        String newTitle = JOptionPane.showInputDialog("Please enter the new title: ");
+        seaQuellers.editThreadTitle(thread.id, thread.subId, thread.forumId, newTitle);
+        threadTitle.setText(newTitle);
+        subUI.refreshThreads();
+    }//GEN-LAST:event_editTitleButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -411,6 +430,7 @@ public class ThreadUI extends javax.swing.JFrame {
     private javax.swing.JButton deleteCommentButton;
     private javax.swing.JButton deleteThreadButton;
     private javax.swing.JButton editButton;
+    private javax.swing.JButton editTitleButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

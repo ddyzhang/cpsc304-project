@@ -125,7 +125,9 @@
                   <Component id="username" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
                   <Component id="threadTitle" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="158" max="32767" attributes="0"/>
+                  <EmptySpace pref="75" max="32767" attributes="0"/>
+                  <Component id="editTitleButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="deleteThreadButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -140,6 +142,7 @@
                       <Component id="username" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="threadTitle" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="deleteThreadButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="editTitleButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="12" max="32767" attributes="0"/>
               </Group>
@@ -186,6 +189,14 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="deleteThreadButtonMouseClicked"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="editTitleButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Edit Title"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editTitleButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
