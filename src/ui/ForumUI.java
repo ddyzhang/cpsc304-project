@@ -44,7 +44,10 @@ public class ForumUI extends javax.swing.JFrame {
         this.forum = forum;
         this.loggedInUser = user;
         this.home = home;
-        if (!(user.isSuperAdmin || forum.userId == user.id)) forumDeletionButton.setVisible(false);
+        if (!(user.isSuperAdmin || forum.userId == user.id)){
+            forumDeletionButton.setVisible(false);
+            subCreationButton.setVisible(false);
+        }
         username.setText(loggedInUser.username);
         forumName.setText(forum.name);
         subsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows

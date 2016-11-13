@@ -47,7 +47,10 @@ public class ThreadUI extends javax.swing.JFrame {
         username.setText(loggedInUser.username);
         threadTitle.setText(thread.title);
         this.isMod = (user.isSuperAdmin || forum.userId == user.id || thread.poster.id == user.id || Arrays.stream(modIds).anyMatch(x -> x == user.id));
-        if (!isMod) deleteThreadButton.setVisible(false);
+        if (!isMod) {
+            deleteThreadButton.setVisible(false);
+            editTitleButton.setVisible(false);
+        }
         editButton.setVisible(false);
         cancelEditButton.setVisible(false);
         drawComments();
