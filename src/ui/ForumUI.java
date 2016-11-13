@@ -5,6 +5,7 @@
  */
 package ui;
 
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -21,8 +22,12 @@ import seaquellersbb.SeaQuellersBBAPI;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -35,11 +40,13 @@ public class ForumUI extends javax.swing.JFrame {
     private User loggedInUser;
     private ArrayList<Subforum> subforums;
     private HomeUI home;
+    private Advertisement ad;
     /**
      * Creates new form ForumUI
      */
     public ForumUI(SeaQuellersBBAPI seaQuellers, Forum forum, User user, HomeUI home) {
         initComponents();
+        this.ad = seaQuellers.getRandomAd();
         this.seaQuellers = seaQuellers;
         this.forum = forum;
         this.loggedInUser = user;
@@ -141,6 +148,12 @@ public class ForumUI extends javax.swing.JFrame {
             }
         });
 
+        AdPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AdPanelMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout AdPanelLayout = new javax.swing.GroupLayout(AdPanel);
         AdPanel.setLayout(AdPanelLayout);
         AdPanelLayout.setHorizontalGroup(
@@ -197,6 +210,19 @@ public class ForumUI extends javax.swing.JFrame {
         newSub.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         newSub.setVisible(true);
     }//GEN-LAST:event_subCreationButtonMouseClicked
+
+    private void AdPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AdPanelMouseClicked
+           try {
+         URL adLink= new URL(ad.link);      
+        openWebpage(adLink.toURI());
+        seaQuellers.adClicked(ad.imageUrl, forum.id);
+    } catch (URISyntaxException e) {
+        e.printStackTrace();
+    }   catch (MalformedURLException ex) {
+        ex.printStackTrace();
+        
+        }
+    }//GEN-LAST:event_AdPanelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -265,7 +291,7 @@ public class ForumUI extends javax.swing.JFrame {
     }
     
     public void drawAd(){
-        Advertisement ad = seaQuellers.getRandomAd();
+        
         seaQuellers.adSeen(ad.imageUrl, forum.id);
         try{
              URL url = new URL(ad.imageUrl);
@@ -284,6 +310,17 @@ public class ForumUI extends javax.swing.JFrame {
                } 
 
     }
+    
+    public static void openWebpage(URI uri) {
+    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+        try {
+            desktop.browse(uri);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AdPanel;
     private javax.swing.JButton forumDeletionButton;

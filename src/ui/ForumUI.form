@@ -161,6 +161,9 @@
       </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="AdPanel">
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="AdPanelMouseClicked"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
