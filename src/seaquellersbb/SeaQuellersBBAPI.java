@@ -336,6 +336,8 @@ public class SeaQuellersBBAPI {
         }
         return numUsers;
     }
+    
+    
 
     public ArrayList<AdStatistic> getAdStatsByAd() {
         ArrayList<AdStatistic> adstats = new ArrayList<AdStatistic>();
@@ -395,15 +397,17 @@ public class SeaQuellersBBAPI {
     public ArrayList<AdStatistic> getStatsForAllForumAds() { 
         
         ArrayList<AdStatistic> adstats = new ArrayList<AdStatistic>();
-        ResultSet result = executeQuery("SELECT * "
-                + "FROM advertisements a "
+        ResultSet result = executeQuery("SELECT profits.imageurl, SUM(((clicks * cpc) + (impressions * cpi))) AS profit, SUM(clicks) as totalclicks, SUM(impressions) as totalimpressions "
+                + "FROM advertisements a, profits "
                 + "WHERE NOT EXISTS "
                     + "(SELECT forumid "
                     + "FROM forums "
                     + "EXCEPT "
                     + "SELECT forumid "
                     + "FROM profits p "
-                    + "WHERE p.imageurl = a.imageurl)");					
+                    + "WHERE p.imageurl = a.imageurl) "
+                + "AND a.imageurl = profits.imageurl "
+                + "GROUP BY profits.imageurl");					
 	try{
             if (result.next()){
                 String imageUrl = result.getString("imageurl");
@@ -670,11 +674,33 @@ public class SeaQuellersBBAPI {
         executeUpdate("DELETE FROM threads WHERE threaddate < now() - INTERVAL \'" + daysOld + " days\' AND postcount=0");        
     }
     
-    public void adSeen(String imageUrl, int forumId) {
-        executeUpdate("UPDATE profits SET impressions = impressions + 1 WHERE imageurl=\'" + imageUrl + "\' AND forumid=" + forumId);
+    public void adSeen(String imageUrl, int forumId) {   
+        ResultSet result = executeQuery("SELECT * FROM profits WHERE imageurl=\'" + imageUrl + "\' AND forumid=" + forumId);
+        try {
+            if (result.next()) {
+                executeUpdate("UPDATE profits SET impressions = impressions + 1 WHERE imageurl=\'" + imageUrl + "\' AND forumid=" + forumId);
+            } else {
+                executeUpdate("INSERT INTO profits VALUES (\'" + imageUrl + "\', " + forumId + ", 0, 1)");
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }       
     }
     
     public void adClicked(String imageUrl, int forumId) {
-        executeUpdate("UPDATE profits SET clicks = clicks + 1 WHERE imageurl=\'" + imageUrl + "\' AND forumid=" + forumId);
+        ResultSet result = executeQuery("SELECT * FROM profits WHERE imageurl=\'" + imageUrl + "\' AND forumid=" + forumId);
+        try {
+            if (result.next()) {
+                executeUpdate("UPDATE profits SET clicks = clicks + 1 WHERE imageurl=\'" + imageUrl + "\' AND forumid=" + forumId);
+            } else {
+                executeUpdate("INSERT INTO profits VALUES (\'" + imageUrl + "\', " + forumId + ", 1, 0)");
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }        
     }
 }

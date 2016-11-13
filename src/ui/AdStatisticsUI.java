@@ -49,43 +49,43 @@ public class AdStatisticsUI extends javax.swing.JFrame {
     
       public void populateAdsView() {
         
-         adsPanel.removeAll();
-         adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
-        adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-         for (int i = 0; i < adsView.size(); i++) {
-            JLabel adName = new JLabel(adsView.get(i).imageUrl);
-          String  Description=("Profit:"+adsView.get(i).profit                    
-                  +" Total Clicks:"+adsView.get(i).totalClicks+" Total Impressions:"
-                    +adsView.get(i).totalImpressions);
-          
-            JLabel description = new JLabel(Description);
-            adName.setName("bloop " + i);
-            adName.setFont(Font.decode("Lucida-Grande-Bold-16"));
-            description.setFont(Font.decode("Lucida-Grande-14"));
+          adsPanel.removeAll();
+          adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+          adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+          for (int i = 0; i < adsView.size(); i++) {
+              JLabel adName = new JLabel(adsView.get(i).imageUrl);
+              String Description = ("Profit:" + adsView.get(i).profit
+                      + " Total Clicks:" + adsView.get(i).totalClicks + " Total Impressions:"
+                      + adsView.get(i).totalImpressions);
 
-            adsPanel.add(adName);
-            adsPanel.add(description);
-            adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        }
-         
-        this.pack();
-        adsPanel.revalidate();
-        adsPanel.repaint();
+              JLabel description = new JLabel(Description);
+              adName.setName("bloop " + i);
+              adName.setFont(Font.decode("Lucida-Grande-Bold-16"));
+              description.setFont(Font.decode("Lucida-Grande-14"));
+
+              adsPanel.add(adName);
+              adsPanel.add(description);
+              adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+          }
+
+          this.pack();
+          adsPanel.revalidate();
+          adsPanel.repaint();
         
     }
     
     
     public void populateForumsView() {
         
-         adsPanel.removeAll();
-         adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+        adsPanel.removeAll();
+        adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-         for (int i = 0; i < forumView.size(); i++) {
+        for (int i = 0; i < forumView.size(); i++) {
             JLabel adName = new JLabel(forumView.get(i).forumName);
-          String  Description=("ForumId:"+forumView.get(i).forumId+" Profit:"+forumView.get(i).profit                    
-                  +" Total Clicks:"+forumView.get(i).totalClicks+" Total Impressions:"
-                    +forumView.get(i).totalImpressions);
-          
+            String Description = ("ForumId:" + forumView.get(i).forumId + " Profit:" + forumView.get(i).profit
+                    + " Total Clicks:" + forumView.get(i).totalClicks + " Total Impressions:"
+                    + forumView.get(i).totalImpressions);
+
             JLabel description = new JLabel(Description);
             adName.setName("bloop " + i);
             adName.setFont(Font.decode("Lucida-Grande-Bold-16"));
@@ -95,7 +95,7 @@ public class AdStatisticsUI extends javax.swing.JFrame {
             adsPanel.add(description);
             adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         }
-         
+
         this.pack();
         adsPanel.revalidate();
         adsPanel.repaint();
@@ -104,26 +104,29 @@ public class AdStatisticsUI extends javax.swing.JFrame {
     
     
      public void populateAllView() {
-        
-         adsPanel.removeAll();
-                 adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
-        adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
-         for (int i = 0; i < allView.size(); i++) {
-            JLabel adName = new JLabel(allView.get(i).imageUrl);
-          String  Description=("ForumId:"+allView.get(i).forumId+" Profit:"+allView.get(i).profit                    
-                  +" Total Clicks:"+allView.get(i).totalClicks+" Total Impressions:"
-                    +allView.get(i).totalImpressions+" Forum Name:"+allView.get(i).forumName);
-          
-            JLabel description = new JLabel(Description);
-            adName.setName("bloop " + i);
-            adName.setFont(Font.decode("Lucida-Grande-Bold-16"));
-            description.setFont(Font.decode("Lucida-Grande-14"));
 
-        }
-         
-        this.pack();
-        adsPanel.revalidate(); 
-        adsPanel.repaint();
+         adsPanel.removeAll();
+         adsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
+         adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+         for (int i = 0; i < allView.size(); i++) {
+             JLabel adName = new JLabel(allView.get(i).imageUrl);
+             String Description = ("Profit:" + allView.get(i).profit
+                     + " Total Clicks:" + allView.get(i).totalClicks + " Total Impressions:"
+                     + allView.get(i).totalImpressions);
+
+             JLabel description = new JLabel(Description);
+             adName.setName("bloop " + i);
+             adName.setFont(Font.decode("Lucida-Grande-Bold-16"));
+             description.setFont(Font.decode("Lucida-Grande-14"));
+
+             adsPanel.add(adName);
+             adsPanel.add(description);
+             adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
+         }
+
+         this.pack();
+         adsPanel.revalidate();
+         adsPanel.repaint();
         
     }
     

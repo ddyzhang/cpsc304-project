@@ -262,7 +262,8 @@ public class ForumUI extends javax.swing.JFrame {
     }
     
     public void drawAd(){
-        Advertisement ad= seaQuellers.getRandomAd();
+        Advertisement ad = seaQuellers.getRandomAd();
+        seaQuellers.adSeen(ad.imageUrl, forum.id);
         try{
              URL url = new URL(ad.imageUrl);
              BufferedImage img = ImageIO.read(url);
