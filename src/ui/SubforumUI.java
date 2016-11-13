@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import seaquellersbb.*;
@@ -44,6 +45,7 @@ public class SubforumUI extends javax.swing.JFrame {
         if (!(user.isSuperAdmin || forum.userId == user.id)){ 
             manageModsButton.setVisible(false);
             deleteSubButton.setVisible(false);
+            pruneButton.setVisible(false);
         }
         username.setText(loggedInUser.username);
         subforumName.setText(subforum.name);
@@ -77,6 +79,7 @@ public class SubforumUI extends javax.swing.JFrame {
         AdPanel = new javax.swing.JPanel();
         deleteSubButton = new javax.swing.JButton();
         manageModsButton = new javax.swing.JButton();
+        pruneButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -173,6 +176,13 @@ public class SubforumUI extends javax.swing.JFrame {
             }
         });
 
+        pruneButton.setText("Prune Threads");
+        pruneButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pruneButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -185,6 +195,8 @@ public class SubforumUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(deleteSubButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pruneButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(manageModsButton)))
                 .addContainerGap())
         );
@@ -197,7 +209,8 @@ public class SubforumUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteSubButton)
-                    .addComponent(manageModsButton))
+                    .addComponent(manageModsButton)
+                    .addComponent(pruneButton))
                 .addContainerGap())
         );
 
@@ -225,6 +238,16 @@ public class SubforumUI extends javax.swing.JFrame {
         manageMods.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         manageMods.setVisible(true);
     }//GEN-LAST:event_manageModsButtonActionPerformed
+
+    private void pruneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pruneButtonActionPerformed
+        try {
+            int pruneDate = Integer.parseInt(JOptionPane.showInputDialog("Please enter the number of days of age you would like to prune from: "));
+            seaQuellers.pruneThreads(subforum.id, subforum.forumId, pruneDate);
+            refreshThreads();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(new JFrame(), "Invalid format. Please enter a number.", "Error", JOptionPane.ERROR_MESSAGE);
+        }        
+    }//GEN-LAST:event_pruneButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -299,6 +322,7 @@ public class SubforumUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton manageModsButton;
     private javax.swing.JButton postThreadButton;
+    private javax.swing.JButton pruneButton;
     private javax.swing.JLabel subforumName;
     private javax.swing.JPanel threadsPanel;
     private javax.swing.JLabel username;

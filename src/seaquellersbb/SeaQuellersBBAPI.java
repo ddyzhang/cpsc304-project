@@ -31,7 +31,7 @@ public class SeaQuellersBBAPI {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager
-                    .getConnection("jdbc:postgresql://seaquellersbb.cdtebwg0ez9h.us-west-2.rds.amazonaws.com:5432/seaquellersbb",
+                    .getConnection("jdbc:postgresql://seaquellersbb.cdtebwg0ez9h.us-west-2.rds.amazonaws.com:5432/test",
                             "seaquellersbb", "compsci304");
         } catch (Exception e) {
             e.printStackTrace();
@@ -341,11 +341,16 @@ public class SeaQuellersBBAPI {
 
     public ArrayList<AdStatistic> getAdStatsByAd() {
         ArrayList<AdStatistic> adstats = new ArrayList<AdStatistic>();
-        ResultSet result = executeQuery("SELECT profits.imageurl, SUM(((clicks * cpc) + (impressions * cpi))) AS profit, SUM(clicks) as totalclicks, SUM(impressions) as totalimpressions "
+        ResultSet result = executeQuery("SELECT imageurl, profit, totalclicks, totalimpressions "
+                + "FROM (SELECT "
+                + "profits.imageurl, SUM(((clicks * cpc) + (impressions * cpi))) AS profit, "
+                + "SUM(clicks) as totalclicks, SUM(impressions) as totalimpressions "
                 + "FROM profits "
                 + "INNER JOIN advertisements "
                 + "ON profits.imageurl = advertisements.imageurl "
-                + "GROUP BY profits.imageurl");
+                + "INNER JOIN forums "
+                + "ON profits.forumid = forums.forumid "
+                + "GROUP BY profits.imageurl) as temp");
 	try{
             while (result.next()){
                 String imageUrl = result.getString("imageurl");
@@ -367,13 +372,16 @@ public class SeaQuellersBBAPI {
     
     public ArrayList<AdStatistic> getAdStatsByForum() {
         ArrayList<AdStatistic> adstats = new ArrayList<AdStatistic>();
-        ResultSet result = executeQuery("SELECT profits.forumid, forumname, SUM(((clicks * cpc) + (impressions * cpi))) AS profit, SUM(clicks) as totalclicks, SUM(impressions) as totalimpressions "
+        ResultSet result = executeQuery("SELECT forumid, forumname, profit, totalclicks, totalimpressions "
+                + "FROM (SELECT "
+                + "profits.forumid, forumname, SUM(((clicks * cpc) + (impressions * cpi))) AS profit, "
+                + "SUM(clicks) as totalclicks, SUM(impressions) as totalimpressions "
                 + "FROM profits "
                 + "INNER JOIN advertisements "
                 + "ON profits.imageurl = advertisements.imageurl "
                 + "INNER JOIN forums "
-                + "ON profits.forumid = forums.forumid"
-                + " GROUP BY profits.forumid, forums.forumname");
+                + "ON profits.forumid = forums.forumid "
+                + "GROUP BY profits.forumid, forums.forumname) as temp");
 	try{
             while (result.next()){
                 int forumId = result.getInt("forumid");

@@ -54,7 +54,7 @@ public class AdStatisticsUI extends javax.swing.JFrame {
           adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
           for (int i = 0; i < adsView.size(); i++) {
               JLabel adName = new JLabel(adsView.get(i).imageUrl);
-              String Description = ("Profit:" + adsView.get(i).profit
+              String Description = ("Profit:$" + adsView.get(i).profit
                       + " Total Clicks:" + adsView.get(i).totalClicks + " Total Impressions:"
                       + adsView.get(i).totalImpressions);
 
@@ -82,7 +82,7 @@ public class AdStatisticsUI extends javax.swing.JFrame {
         adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         for (int i = 0; i < forumView.size(); i++) {
             JLabel adName = new JLabel(forumView.get(i).forumName);
-            String Description = ("ForumId:" + forumView.get(i).forumId + " Profit:" + forumView.get(i).profit
+            String Description = ("ForumId:" + forumView.get(i).forumId + " Profit:$" + forumView.get(i).profit
                     + " Total Clicks:" + forumView.get(i).totalClicks + " Total Impressions:"
                     + forumView.get(i).totalImpressions);
 
@@ -110,7 +110,7 @@ public class AdStatisticsUI extends javax.swing.JFrame {
          adsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
          for (int i = 0; i < allView.size(); i++) {
              JLabel adName = new JLabel(allView.get(i).imageUrl);
-             String Description = ("Profit:" + allView.get(i).profit
+             String Description = ("Profit:$" + allView.get(i).profit
                      + " Total Clicks:" + allView.get(i).totalClicks + " Total Impressions:"
                      + allView.get(i).totalImpressions);
 
