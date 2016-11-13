@@ -5,6 +5,8 @@
  */
 package ui;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -151,20 +153,20 @@ public class CreateAdUI extends javax.swing.JFrame {
 
     private void confirmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmButtonMouseClicked
         String cpc = CPC.getText();
-        String cpi=CPI.getText();
-        String link=Link.getText();
+        String cpi = CPI.getText();
+        String link = Link.getText();
         String URL = ImgURL.getText();
-          if ( URL.isEmpty() || cpc.isEmpty() || cpi.isEmpty()||link.isEmpty()) {
-             JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fieldss", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-          else{
-               
+        if (URL.isEmpty() || cpc.isEmpty() || cpi.isEmpty() || link.isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (!isValidUrl(URL) || !isValidUrl(link)) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please enter valid URLs.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
 
-        System.out.println(URL+" "+ loggedInUser.id+" "+ Double.parseDouble(cpc)+" "+Double.parseDouble(cpi)+" "+link);
-        seaQuellers.createAd(URL, loggedInUser.id, Double.parseDouble(cpc),Double.parseDouble(cpi),link);
-        
-        this.dispose();
-          }
+            System.out.println(URL + " " + loggedInUser.id + " " + Double.parseDouble(cpc) + " " + Double.parseDouble(cpi) + " " + link);
+            seaQuellers.createAd(URL, loggedInUser.id, Double.parseDouble(cpc), Double.parseDouble(cpi), link);
+
+            this.dispose();
+        }
     }//GEN-LAST:event_confirmButtonMouseClicked
 
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
@@ -175,6 +177,15 @@ public class CreateAdUI extends javax.swing.JFrame {
         parent.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
+    private boolean isValidUrl(String link) {
+        try {
+            URL url = new URL(link);
+        } catch (MalformedURLException e) {
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * @param args the command line arguments
      */

@@ -264,24 +264,23 @@ public class ForumUI extends javax.swing.JFrame {
         }
     }
     
-    public void drawAd(){
+    public void drawAd() {
         Advertisement ad = seaQuellers.getRandomAd();
         seaQuellers.adSeen(ad.imageUrl, forum.id);
-        try{
-             URL url = new URL(ad.imageUrl);
-             BufferedImage img = ImageIO.read(url);
-             ImageIcon ad1Image = new ImageIcon(img);
-                JLabel forumAdLabel = new JLabel();
-        
-        forumAdLabel.setIcon(ad1Image);
-        AdPanel.setLayout(new GridLayout(0,1));
-        AdPanel.add(forumAdLabel);}
-       catch (MalformedURLException e) {
-                  e.printStackTrace();
-               } 
-        catch (IOException e) {
-                  e.printStackTrace();
-               } 
+        try {
+            URL url = new URL(ad.imageUrl);
+            BufferedImage img = ImageIO.read(url);
+            ImageIcon ad1Image = new ImageIcon(img);
+            JLabel forumAdLabel = new JLabel();
+
+            forumAdLabel.setIcon(ad1Image);
+            AdPanel.setLayout(new GridLayout(0, 1));
+            AdPanel.add(forumAdLabel);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

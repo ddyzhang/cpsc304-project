@@ -52,6 +52,11 @@ public class LoginUI extends javax.swing.JFrame {
         registerHeading2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 204));
 
@@ -244,6 +249,10 @@ public class LoginUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_passwordFieldActionPerformed
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        System.exit(0);
+    }//GEN-LAST:event_formWindowClosed
+
     /**
      * Sign up new user
      * */
@@ -252,7 +261,9 @@ public class LoginUI extends javax.swing.JFrame {
         String password = new String(registerPWTxtField.getPassword());
         String email = registerEmailTxtField.getText();
         if ( username.isEmpty() || password.isEmpty() || email.isEmpty()) {
-            JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fieldss", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (!isValidUsername(username)) {
+            JOptionPane.showMessageDialog(new JFrame(), "Invalid username. Please only use alphanumeric characters.", "Error", JOptionPane.ERROR_MESSAGE);
         } else if (!isValidEmailAddress(email)) {
             JOptionPane.showMessageDialog(new JFrame(), "Invalid email address format.", "Error", JOptionPane.ERROR_MESSAGE);
         } else if (seaQuellers.createUser(username, email, password)) {
@@ -266,6 +277,12 @@ public class LoginUI extends javax.swing.JFrame {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
+    
+    private boolean isValidUsername(String username) {
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("[A-Za-z0-9]+");
+        java.util.regex.Matcher m = pattern.matcher(username);
         return m.matches();
     }
 
