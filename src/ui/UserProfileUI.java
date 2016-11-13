@@ -24,7 +24,7 @@ public class UserProfileUI extends javax.swing.JFrame {
     public UserProfileUI(SeaQuellersBBAPI seaQuellers, User user) {
         initComponents();
         this.seaQuellers = seaQuellers;
-        this.loggedInUser = user;
+        this.loggedInUser = seaQuellers.getUserInfo(user.id);
         signupDate.setText(loggedInUser.signupDate);
         numPosts.setText("" + loggedInUser.numPosts);
         emailBox.setText(user.email);
