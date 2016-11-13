@@ -202,6 +202,7 @@ public class EditDeleteAdPopUpUI extends javax.swing.JFrame {
 
     private void DeleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeleteButtonMouseClicked
         seaQuellers.deleteAd(oldURL);
+        editDelAdsPage.populateAdsView();
         this.dispose();
     }//GEN-LAST:event_DeleteButtonMouseClicked
 

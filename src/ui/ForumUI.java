@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
@@ -17,6 +18,12 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import seaquellersbb.*;
 import seaquellersbb.SeaQuellersBBAPI;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import java.net.URL;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -43,6 +50,8 @@ public class ForumUI extends javax.swing.JFrame {
         subsPanel.setLayout(new GridLayout(0, 1)); // One column, unlimited rows
         subsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.drawSubForumsPanel();
+        this.drawAd();
+    
         this.pack();
     }
 
@@ -62,6 +71,7 @@ public class ForumUI extends javax.swing.JFrame {
         subsPanel = new javax.swing.JPanel();
         forumDeletionButton = new javax.swing.JButton();
         subCreationButton = new javax.swing.JButton();
+        AdPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -128,6 +138,17 @@ public class ForumUI extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout AdPanelLayout = new javax.swing.GroupLayout(AdPanel);
+        AdPanel.setLayout(AdPanelLayout);
+        AdPanelLayout.setHorizontalGroup(
+            AdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        AdPanelLayout.setVerticalGroup(
+            AdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -136,6 +157,7 @@ public class ForumUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(AdPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(subsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(forumDeletionButton)
@@ -149,11 +171,13 @@ public class ForumUI extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(subsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(AdPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(forumDeletionButton)
                     .addComponent(subCreationButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -236,7 +260,28 @@ public class ForumUI extends javax.swing.JFrame {
             subsPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         }
     }
+    
+    public void drawAd(){
+        Advertisement ad= seaQuellers.getRandomAd();
+        try{
+             URL url = new URL(ad.imageUrl);
+             BufferedImage img = ImageIO.read(url);
+             ImageIcon ad1Image = new ImageIcon(img);
+                JLabel forumAdLabel = new JLabel();
+        
+        forumAdLabel.setIcon(ad1Image);
+        AdPanel.setLayout(new GridLayout(0,1));
+        AdPanel.add(forumAdLabel);}
+       catch (MalformedURLException e) {
+                  e.printStackTrace();
+               } 
+        catch (IOException e) {
+                  e.printStackTrace();
+               } 
+
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AdPanel;
     private javax.swing.JButton forumDeletionButton;
     private javax.swing.JLabel forumName;
     private javax.swing.JLabel jLabel5;

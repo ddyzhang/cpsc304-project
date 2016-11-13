@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
@@ -52,6 +53,9 @@ public class SubforumUI extends javax.swing.JFrame {
         for (int i = 0; i < mods.size(); i++) {
             modIds[i] = this.mods.get(i).id;
         }
+        
+  
+
         this.pack();
     }
 
@@ -70,6 +74,7 @@ public class SubforumUI extends javax.swing.JFrame {
         subforumName = new javax.swing.JLabel();
         postThreadButton = new javax.swing.JButton();
         threadsPanel = new javax.swing.JPanel();
+        AdPanel = new javax.swing.JPanel();
         deleteSubButton = new javax.swing.JButton();
         manageModsButton = new javax.swing.JButton();
 
@@ -123,15 +128,30 @@ public class SubforumUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        javax.swing.GroupLayout AdPanelLayout = new javax.swing.GroupLayout(AdPanel);
+        AdPanel.setLayout(AdPanelLayout);
+        AdPanelLayout.setHorizontalGroup(
+            AdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        AdPanelLayout.setVerticalGroup(
+            AdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 63, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout threadsPanelLayout = new javax.swing.GroupLayout(threadsPanel);
         threadsPanel.setLayout(threadsPanelLayout);
         threadsPanelLayout.setHorizontalGroup(
             threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(threadsPanelLayout.createSequentialGroup()
+                .addComponent(AdPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         threadsPanelLayout.setVerticalGroup(
             threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 416, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, threadsPanelLayout.createSequentialGroup()
+                .addGap(0, 353, Short.MAX_VALUE)
+                .addComponent(AdPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         deleteSubButton.setText("Delete Subforum");
@@ -273,6 +293,7 @@ public class SubforumUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AdPanel;
     private javax.swing.JButton deleteSubButton;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
