@@ -715,7 +715,7 @@ public class SeaQuellersBBAPI {
     }
     
     public void pruneThreads(int subId, int forumId, int daysOld) {
-        executeUpdate("DELETE FROM threads WHERE threaddate < now() - INTERVAL \'" + daysOld + " days\' AND postcount=0");        
+        executeUpdate("DELETE FROM threads WHERE threaddate < now() - INTERVAL \'" + daysOld + " days\' AND postcount=0 AND subid=" + subId + " AND forumid=" + forumId);        
     }
     
     public void adSeen(String imageUrl, int forumId) {   
