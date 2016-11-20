@@ -293,7 +293,7 @@ public class SeaQuellersBBAPI {
         int maxId = 0;
         try {
             if (result.next()) {
-                maxId = result.getInt(0);
+                maxId = result.getInt("max");
             } else {
                 throw new Exception("Something's wrong with the database.");
             }
@@ -325,7 +325,7 @@ public class SeaQuellersBBAPI {
         int numUsers = 0;
         try {
             if (result.next()) {
-                numUsers = result.getInt(0);
+                numUsers = result.getInt("count");
             } else {
                 throw new Exception("Something's wrong with the database.");
             }

@@ -14,6 +14,8 @@ import seaquellersbb.*;
  */
 public class LoginUI extends javax.swing.JFrame {
     private SeaQuellersBBAPI seaQuellers;
+    private User mostRecent;
+    private int numUsers;
 
     /**
      * Creates new form Login
@@ -22,6 +24,10 @@ public class LoginUI extends javax.swing.JFrame {
         initComponents();
 
         this.seaQuellers = seaQuellers;
+        this.mostRecent = seaQuellers.getMostRecentUser();
+        this.numUsers = seaQuellers.getNumUsers();
+        registerHeading3.setText("Most Recent User: " + mostRecent.username);
+        registerHeading4.setText("Number of Users: " + numUsers);
     }
 
     /**
@@ -50,6 +56,8 @@ public class LoginUI extends javax.swing.JFrame {
         signUpBtn = new javax.swing.JButton();
         registerHeading1 = new javax.swing.JLabel();
         registerHeading2 = new javax.swing.JLabel();
+        registerHeading3 = new javax.swing.JLabel();
+        registerHeading4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -173,6 +181,12 @@ public class LoginUI extends javax.swing.JFrame {
         registerHeading2.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         registerHeading2.setText("Connect with friends and the world around you ");
 
+        registerHeading3.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        registerHeading3.setText("Most Recent User:");
+
+        registerHeading4.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        registerHeading4.setText("Number of Users:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -182,7 +196,9 @@ public class LoginUI extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(registerHeading1)
-                    .addComponent(registerHeading2))
+                    .addComponent(registerHeading2)
+                    .addComponent(registerHeading3)
+                    .addComponent(registerHeading4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(headingLabel)
@@ -205,12 +221,6 @@ public class LoginUI extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(109, 109, 109)
-                        .addComponent(registerHeading2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(registerHeading1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                         .addComponent(headingLabel)
                         .addGap(29, 29, 29)
@@ -225,9 +235,20 @@ public class LoginUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(registerEmailTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(registerEmailLabel))
-                        .addGap(18, 18, 18)
-                        .addComponent(signUpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27))))
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(109, 109, 109)
+                        .addComponent(registerHeading2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(registerHeading1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(signUpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(registerHeading3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(registerHeading4)))
+                .addGap(21, 21, 21))
         );
 
         pack();
@@ -268,6 +289,12 @@ public class LoginUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(new JFrame(), "Invalid email address format.", "Error", JOptionPane.ERROR_MESSAGE);
         } else if (seaQuellers.createUser(username, email, password)) {
             JOptionPane.showMessageDialog(new JFrame(), "Account created successfully! Please login using your new account.");
+            this.mostRecent = seaQuellers.getMostRecentUser();
+            this.numUsers = seaQuellers.getNumUsers();
+            registerHeading3.setText("Most Recent User: " + mostRecent.username);
+            registerHeading4.setText("Number of Users: " + numUsers);
+            this.pack();
+            
         } else {
             JOptionPane.showMessageDialog(new JFrame(), "Username is already taken.", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -357,6 +384,8 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JTextField registerEmailTxtField;
     private javax.swing.JLabel registerHeading1;
     private javax.swing.JLabel registerHeading2;
+    private javax.swing.JLabel registerHeading3;
+    private javax.swing.JLabel registerHeading4;
     private javax.swing.JLabel registerPWLabel;
     private javax.swing.JPasswordField registerPWTxtField;
     private javax.swing.JLabel registerUsernameLabel;
