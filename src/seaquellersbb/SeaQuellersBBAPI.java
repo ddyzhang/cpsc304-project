@@ -191,7 +191,7 @@ public class SeaQuellersBBAPI {
     public ArrayList<Comment> getComments(int threadId, int subId, int forumId) {
         ArrayList<Comment> comments = new ArrayList<Comment>();
         ResultSet result = executeQuery("SELECT * FROM comments, users WHERE forumid=" + forumId + 
-                " AND subid=" + subId + " AND threadid=" + threadId + " AND comments.userid=users.userid");
+                " AND subid=" + subId + " AND threadid=" + threadId + " AND comments.userid=users.userid ORDER BY commentid ASC");
         try {
             while (result.next()) {
                 int id = result.getInt("commentid");
