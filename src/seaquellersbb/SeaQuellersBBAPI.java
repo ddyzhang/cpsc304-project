@@ -507,7 +507,11 @@ public class SeaQuellersBBAPI {
         try {
             if (result.next()) {
                 int id = result.getInt(1) + 1;
-                executeUpdate("INSERT INTO users(userid, username, email, password) VALUES (" + id + ", \'" + username + "\', \'" + email + "\', \'" + password + "\')");
+                try {
+                    executeUpdate("INSERT INTO users(userid, username, email, password) VALUES (" + id + ", \'" + username + "\', \'" + email + "\', \'" + password + "\')");
+                } catch (Exception e) {
+                    throw new RuntimeException("Please enter valid fields.");
+                }                
             } else {
                 throw new RuntimeException("Something is wrong with the database.");
             }
