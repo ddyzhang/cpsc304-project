@@ -5,6 +5,8 @@
  */
 package ui;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import seaquellersbb.Forum;
 import seaquellersbb.SeaQuellersBBAPI;
 import seaquellersbb.Subforum;
@@ -174,10 +176,14 @@ public class NewThreadUI extends javax.swing.JFrame {
     private void submitBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitBtnMouseClicked
         String newThreadTitle = titleField.getText();
         String newThreadBody = bodyField.getText();
+        
+        if (newThreadTitle.isEmpty() || newThreadBody.isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
         seaQuellers.createThread(subid, forumid, newThreadTitle, newThreadBody, userid);
         subforum.refreshThreads();
         this.dispose();
-    
+        }
     }//GEN-LAST:event_submitBtnMouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked

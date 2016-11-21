@@ -257,7 +257,7 @@ public class SubforumUI extends javax.swing.JFrame {
 
     private void pruneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pruneButtonActionPerformed
         try {
-            int pruneDate = Integer.parseInt(JOptionPane.showInputDialog("Please enter the number of days of age you would like to prune from: "));
+            int pruneDate = Integer.parseInt(JOptionPane.showInputDialog("Please enter the number of days you would like to prune from: "));
             seaQuellers.pruneThreads(subforum.id, subforum.forumId, pruneDate);
             refreshThreads();
         } catch (NumberFormatException e) {

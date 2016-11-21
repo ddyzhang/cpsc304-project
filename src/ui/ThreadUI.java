@@ -165,6 +165,11 @@ public class ThreadUI extends javax.swing.JFrame {
                 replyBtnMouseClicked(evt);
             }
         });
+        replyBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                replyBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout DisplayPanelLayout = new javax.swing.GroupLayout(DisplayPanel);
         DisplayPanel.setLayout(DisplayPanelLayout);
@@ -262,9 +267,13 @@ public class ThreadUI extends javax.swing.JFrame {
     // mouse event to create a new thread comment, clear commentPanel, and refresh the window 
     private void replyBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_replyBtnMouseClicked
         String body = commentPanel.getText();
+        if (body.isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please enter a comment.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
         seaQuellers.createComment(thread.id, thread.subId, thread.forumId, body, loggedInUser.id);
         commentPanel.setText("");
         this.refreshComments();
+        }
     }//GEN-LAST:event_replyBtnMouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
@@ -321,6 +330,10 @@ public class ThreadUI extends javax.swing.JFrame {
         threadTitle.setText(newTitle);
         subUI.refreshThreads();
     }//GEN-LAST:event_editTitleButtonActionPerformed
+
+    private void replyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replyBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_replyBtnActionPerformed
 
     /**
      * @param args the command line arguments

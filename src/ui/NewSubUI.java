@@ -5,6 +5,8 @@
  */
 package ui;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import seaquellersbb.SeaQuellersBBAPI;
 import seaquellersbb.User;
 
@@ -116,9 +118,13 @@ public class NewSubUI extends javax.swing.JFrame {
     private void confirmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmButtonMouseClicked
         String newSubTitle = subNameTxt.getText();
         String newSubDesc = subDescTxt.getText();
+        if (newSubTitle.isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please fill in a subforum name.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
         seaQuellers.createSubforum(forumid, newSubTitle, newSubDesc);
         forum.refreshSubForums();
         this.dispose();
+        }
     }//GEN-LAST:event_confirmButtonMouseClicked
 
     /**
