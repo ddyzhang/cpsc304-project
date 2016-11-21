@@ -267,7 +267,10 @@ public class ThreadUI extends javax.swing.JFrame {
     // mouse event to create a new thread comment, clear commentPanel, and refresh the window 
     private void replyBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_replyBtnMouseClicked
         String body = commentPanel.getText();
-        if (body.isEmpty()) {
+        
+        String noSpacesBody = body.replaceAll("\\s+","");
+        
+        if (noSpacesBody.length() < 1) {
             JOptionPane.showMessageDialog(new JFrame(), "Please enter a comment.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
         seaQuellers.createComment(thread.id, thread.subId, thread.forumId, body, loggedInUser.id);

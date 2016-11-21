@@ -118,7 +118,10 @@ public class NewSubUI extends javax.swing.JFrame {
     private void confirmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmButtonMouseClicked
         String newSubTitle = subNameTxt.getText();
         String newSubDesc = subDescTxt.getText();
-        if (newSubTitle.isEmpty()) {
+        
+         String noSpacesTitle = newSubTitle.replaceAll("\\s+","");
+        
+        if (noSpacesTitle.length() < 1) {
             JOptionPane.showMessageDialog(new JFrame(), "Please fill in a subforum name.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
         seaQuellers.createSubforum(forumid, newSubTitle, newSubDesc);

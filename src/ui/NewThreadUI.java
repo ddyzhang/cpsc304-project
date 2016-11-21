@@ -177,7 +177,10 @@ public class NewThreadUI extends javax.swing.JFrame {
         String newThreadTitle = titleField.getText();
         String newThreadBody = bodyField.getText();
         
-        if (newThreadTitle.isEmpty() || newThreadBody.isEmpty()) {
+        String noSpacesTitle = newThreadTitle.replaceAll("\\s+","");
+        String noSpacesBody = newThreadBody.replaceAll("\\s+","");
+        
+        if (noSpacesTitle.length() < 1 || noSpacesBody.length() < 1) {
             JOptionPane.showMessageDialog(new JFrame(), "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
         seaQuellers.createThread(subid, forumid, newThreadTitle, newThreadBody, userid);

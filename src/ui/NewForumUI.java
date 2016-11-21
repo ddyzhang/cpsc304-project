@@ -5,6 +5,8 @@
  */
 package ui;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import seaquellersbb.SeaQuellersBBAPI;
 import seaquellersbb.User;
@@ -116,10 +118,17 @@ public class NewForumUI extends javax.swing.JFrame {
     private void confirmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmButtonMouseClicked
         String newForumTitle = forumTitle.getText();
         String newForumDesc = forumDesc.getText();
+        
+        String noSpacesTitle = newForumTitle.replaceAll("\\s+","");
+        
+        if (noSpacesTitle.length() < 1) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please fill in a forum name.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
         System.out.println("Creating forum for user: " + loggedInUser.id);
         seaQuellers.createForum(newForumTitle, newForumDesc, loggedInUser.id);
         home.refreshForums();
         this.dispose();
+        }
     }//GEN-LAST:event_confirmButtonMouseClicked
 
     private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
