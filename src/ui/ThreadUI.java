@@ -51,6 +51,7 @@ public class ThreadUI extends javax.swing.JFrame {
             deleteThreadButton.setVisible(false);
             editTitleButton.setVisible(false);
         }
+        deleteCommentButton.setVisible(false);
         editButton.setVisible(false);
         cancelEditButton.setVisible(false);
         drawComments();
