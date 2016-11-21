@@ -290,6 +290,11 @@ public class ThreadUI extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteThreadButtonMouseClicked
 
     private void editButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editButtonMouseClicked
+        String body = commentPanel.getText();
+        if (body.isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Please enter a comment.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         if (activeComment != null){
             String newCommentBody = commentPanel.getText();
             seaQuellers.editCommentBody(activeComment.id, thread.id, thread.subId, thread.forumId, newCommentBody);
@@ -329,6 +334,10 @@ public class ThreadUI extends javax.swing.JFrame {
 
     private void editTitleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editTitleButtonActionPerformed
         String newTitle = JOptionPane.showInputDialog("Please enter the new title: ");
+        if (newTitle.isEmpty()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Title cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         seaQuellers.editThreadTitle(thread.id, thread.subId, thread.forumId, newTitle);
         threadTitle.setText(newTitle);
         subUI.refreshThreads();
